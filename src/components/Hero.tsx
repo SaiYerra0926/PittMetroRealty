@@ -1,4 +1,4 @@
-import { Search, MapPin, Home, DollarSign } from "lucide-react";
+import { Search, MapPin, Home, DollarSign, Bed } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -28,13 +28,13 @@ const Hero = () => {
             Your journey to the perfect home starts here.
           </p>
 
-          {/* Property Search Form */}
+          {/* Advanced Property Search Form */}
           <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-luxury">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-4">
               <div className="relative">
                 <MapPin className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
                 <Input
-                  placeholder="Location"
+                  placeholder="City, State, ZIP or Address"
                   className="pl-10 h-12 border-0 bg-muted focus:bg-white transition-all"
                 />
               </div>
@@ -45,10 +45,14 @@ const Hero = () => {
                   <SelectValue placeholder="Property Type" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="house">House</SelectItem>
+                  <SelectItem value="single-family">Single Family Home</SelectItem>
+                  <SelectItem value="townhouse">Townhouse</SelectItem>
+                  <SelectItem value="condo">Condominium</SelectItem>
                   <SelectItem value="apartment">Apartment</SelectItem>
                   <SelectItem value="villa">Villa</SelectItem>
                   <SelectItem value="commercial">Commercial</SelectItem>
+                  <SelectItem value="land">Land/Lot</SelectItem>
+                  <SelectItem value="multi-family">Multi-Family</SelectItem>
                 </SelectContent>
               </Select>
 
@@ -58,17 +62,52 @@ const Hero = () => {
                   <SelectValue placeholder="Price Range" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="0-500k">$0 - $500k</SelectItem>
-                  <SelectItem value="500k-1m">$500k - $1M</SelectItem>
-                  <SelectItem value="1m-2m">$1M - $2M</SelectItem>
-                  <SelectItem value="2m+">$2M+</SelectItem>
+                  <SelectItem value="0-200k">$0 - $200k</SelectItem>
+                  <SelectItem value="200k-400k">$200k - $400k</SelectItem>
+                  <SelectItem value="400k-600k">$400k - $600k</SelectItem>
+                  <SelectItem value="600k-800k">$600k - $800k</SelectItem>
+                  <SelectItem value="800k-1m">$800k - $1M</SelectItem>
+                  <SelectItem value="1m-1.5m">$1M - $1.5M</SelectItem>
+                  <SelectItem value="1.5m-2m">$1.5M - $2M</SelectItem>
+                  <SelectItem value="2m-5m">$2M - $5M</SelectItem>
+                  <SelectItem value="5m+">$5M+</SelectItem>
                 </SelectContent>
               </Select>
 
-              <Button variant="hero" size="lg" className="h-12">
+              <Select>
+                <SelectTrigger className="h-12 border-0 bg-muted focus:bg-white">
+                  <Bed className="h-5 w-5 text-muted-foreground mr-2" />
+                  <SelectValue placeholder="Beds" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="any">Any Beds</SelectItem>
+                  <SelectItem value="1+">1+ Beds</SelectItem>
+                  <SelectItem value="2+">2+ Beds</SelectItem>
+                  <SelectItem value="3+">3+ Beds</SelectItem>
+                  <SelectItem value="4+">4+ Beds</SelectItem>
+                  <SelectItem value="5+">5+ Beds</SelectItem>
+                </SelectContent>
+              </Select>
+
+              <Button variant="hero" size="lg" className="h-12 lg:col-span-1">
                 <Search className="h-5 w-5 mr-2" />
-                Search Properties
+                Search
               </Button>
+            </div>
+
+            {/* Advanced Filters Toggle */}
+            <div className="flex items-center justify-between pt-4 border-t border-muted">
+              <Button variant="ghost" className="text-primary hover:text-primary-foreground hover:bg-primary">
+                Advanced Filters
+              </Button>
+              <div className="flex gap-2">
+                <Button variant="outline" size="sm">
+                  Save Search
+                </Button>
+                <Button variant="outline" size="sm">
+                  Map View
+                </Button>
+              </div>
             </div>
           </div>
 
