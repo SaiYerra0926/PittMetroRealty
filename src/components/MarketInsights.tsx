@@ -102,95 +102,108 @@ const MarketInsights = () => {
           ))}
         </div>
 
-        {/* Neighborhood Analysis */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-          <div>
-            <h3 className="text-3xl font-serif font-bold text-primary mb-8">Top Neighborhoods</h3>
-            <div className="space-y-4">
-              {neighborhoods.map((neighborhood, index) => (
-                <Card key={index} className="shadow-card hover:shadow-hover transition-all duration-300">
-                  <CardContent className="p-6">
-                    <div className="flex items-center justify-between mb-3">
-                      <h4 className="font-semibold text-lg">{neighborhood.name}</h4>
-                      <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                        neighborhood.inventory === 'Low' ? 'bg-red-100 text-red-700' :
-                        neighborhood.inventory === 'Medium' ? 'bg-yellow-100 text-yellow-700' :
-                        'bg-green-100 text-green-700'
-                      }`}>
-                        {neighborhood.inventory} Inventory
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-2xl font-bold text-primary">{neighborhood.avgPrice}</p>
-                        <p className="text-sm text-muted-foreground">Average Price</p>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-green-600 font-semibold">{neighborhood.priceChange}</p>
-                        <p className="text-sm text-muted-foreground">Price Change</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <h3 className="text-3xl font-serif font-bold text-primary mb-8">Market Forecast</h3>
+        {/* Investment Analytics */}
+        <div className="mb-16">
+          <h3 className="text-3xl font-serif font-bold text-primary mb-8 text-center">Investment Analytics & Tools</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <Card className="shadow-luxury">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <BarChart3 className="h-5 w-5 text-primary" />
-                  Next 12 Months Outlook
+                  ROI Calculator
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
-                  <div className="flex items-center gap-3">
-                    <Home className="h-5 w-5 text-primary" />
-                    <span className="font-medium">Home Prices</span>
-                  </div>
-                  <div className="text-right">
-                    <span className="text-green-600 font-semibold">+8-12%</span>
-                    <p className="text-sm text-muted-foreground">Continued Growth</p>
+              <CardContent className="space-y-4">
+                <div className="bg-gradient-primary/10 p-4 rounded-lg">
+                  <div className="text-center">
+                    <p className="text-3xl font-bold text-primary">12.8%</p>
+                    <p className="text-sm text-muted-foreground">Average Annual ROI</p>
                   </div>
                 </div>
-
-                <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
-                  <div className="flex items-center gap-3">
-                    <DollarSign className="h-5 w-5 text-accent" />
-                    <span className="font-medium">Interest Rates</span>
+                <div className="space-y-3">
+                  <div className="flex justify-between">
+                    <span className="text-sm">Cash Flow</span>
+                    <span className="text-sm font-semibold text-green-600">+$2,400/mo</span>
                   </div>
-                  <div className="text-right">
-                    <span className="text-blue-600 font-semibold">6.5-7.2%</span>
-                    <p className="text-sm text-muted-foreground">Stabilizing</p>
+                  <div className="flex justify-between">
+                    <span className="text-sm">Appreciation</span>
+                    <span className="text-sm font-semibold text-green-600">+8.5%/year</span>
                   </div>
-                </div>
-
-                <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
-                  <div className="flex items-center gap-3">
-                    <Calendar className="h-5 w-5 text-secondary" />
-                    <span className="font-medium">Market Activity</span>
-                  </div>
-                  <div className="text-right">
-                    <span className="text-green-600 font-semibold">Strong</span>
-                    <p className="text-sm text-muted-foreground">High Demand</p>
+                  <div className="flex justify-between">
+                    <span className="text-sm">Cap Rate</span>
+                    <span className="text-sm font-semibold">7.2%</span>
                   </div>
                 </div>
-
-                <div className="pt-4 border-t">
-                  <h4 className="font-semibold mb-3">Expert Analysis</h4>
-                  <p className="text-muted-foreground text-sm leading-relaxed">
-                    The local real estate market remains robust with continued appreciation in home values. 
-                    While interest rates have stabilized, strong employment growth and limited inventory 
-                    continue to support buyer demand. This is an excellent time for both buyers and sellers 
-                    to take advantage of market conditions.
-                  </p>
-                </div>
-
                 <Button variant="outline" className="w-full">
-                  Download Full Market Report
+                  Calculate Your ROI
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card className="shadow-luxury">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <DollarSign className="h-5 w-5 text-accent" />
+                  Mortgage Calculator
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="bg-gradient-accent/10 p-4 rounded-lg">
+                  <div className="text-center">
+                    <p className="text-3xl font-bold text-primary">$3,247</p>
+                    <p className="text-sm text-muted-foreground">Monthly Payment</p>
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  <div className="flex justify-between">
+                    <span className="text-sm">Principal & Interest</span>
+                    <span className="text-sm font-semibold">$2,890</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm">Property Tax</span>
+                    <span className="text-sm font-semibold">$245</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm">Insurance</span>
+                    <span className="text-sm font-semibold">$112</span>
+                  </div>
+                </div>
+                <Button variant="outline" className="w-full">
+                  Detailed Calculation
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card className="shadow-luxury">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Home className="h-5 w-5 text-secondary" />
+                  Property Tracker
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="bg-gradient-secondary/10 p-4 rounded-lg">
+                  <div className="text-center">
+                    <p className="text-3xl font-bold text-primary">247</p>
+                    <p className="text-sm text-muted-foreground">Properties Tracked</p>
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  <div className="flex justify-between">
+                    <span className="text-sm">Price Alerts</span>
+                    <span className="text-sm font-semibold text-blue-600">Active</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm">New Listings</span>
+                    <span className="text-sm font-semibold">12 Today</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm">Saved Searches</span>
+                    <span className="text-sm font-semibold">5 Active</span>
+                  </div>
+                </div>
+                <Button variant="outline" className="w-full">
+                  Manage Alerts
                 </Button>
               </CardContent>
             </Card>

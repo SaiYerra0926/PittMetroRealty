@@ -3,6 +3,8 @@ import Hero from "@/components/Hero";
 import AdvancedSearch from "@/components/AdvancedSearch";
 import FeaturedProperties from "@/components/FeaturedProperties";
 import MarketInsights from "@/components/MarketInsights";
+import PropertyComparison from "@/components/PropertyComparison";
+import MortgageCalculator from "@/components/MortgageCalculator";
 import PropertyValuation from "@/components/PropertyValuation";
 import Services from "@/components/Services";
 import TestimonialsSection from "@/components/TestimonialsSection";
@@ -17,7 +19,9 @@ const Index = () => {
       <Hero />
       <AdvancedSearch />
       <FeaturedProperties />
+      <PropertyComparison />
       <MarketInsights />
+      <MortgageCalculator />
       <PropertyValuation />
       <Services />
       <TestimonialsSection />

@@ -4,24 +4,24 @@ import { Button } from "@/components/ui/button";
 const About = () => {
   const achievements = [
     {
-      icon: Award,
-      title: "Award Winning",
-      description: "Multiple industry awards for excellence in real estate services"
-    },
-    {
       icon: Users,
       title: "Client Focused",
-      description: "Over 1200 satisfied clients with 98% satisfaction rate"
+      description: "Over 1200 satisfied clients with 98% satisfaction rate and personalized service"
     },
     {
       icon: Clock,
       title: "15+ Years Experience",
-      description: "Extensive experience in residential and commercial real estate"
+      description: "Extensive experience in residential, commercial, and luxury real estate markets"
     },
     {
       icon: TrendingUp,
-      title: "Market Leader",
-      description: "Consistently top-performing agent in the regional market"
+      title: "Investment Specialist",
+      description: "Expert in property investment strategies and portfolio management"
+    },
+    {
+      icon: Award,
+      title: "Technology Pioneer",
+      description: "Leveraging cutting-edge tools and AI-powered market analysis for superior results"
     }
   ];
 
