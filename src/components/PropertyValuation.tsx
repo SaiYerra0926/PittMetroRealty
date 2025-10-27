@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
 
 const PropertyValuation = () => {
   const [propertyType, setPropertyType] = useState("");
@@ -14,12 +15,18 @@ const PropertyValuation = () => {
     <section className="py-20 bg-gradient-to-br from-primary/5 to-accent/5">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-serif font-bold text-primary mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold text-primary mb-6 animate-fade-in-up">
             Free Property Valuation
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Get an accurate estimate of your property's current market value with our comprehensive analysis.
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed animate-fade-in-up-delay">
+            Get an accurate estimate of your property's current market value with our comprehensive analysis. 
+            Professional valuation reports delivered within 24 hours.
           </p>
+          <div className="mt-8 flex justify-center gap-4 animate-fade-in-up-delay">
+            <Badge variant="outline" className="px-4 py-2">100% Free</Badge>
+            <Badge variant="outline" className="px-4 py-2">24hr Delivery</Badge>
+            <Badge variant="outline" className="px-4 py-2">Expert Analysis</Badge>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">

@@ -18,7 +18,8 @@ const PropertyComparison = () => {
       lotSize: "0.25 acres",
       propertyType: "Single Family",
       daysOnMarket: 12,
-      image: "/placeholder.svg"
+      image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+      features: ["Modern Kitchen", "Hardwood Floors", "Walk-in Closet", "Fireplace"]
     },
     {
       id: 2,
@@ -32,7 +33,8 @@ const PropertyComparison = () => {
       lotSize: "0.4 acres",
       propertyType: "Single Family",
       daysOnMarket: 8,
-      image: "/placeholder.svg"
+      image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2053&q=80",
+      features: ["Gourmet Kitchen", "Marble Countertops", "Master Suite", "Pool"]
     }
   ]);
 
@@ -49,7 +51,8 @@ const PropertyComparison = () => {
       lotSize: "0.3 acres",
       propertyType: "Townhouse",
       daysOnMarket: 15,
-      image: "/placeholder.svg"
+      image: "https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+      features: ["Open Floor Plan", "Granite Countertops", "Balcony", "Garage"]
     };
     setSelectedProperties([...selectedProperties, newProperty]);
   };
@@ -62,12 +65,17 @@ const PropertyComparison = () => {
     <section className="py-20 bg-background">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-serif font-bold text-primary mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold text-primary mb-6 animate-fade-in-up">
             Property Comparison Tool
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Compare properties side by side to make informed decisions. Analyze key metrics and features.
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed animate-fade-in-up-delay">
+            Compare properties side by side to make informed decisions. Analyze key metrics, features, and value propositions.
           </p>
+          <div className="mt-8 flex justify-center gap-4 animate-fade-in-up-delay">
+            <Badge variant="outline" className="px-4 py-2">Real Photos</Badge>
+            <Badge variant="outline" className="px-4 py-2">Detailed Analysis</Badge>
+            <Badge variant="outline" className="px-4 py-2">Value Scoring</Badge>
+          </div>
         </div>
 
         <div className="max-w-7xl mx-auto">
@@ -138,6 +146,18 @@ const PropertyComparison = () => {
                       <Badge variant={property.daysOnMarket < 10 ? "destructive" : "secondary"}>
                         {property.daysOnMarket} days
                       </Badge>
+                    </div>
+                  </div>
+
+                  <div className="pt-4 border-t">
+                    <h4 className="text-sm font-semibold text-muted-foreground mb-3">Key Features</h4>
+                    <div className="grid grid-cols-2 gap-2">
+                      {property.features.map((feature, idx) => (
+                        <div key={idx} className="flex items-center gap-2">
+                          <div className="w-2 h-2 bg-primary rounded-full"></div>
+                          <span className="text-xs text-muted-foreground">{feature}</span>
+                        </div>
+                      ))}
                     </div>
                   </div>
 

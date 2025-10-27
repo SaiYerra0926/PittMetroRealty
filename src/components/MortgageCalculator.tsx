@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
+import { Badge } from "@/components/ui/badge";
 
 const MortgageCalculator = () => {
   const [homePrice, setHomePrice] = useState(750000);
@@ -27,12 +28,18 @@ const MortgageCalculator = () => {
     <section className="py-20 bg-muted/30">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-serif font-bold text-primary mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold text-primary mb-6 animate-fade-in-up">
             Mortgage Calculator
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Calculate your monthly payments and explore different scenarios to find the perfect loan for your needs.
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed animate-fade-in-up-delay">
+            Calculate your monthly payments and explore different scenarios to find the perfect loan for your needs. 
+            Get accurate estimates with our professional mortgage calculator.
           </p>
+          <div className="mt-8 flex justify-center gap-4 animate-fade-in-up-delay">
+            <Badge variant="outline" className="px-4 py-2">Real-time Calculations</Badge>
+            <Badge variant="outline" className="px-4 py-2">Detailed Breakdown</Badge>
+            <Badge variant="outline" className="px-4 py-2">Pre-approval Ready</Badge>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
@@ -108,12 +115,16 @@ const MortgageCalculator = () => {
           {/* Results */}
           <Card className="shadow-luxury">
             <CardHeader>
-              <CardTitle>Payment Breakdown</CardTitle>
+              <CardTitle className="flex items-center gap-2">
+                <DollarSign className="h-5 w-5 text-primary" />
+                Payment Breakdown
+              </CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="bg-gradient-primary text-white p-6 rounded-lg text-center">
-                <p className="text-sm mb-2">Total Monthly Payment</p>
-                <p className="text-4xl font-bold">${totalMonthly.toLocaleString(undefined, {maximumFractionDigits: 0})}</p>
+              <div className="bg-gradient-to-r from-primary to-primary-light text-white p-8 rounded-xl text-center shadow-lg">
+                <p className="text-lg mb-3 opacity-90">Total Monthly Payment</p>
+                <p className="text-5xl font-bold mb-2">${totalMonthly.toLocaleString(undefined, {maximumFractionDigits: 0})}</p>
+                <p className="text-sm opacity-80">Principal, Interest, Taxes & Insurance</p>
               </div>
 
               <div className="space-y-4">

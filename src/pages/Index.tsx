@@ -2,8 +2,9 @@ import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import AdvancedSearch from "@/components/AdvancedSearch";
 import FeaturedProperties from "@/components/FeaturedProperties";
-import MarketInsights from "@/components/MarketInsights";
 import PropertyComparison from "@/components/PropertyComparison";
+import PropertyMap from "@/components/PropertyMap";
+import MarketInsights from "@/components/MarketInsights";
 import MortgageCalculator from "@/components/MortgageCalculator";
 import PropertyValuation from "@/components/PropertyValuation";
 import Services from "@/components/Services";
@@ -20,6 +21,7 @@ const Index = () => {
       <AdvancedSearch />
       <FeaturedProperties />
       <PropertyComparison />
+      <PropertyMap />
       <MarketInsights />
       <MortgageCalculator />
       <PropertyValuation />
