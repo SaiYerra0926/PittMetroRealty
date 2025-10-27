@@ -2,9 +2,372 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Amit Agarwal Real Estate Design System
+/* Pitt Metro Realty Design System
 All colors MUST be HSL for proper theming.
 */
+
+/* Professional Business Website Animations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in-down {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes professional-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.2);
+  }
+}
+
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes float-1 {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translateY(-20px) rotate(180deg);
+    opacity: 1;
+  }
+}
+
+@keyframes float-2 {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateY(-15px) rotate(-180deg);
+    opacity: 0.8;
+  }
+}
+
+@keyframes float-3 {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(-25px) rotate(90deg);
+    opacity: 0.9;
+  }
+}
+
+@keyframes float-4 {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translateY(-18px) rotate(-90deg);
+    opacity: 0.7;
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes bounce-subtle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Animation Classes */
+.animate-fade-in {
+  animation: fade-in 1s ease-out;
+}
+
+.animate-slide-in-left {
+  animation: slide-in-left 0.8s ease-out;
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 0.8s ease-out;
+}
+
+.animate-slide-in-up {
+  animation: slide-in-up 0.8s ease-out;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s ease-out;
+}
+
+.animate-fade-in-down {
+  animation: fade-in-down 0.8s ease-out;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.6s ease-out;
+}
+
+.animate-professional-glow {
+  animation: professional-glow 3s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s infinite;
+}
+
+.animate-shimmer {
+  animation: shimmer 2s linear infinite;
+}
+
+.animate-bounce-subtle {
+  animation: bounce-subtle 2s ease-in-out infinite;
+}
+
+/* Professional Section Transitions */
+.section-transition {
+  transition: all 0.3s ease-in-out;
+}
+
+.section-transition:hover {
+  transform: translateY(-2px);
+}
+
+/* Enhanced Professional Shadows */
+.shadow-professional {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.shadow-professional-hover {
+  box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.15), 0 10px 20px -5px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+
+/* Smooth Gradient Backgrounds */
+.bg-gradient-professional {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);
+}
+
+.bg-gradient-section {
+  background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 50%, #e2e8f0 100%);
+}
+
+.bg-gradient-hero {
+  background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #475569 100%);
+}
+
+.animate-gradient-shift {
+  background-size: 200% 200%;
+  animation: gradient-shift 8s ease-in-out infinite;
+}
+
+.animate-float-1 {
+  animation: float-1 6s ease-in-out infinite;
+}
+
+.animate-float-2 {
+  animation: float-2 8s ease-in-out infinite;
+}
+
+.animate-float-3 {
+  animation: float-3 7s ease-in-out infinite;
+}
+
+.animate-float-4 {
+  animation: float-4 9s ease-in-out infinite;
+}
+
+/* Real Estate Specific Styles */
+.property-card {
+  @apply bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2;
+}
+
+.property-image {
+  @apply w-full h-48 object-cover transition-transform duration-500 hover:scale-105;
+}
+
+.feature-icon {
+  @apply w-12 h-12 rounded-lg flex items-center justify-center text-white transition-all duration-300 hover:scale-110;
+}
+
+.service-card {
+  @apply bg-white rounded-xl p-6 shadow-lg border border-gray-100 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1;
+}
+
+.testimonial-card {
+  @apply bg-white rounded-xl p-6 shadow-lg border border-gray-100 transition-all duration-300 hover:shadow-2xl;
+}
+
+/* Button Enhancements */
+.btn-primary {
+  @apply bg-primary text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-primary/50;
+}
+
+.btn-secondary {
+  @apply bg-gray-100 text-gray-700 px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:bg-gray-200 hover:shadow-md hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-gray-300;
+}
+
+.btn-outline {
+  @apply border-2 border-primary text-primary px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:bg-primary hover:text-white hover:shadow-lg hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-primary/50;
+}
+
+/* Form Enhancements */
+.form-input {
+  @apply w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary focus:outline-none transition-all duration-300 hover:border-gray-300;
+}
+
+.form-textarea {
+  @apply w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary focus:outline-none transition-all duration-300 hover:border-gray-300 resize-none;
+}
+
+/* Loading States */
+.loading-skeleton {
+  @apply bg-gray-200 animate-pulse rounded;
+}
+
+.loading-shimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Scroll Animations */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s ease-out;
+}
+
+.scroll-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Responsive Typography */
+.text-responsive-xl {
+  @apply text-2xl md:text-3xl lg:text-4xl xl:text-5xl;
+}
+
+.text-responsive-lg {
+  @apply text-xl md:text-2xl lg:text-3xl;
+}
+
+.text-responsive-md {
+  @apply text-lg md:text-xl lg:text-2xl;
+}
+
+/* Interactive Elements */
+.interactive-hover {
+  @apply transition-all duration-300 hover:scale-105 hover:shadow-lg;
+}
+
+.interactive-focus {
+  @apply focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2;
+}
+
+/* Glass Effect */
+.glass-effect {
+  @apply bg-white/80 backdrop-blur-md border border-white/20;
+}
+
+.glass-effect-dark {
+  @apply bg-black/20 backdrop-blur-md border border-white/10;
+}
 
 @layer base {
   :root {
@@ -304,4 +667,155 @@ All colors MUST be HSL for proper theming.
   .animate-pulse-slow {
     animation: pulse 2s ease-in-out infinite;
   }
+
+  /* Professional Spacing System */
+  .section-spacing {
+    @apply py-12 lg:py-16;
+  }
+
+  .section-spacing-lg {
+    @apply py-16 lg:py-20;
+  }
+
+  .section-spacing-xl {
+    @apply py-20 lg:py-24;
+  }
+
+  .container-spacing {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .content-spacing {
+    @apply space-y-6 lg:space-y-8;
+  }
+
+  .form-spacing {
+    @apply space-y-4 lg:space-y-6;
+  }
+
+  .card-spacing {
+    @apply p-6 lg:p-8;
+  }
+
+  .button-spacing {
+    @apply px-6 py-3;
+  }
+
+  .input-spacing {
+    @apply px-4 py-3;
+  }
+
+  /* Optimized Layout Classes */
+  .hero-section {
+    @apply min-h-screen flex items-center pt-20 lg:pt-24 pb-12 lg:pb-16;
+  }
+
+  .content-section {
+    @apply py-12 lg:py-16;
+  }
+
+  .feature-section {
+    @apply py-16 lg:py-20;
+  }
+
+  .cta-section {
+    @apply py-16 lg:py-20;
+  }
+
+  /* Grid Spacing */
+  .grid-spacing {
+    @apply grid gap-6 lg:gap-8;
+  }
+
+  .grid-spacing-sm {
+    @apply grid gap-4 lg:gap-6;
+  }
+
+  .grid-spacing-lg {
+    @apply grid gap-8 lg:gap-12;
+  }
+
+  /* Text Spacing */
+  .text-spacing {
+    @apply leading-relaxed;
+  }
+
+  .heading-spacing {
+    @apply mb-4 lg:mb-6;
+  }
+
+  .paragraph-spacing {
+    @apply mb-6 lg:mb-8;
+  }
+
+  /* Component Spacing */
+  .card-content-spacing {
+    @apply p-6 lg:p-8 space-y-4 lg:space-y-6;
+  }
+
+  .form-group-spacing {
+    @apply space-y-2 lg:space-y-3;
+  }
+
+  .button-group-spacing {
+    @apply flex gap-3 lg:gap-4;
+  }
+
+  /* Responsive Spacing */
+  @media (max-width: 768px) {
+    .section-spacing {
+      @apply py-8;
+    }
+    
+    .section-spacing-lg {
+      @apply py-12;
+    }
+    
+    .section-spacing-xl {
+      @apply py-16;
+    }
+    
+    .card-spacing {
+      @apply p-4;
+    }
+    
+    .content-spacing {
+      @apply space-y-4;
+    }
+    
+    .form-spacing {
+      @apply space-y-3;
+    }
+  }
+
+  /* Professional Margins */
+  .margin-auto {
+    @apply mx-auto;
+  }
+
+  .margin-section {
+    @apply my-12 lg:my-16;
+  }
+
+  .margin-content {
+    @apply my-6 lg:my-8;
+  }
+
+  /* Clean Layout Utilities */
+  .no-excess-space {
+    @apply m-0 p-0;
+  }
+
+  .tight-spacing {
+    @apply space-y-2;
+  }
+
+  .normal-spacing {
+    @apply space-y-4;
+  }
+
+  .loose-spacing {
+    @apply space-y-6;
+  }
+
 }

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, Filter, X, Calendar, Square, Car, Trees, Waves, Zap, Shield, Mountain } from "lucide-react";
+import { Search, Filter, X, Calendar, Square, Car, Trees, Waves, Zap, Shield, Mountain, Bookmark } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -28,9 +28,9 @@ const AdvancedSearch = () => {
   ];
 
   return (
-    <section className="py-12 bg-muted/30">
+    <section className="py-16 bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/20">
       <div className="container mx-auto px-4">
-        <Card className="shadow-luxury">
+        <Card className="shadow-professional hover:shadow-professional-hover section-transition animate-scale-in">
           <CardHeader>
             <div className="flex items-center justify-between">
               <CardTitle className="text-2xl font-serif text-primary">
@@ -299,6 +299,7 @@ const AdvancedSearch = () => {
                 Search Properties
               </Button>
               <Button variant="outline" size="lg">
+                <Bookmark className="h-4 w-4 mr-2" />
                 Save Search
               </Button>
               <Button variant="outline" size="lg">

@@ -1,56 +1,84 @@
-# Welcome to your Lovable project
+# Pitt Metro Realty - Estate Showcase Website
 
-## Project info
+A professional real estate website built for Pitt Metro Realty, featuring property listings, owner portal, and comprehensive real estate services.
 
-**URL**: https://lovable.dev/projects/6f6846df-e1e3-4408-a589-7452f976a104
+## About Pitt Metro Realty
 
-## How can I edit this code?
+Pitt Metro Realty is a premier real estate agency specializing in luxury properties and exceptional service in Pittsburgh and surrounding areas. With over 15 years of experience, we provide comprehensive real estate solutions including buying, selling, renting, and property management services.
 
-There are several ways of editing your application.
+## Features
 
-**Use Lovable**
+- **Property Listings**: Browse featured properties with detailed information
+- **Owner Portal**: Secure photo upload and property management system
+- **Professional Design**: Modern, responsive website with beautiful UI/UX
+- **Contact System**: Multiple ways to get in touch with our expert team
+- **Services Overview**: Comprehensive real estate services and expertise
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/6f6846df-e1e3-4408-a589-7452f976a104) and start prompting.
+## Getting Started
 
-Changes made via Lovable will be committed automatically to this repo.
+### Prerequisites
 
-**Use your preferred IDE**
+- Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+### Installation
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
+# Step 1: Clone the repository
 git clone <YOUR_GIT_URL>
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# Step 2: Navigate to the project directory
+cd amitagarwal-estate-showcase
 
-# Step 3: Install the necessary dependencies.
+# Step 3: Install the necessary dependencies
 npm i
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Step 4: Start the development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+## Interactive Maps Integration
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+This project includes interactive maps for displaying Pittsburgh, Pennsylvania real estate properties using Leaflet and OpenStreetMap.
 
-**Use GitHub Codespaces**
+### Features
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+- **No API Key Required**: Uses OpenStreetMap tiles (completely free)
+- **Interactive Pittsburgh Map**: Centered on Pittsburgh, PA with zoom controls
+- **Property Markers**: Clickable markers for each property with popups
+- **Real-time Property Information**: Detailed property cards with images and specs
+- **Directions Integration**: "Get Directions" button opens Google Maps directions
+- **Responsive Design**: Works perfectly on all device sizes
 
-## What technologies are used for this project?
+### Technology Stack
+
+- **Leaflet**: Open-source JavaScript library for interactive maps
+- **OpenStreetMap**: Free, open-source map data
+- **React Integration**: Seamless integration with React components
+- **TypeScript Support**: Full type safety and error handling
+
+### Usage
+
+The PropertyMap component (`src/components/PropertyMap.tsx`) displays:
+- Interactive map centered on Pittsburgh, PA
+- Property markers for Robinson Township and Moon Township
+- Interactive property selection with popups
+- Detailed property information panel
+- Market overview statistics
+
+**Note**: This implementation requires no API keys or external service setup. The map works immediately out of the box!
+
+## Owner Portal Access
+
+Property owners can access the secure portal to:
+- Upload property photos
+- Manage property listings
+- Track listing status
+- Access professional tools
+
+**Access Codes**: `OWNER2024`, `PITT-METRO-OWNER`, `PROPERTY-ACCESS-2024`
+**Demo Login**: `owner@pittmetro.com` / `owner123`
+
+## Technology Stack
 
 This project is built with:
 
@@ -59,15 +87,22 @@ This project is built with:
 - React
 - shadcn-ui
 - Tailwind CSS
+- Leaflet (Interactive Maps)
+- OpenStreetMap
 
-## How can I deploy this project?
+## Deployment
 
-Simply open [Lovable](https://lovable.dev/projects/6f6846df-e1e3-4408-a589-7452f976a104) and click on Share -> Publish.
+The website can be deployed to any static hosting service such as:
+- Vercel
+- Netlify
+- GitHub Pages
+- AWS S3 + CloudFront
 
-## Can I connect a custom domain to my Lovable project?
+## Contact
 
-Yes, you can!
+For more information about Pitt Metro Realty services, visit our website or contact us directly.
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+**Pitt Metro Realty**
+- Phone: (412) 555-0123
+- Email: info@pittmetrorealty.com
+- Address: Pittsburgh, Pennsylvania

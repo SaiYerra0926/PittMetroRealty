@@ -1,11 +1,24 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { MapPin, Navigation, Phone, Mail, Home, DollarSign, Bed, Bath } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+
+// Fix for default markers in Leaflet
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+});
 
 const PropertyMap = () => {
   const [selectedProperty, setSelectedProperty] = useState(0);
+  const mapRef = useRef<HTMLDivElement>(null);
+  const mapInstanceRef = useRef<L.Map | null>(null);
+  const markersRef = useRef<L.Marker[]>([]);
 
   const properties = [
     {
@@ -80,27 +93,89 @@ const PropertyMap = () => {
     window.open(url, '_blank');
   };
 
+  // Initialize Leaflet map
+  useEffect(() => {
+    if (mapRef.current && !mapInstanceRef.current) {
+      // Create map centered on Pittsburgh
+      const map = L.map(mapRef.current).setView([40.4432, -79.9428], 13);
+      mapInstanceRef.current = map;
+
+      // Add OpenStreetMap tiles
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+      }).addTo(map);
+
+      // Add property markers
+      properties.forEach((property, index) => {
+        const marker = L.marker([property.coordinates.lat, property.coordinates.lng])
+          .addTo(map)
+          .bindPopup(`
+            <div class="p-2 text-center">
+              <h3 class="font-bold text-primary text-sm">${property.name}</h3>
+              <p class="text-lg font-bold text-primary">$${property.price.toLocaleString()}</p>
+              <p class="text-xs text-gray-600">${property.beds}B ${property.baths}BA • ${property.sqft.toLocaleString()} sq ft</p>
+            </div>
+          `);
+
+        marker.on('click', () => {
+          setSelectedProperty(index);
+        });
+
+        markersRef.current.push(marker);
+      });
+    }
+
+    return () => {
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
+        markersRef.current = [];
+      }
+    };
+  }, []);
+
+  // Update marker styles when selected property changes
+  useEffect(() => {
+    markersRef.current.forEach((marker, index) => {
+      if (index === selectedProperty) {
+        marker.setIcon(L.divIcon({
+          className: 'custom-marker-selected',
+          html: `<div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center font-bold shadow-lg">${index + 1}</div>`,
+          iconSize: [32, 32],
+          iconAnchor: [16, 16]
+        }));
+      } else {
+        marker.setIcon(L.divIcon({
+          className: 'custom-marker',
+          html: `<div class="w-6 h-6 bg-white text-primary rounded-full flex items-center justify-center font-bold shadow-md border-2 border-primary">${index + 1}</div>`,
+          iconSize: [24, 24],
+          iconAnchor: [12, 12]
+        }));
+      }
+    });
+  }, [selectedProperty]);
+
   return (
-    <section className="py-20 bg-gradient-to-br from-slate-50 to-blue-50">
+    <section className="relative bg-gradient-to-br from-blue-50/30 via-slate-50/50 to-indigo-50/20">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
+        <div className="text-center mb-16 pt-20">
           <h2 className="text-4xl md:text-5xl font-bold text-primary mb-6 animate-fade-in-up">
-            Pittsburgh Area Properties
+            Pittsburgh Real Estate Map
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed animate-fade-in-up-delay">
-            Explore our featured properties in Robinson Township and Moon Township, PA. Click on any property to get detailed information and directions.
+            Explore our featured properties across Pittsburgh, PA with interactive maps. Click on any property marker to see basic details.
           </p>
           <div className="mt-8 flex justify-center gap-4 animate-fade-in-up-delay">
+            <Badge variant="outline" className="px-4 py-2">Pittsburgh, PA</Badge>
             <Badge variant="outline" className="px-4 py-2">Robinson Township</Badge>
             <Badge variant="outline" className="px-4 py-2">Moon Township</Badge>
-            <Badge variant="outline" className="px-4 py-2">Get Directions</Badge>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-          {/* Map Placeholder */}
-          <div className="lg:col-span-2">
-            <Card className="shadow-luxury h-[600px]">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto pb-20">
+          {/* Map Section */}
+          <div className="space-y-6 lg:sticky lg:top-24 lg:self-start">
+            <Card className="shadow-professional hover:shadow-professional-hover section-transition animate-fade-in-up">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <MapPin className="h-5 w-5 text-primary" />
@@ -108,54 +183,59 @@ const PropertyMap = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-0">
-                <div className="relative h-[500px] bg-gradient-to-br from-blue-100 to-green-100 rounded-lg overflow-hidden">
-                  {/* Map Background */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-200 via-green-200 to-yellow-200 opacity-60"></div>
+                <div className="relative h-[500px] rounded-lg overflow-hidden">
+                  {/* Leaflet Map Container */}
+                  <div ref={mapRef} className="w-full h-full rounded-lg"></div>
                   
-                  {/* Property Markers */}
+                  {/* Simple Map Controls */}
+                  <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm rounded-lg p-3 shadow-lg z-[1000]">
+                    <div className="flex items-center gap-2 text-xs">
+                      <MapPin className="h-4 w-4 text-primary" />
+                      <span className="font-medium">Pittsburgh, PA</span>
+                    </div>
+                    <div className="text-xs text-gray-600 mt-1">
+                      Robinson & Moon Townships
+                    </div>
+                    <div className="text-xs text-gray-500 mt-1">
+                      Powered by OpenStreetMap
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Property List */}
+            <Card className="shadow-professional hover:shadow-professional-hover section-transition animate-fade-in-up">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Home className="h-5 w-5 text-primary" />
+                  All Properties
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3 max-h-[400px] overflow-y-auto">
                   {properties.map((property, index) => (
                     <div
                       key={property.id}
-                      className={`absolute cursor-pointer transition-all duration-300 ${
-                        selectedProperty === index ? 'scale-125 z-10' : 'hover:scale-110'
+                      className={`p-3 rounded-lg border cursor-pointer transition-all duration-200 ${
+                        selectedProperty === index 
+                          ? 'border-primary bg-primary/5' 
+                          : 'border-gray-200 hover:border-primary/50 hover:bg-gray-50'
                       }`}
-                      style={{
-                        left: `${20 + (index * 15)}%`,
-                        top: `${30 + (index * 10)}%`,
-                      }}
                       onClick={() => setSelectedProperty(index)}
                     >
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center shadow-lg ${
-                        selectedProperty === index 
-                          ? 'bg-primary text-white' 
-                          : 'bg-white text-primary border-2 border-primary'
-                      }`}>
-                        <Home className="h-4 w-4" />
-                      </div>
-                      <div className={`absolute top-10 left-1/2 transform -translate-x-1/2 px-2 py-1 rounded text-xs font-medium whitespace-nowrap ${
-                        selectedProperty === index 
-                          ? 'bg-primary text-white' 
-                          : 'bg-white text-primary border border-primary'
-                      }`}>
-                        ${property.price.toLocaleString()}
+                      <div className="flex items-center justify-between">
+                        <div className="flex-1">
+                          <h4 className="font-semibold text-sm text-primary">{property.name}</h4>
+                          <p className="text-xs text-muted-foreground">{property.address}</p>
+                        </div>
+                        <div className="text-right">
+                          <div className="text-sm font-bold text-primary">${property.price.toLocaleString()}</div>
+                          <div className="text-xs text-muted-foreground">{property.beds}B {property.baths}BA</div>
+                        </div>
                       </div>
                     </div>
                   ))}
-                  
-                  {/* Map Legend */}
-                  <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg p-4 shadow-lg">
-                    <h4 className="font-semibold text-sm mb-2">Legend</h4>
-                    <div className="space-y-1 text-xs">
-                      <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 bg-primary rounded-full"></div>
-                        <span>Selected Property</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 bg-white border border-primary rounded-full"></div>
-                        <span>Available Properties</span>
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -163,7 +243,7 @@ const PropertyMap = () => {
 
           {/* Property Details */}
           <div className="space-y-6">
-            <Card className="shadow-luxury">
+            <Card className="shadow-professional hover:shadow-professional-hover section-transition animate-fade-in-up">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Home className="h-5 w-5 text-primary" />
@@ -248,8 +328,8 @@ const PropertyMap = () => {
               </CardContent>
             </Card>
 
-            {/* Quick Stats */}
-            <Card className="shadow-card">
+            {/* Market Overview */}
+            <Card className="shadow-professional hover:shadow-professional-hover section-transition animate-fade-in-up">
               <CardContent className="p-6">
                 <h4 className="font-semibold text-primary mb-4">Market Overview</h4>
                 <div className="space-y-3">

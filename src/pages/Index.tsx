@@ -1,35 +1,27 @@
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
-import AdvancedSearch from "@/components/AdvancedSearch";
 import FeaturedProperties from "@/components/FeaturedProperties";
-import PropertyComparison from "@/components/PropertyComparison";
 import PropertyMap from "@/components/PropertyMap";
-import MarketInsights from "@/components/MarketInsights";
-import MortgageCalculator from "@/components/MortgageCalculator";
-import PropertyValuation from "@/components/PropertyValuation";
 import Services from "@/components/Services";
-import TestimonialsSection from "@/components/TestimonialsSection";
+import ReviewsSection from "@/components/ReviewsSection";
 import About from "@/components/About";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import Chatbot from "@/components/Chatbot";
 
 const Index = () => {
   return (
     <div className="min-h-screen">
       <Header />
       <Hero />
-      <AdvancedSearch />
       <FeaturedProperties />
-      <PropertyComparison />
       <PropertyMap />
-      <MarketInsights />
-      <MortgageCalculator />
-      <PropertyValuation />
       <Services />
-      <TestimonialsSection />
+      <ReviewsSection />
       <About />
       <Contact />
       <Footer />
+      <Chatbot />
     </div>
   );
 };

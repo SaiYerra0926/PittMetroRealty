@@ -1,44 +1,78 @@
-import { useState } from "react";
-import { Menu, X, Phone, Mail, Search, MapPin } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { useState, useEffect } from "react";
+import { Menu, X, Phone, Mail } from "lucide-react";
 import Logo from "@/components/Logo";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("home");
 
   const navItems = [
-    { label: "Sell", href: "#sell" },
-    { label: "Buy", href: "#buy" },
-    { label: "Rent", href: "#rent" },
-    { label: "Manage", href: "#manage" },
-    { label: "About", href: "#about" },
-    { label: "Contact", href: "#contact" },
+    { 
+      label: "Home", 
+      href: "#home"
+    },
+    { 
+      label: "Properties", 
+      href: "#properties"
+    },
+    { 
+      label: "Services", 
+      href: "#services"
+    },
+    { 
+      label: "About", 
+      href: "#about"
+    },
+    { 
+      label: "Contact", 
+      href: "#contact"
+    },
   ];
 
-  return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 shadow-lg border-b border-slate-700">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Top utility bar */}
-        <div className="hidden lg:flex items-center justify-between py-3 text-sm text-slate-300 border-b border-slate-600">
-          <div className="flex items-center gap-8">
-            <span className="font-medium hover:text-yellow-400 transition-colors cursor-pointer">Residential</span>
-            <span className="font-medium hover:text-yellow-400 transition-colors cursor-pointer">Commercial</span>
-            <span className="font-medium hover:text-yellow-400 transition-colors cursor-pointer">Investment</span>
-          </div>
-          <div className="flex items-center gap-8">
-            <a href="tel:+1234567890" className="flex items-center gap-2 hover:text-yellow-400 transition-colors">
-              <Phone className="h-4 w-4" />
-              <span>+1 (234) 567-8900</span>
-            </a>
-            <a href="mailto:info@amitagarwal.com" className="flex items-center gap-2 hover:text-yellow-400 transition-colors">
-              <Mail className="h-4 w-4" />
-              <span>info@amitagarwal.com</span>
-            </a>
-          </div>
-        </div>
+  // Detect active section based on scroll position
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = navItems.map(item => 
+        document.querySelector(item.href)
+      ).filter(Boolean);
 
+      const scrollPosition = window.scrollY + 200;
+
+      sections.forEach((section, index) => {
+        if (section) {
+          const rect = section.getBoundingClientRect();
+          const sectionTop = rect.top + window.scrollY;
+          const sectionBottom = sectionTop + rect.height;
+
+          if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+            setActiveSection(navItems[index].href.replace('#', ''));
+          }
+        }
+      });
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Initial call
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const handleNavClick = (href: string) => {
+    const element = document.querySelector(href);
+    if (element) {
+      element.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+    setIsMenuOpen(false);
+  };
+
+  return (
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-200/50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Main navigation */}
-        <nav className="flex items-center justify-between py-5">
+        <nav className="flex items-center justify-between py-4">
           {/* Logo */}
           <div className="flex items-center">
             <Logo />
@@ -46,67 +80,102 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-8">
-            <div className="flex items-center gap-6">
-              {navItems.map((item) => (
-                <a
+            {navItems.map((item) => {
+              const isActive = activeSection === item.href.replace('#', '');
+              
+              return (
+                <button
                   key={item.label}
-                  href={item.href}
-                  className="text-slate-200 hover:text-yellow-400 transition-colors font-medium text-sm flex items-center gap-1"
+                  onClick={() => handleNavClick(item.href)}
+                  className={`relative px-4 py-2 font-medium text-sm transition-all duration-300 hover:scale-105 group ${
+                    isActive 
+                      ? 'text-primary' 
+                      : 'text-gray-700 hover:text-primary'
+                  }`}
                 >
                   {item.label}
-                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </a>
-              ))}
+                  
+                  {/* Active indicator */}
+                  {isActive && (
+                    <div className="absolute bottom-0 left-0 w-full h-0.5 bg-primary rounded-full animate-slide-in-scale" />
+                  )}
+                  
+                  {/* Hover indicator */}
+                  <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary rounded-full transition-all duration-300 group-hover:w-full" />
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Contact Info */}
+          <div className="hidden lg:flex items-center gap-6">
+            <div className="flex items-center gap-2 text-gray-600 hover:text-primary transition-all duration-300 cursor-pointer hover:scale-105 group">
+              <div className="w-6 h-6 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-all duration-300">
+                <Phone className="h-3 w-3 text-primary" />
+              </div>
+              <span className="text-sm font-medium">(234) 567-8900</span>
             </div>
-            <div className="flex items-center gap-3">
-              <Button variant="outline" size="sm" className="flex items-center gap-2 border-slate-600 text-slate-200 hover:bg-slate-700 hover:text-white">
-                <Search className="h-4 w-4" />
-                Find Properties
-              </Button>
-              <Button variant="default" size="sm" className="bg-yellow-500 hover:bg-yellow-600 text-slate-900 font-semibold">
-                What's my property worth?
-              </Button>
+            <div className="flex items-center gap-2 text-gray-600 hover:text-primary transition-all duration-300 cursor-pointer hover:scale-105 group">
+              <div className="w-6 h-6 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-200 transition-all duration-300">
+                <Mail className="h-3 w-3 text-blue-600" />
+              </div>
+              <span className="text-sm font-medium">info@pittmetro.com</span>
             </div>
           </div>
 
           {/* Mobile menu button */}
           <button
-            className="lg:hidden p-2 rounded-md hover:bg-slate-700 transition-colors"
+            className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-all duration-300 hover:scale-105 group"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle menu"
           >
-            {isMenuOpen ? (
-              <X className="h-6 w-6 text-slate-200" />
-            ) : (
-              <Menu className="h-6 w-6 text-slate-200" />
-            )}
+            <div className="w-6 h-6 flex items-center justify-center">
+              {isMenuOpen ? (
+                <X className="h-5 w-5 text-gray-700 group-hover:text-primary transition-all duration-300" />
+              ) : (
+                <Menu className="h-5 w-5 text-gray-700 group-hover:text-primary transition-all duration-300" />
+              )}
+            </div>
           </button>
         </nav>
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="lg:hidden py-4 border-t border-slate-600 bg-slate-800">
-            <div className="flex flex-col gap-2">
-              {navItems.map((item) => (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  className="text-slate-200 hover:text-yellow-400 transition-colors font-medium py-3 px-2 rounded-md hover:bg-slate-700"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {item.label}
-                </a>
-              ))}
-              <div className="pt-2 mt-2 border-t border-slate-600 space-y-2">
-                <Button variant="outline" size="sm" className="w-full flex items-center gap-2 border-slate-600 text-slate-200 hover:bg-slate-700">
-                  <Search className="h-4 w-4" />
-                  Find Properties
-                </Button>
-                <Button variant="default" size="sm" className="w-full bg-yellow-500 hover:bg-yellow-600 text-slate-900">
-                  What's my property worth?
-                </Button>
+          <div className="lg:hidden py-6 border-t border-gray-200 bg-white/95 backdrop-blur-md animate-slide-in-down">
+            <div className="flex flex-col gap-1">
+              {navItems.map((item, index) => {
+                const isActive = activeSection === item.href.replace('#', '');
+                
+                return (
+                  <button
+                    key={item.label}
+                    onClick={() => handleNavClick(item.href)}
+                    className={`py-3 px-4 text-left font-medium transition-all duration-300 rounded-lg hover:scale-105 ${
+                      isActive 
+                        ? 'text-primary bg-primary/10' 
+                        : 'text-gray-700 hover:text-primary hover:bg-gray-50'
+                    }`}
+                    style={{ animationDelay: `${index * 0.1}s` }}
+                  >
+                    {item.label}
+                  </button>
+                );
+              })}
+              
+              {/* Mobile Contact Info */}
+              <div className="pt-4 mt-2 border-t border-gray-200 space-y-3">
+                <div className="flex items-center gap-3 text-gray-600 hover:text-primary transition-all duration-300 py-2 px-4 hover:scale-105 group">
+                  <div className="w-6 h-6 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-all duration-300">
+                    <Phone className="h-3 w-3 text-primary" />
+                  </div>
+                  <span className="text-sm font-medium">(234) 567-8900</span>
+                </div>
+                <div className="flex items-center gap-3 text-gray-600 hover:text-primary transition-all duration-300 py-2 px-4 hover:scale-105 group">
+                  <div className="w-6 h-6 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-200 transition-all duration-300">
+                    <Mail className="h-3 w-3 text-blue-600" />
+                  </div>
+                  <span className="text-sm font-medium">info@pittmetro.com</span>
+                </div>
               </div>
             </div>
           </div>

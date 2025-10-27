@@ -63,7 +63,7 @@ const ScheduleConsultation = () => {
                     </li>
                     <li className="flex items-center gap-2">
                       <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                      Amit will call you at the scheduled time
+                      Pitt Metro Realty will call you at the scheduled time
                     </li>
                   </ul>
                 </div>
@@ -90,7 +90,7 @@ const ScheduleConsultation = () => {
             Schedule Your Consultation
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed animate-fade-in-up-delay">
-            Book a personalized consultation with Amit Agarwal. Get expert advice tailored to your real estate needs.
+            Book a personalized consultation with Pitt Metro Realty. Get expert advice tailored to your real estate needs.
           </p>
           <div className="mt-8 flex justify-center gap-4 animate-fade-in-up-delay">
             <Badge variant="outline" className="px-4 py-2">Free Consultation</Badge>
@@ -254,7 +254,7 @@ const ScheduleConsultation = () => {
                   <div>
                     <h3 className="font-semibold text-lg mb-2">Personalized Service</h3>
                     <p className="text-muted-foreground">
-                      Get one-on-one attention from Amit Agarwal with customized advice based on your specific needs.
+                      Get one-on-one attention from Pitt Metro Realty with customized advice based on your specific needs.
                     </p>
                   </div>
                 </div>
