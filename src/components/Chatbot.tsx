@@ -69,7 +69,7 @@ const Chatbot = () => {
     "property_valuation": "I'd be happy to help with property valuation! Our free valuation service provides:\n• Market analysis\n• Comparable sales\n• Price recommendations\n• 24-hour delivery\n\nWould you like to schedule a free property valuation?",
     
     // Contact & Consultation
-    "contact_agent": "You can reach our team through:\n📞 Phone: +1 (234) 567-8900\n📧 Email: info@amitaggarwal.com\n📍 Office: 123 Business Center, Pittsburgh, PA\n\nWe're available Mon-Fri 9AM-7PM, Sat-Sun 10AM-5PM",
+    "contact_agent": "You can reach our team through:\n📞 Phone: +1-412-977-7090\n📧 Email: aggarwal_a@hotmail.com\n📍 Office: 201 Sonni Ln, McKees Rocks, PA 15136\n\nWe're available Mon-Fri 9AM-7PM, Sat-Sun 10AM-5PM",
     "schedule_consultation": "I can help you schedule a consultation! We offer:\n• Free initial consultation\n• Personalized advice\n• Market insights\n• No obligation\n\nWould you like to book a consultation?",
     
     // Investment
@@ -78,7 +78,7 @@ const Chatbot = () => {
     // General Questions
     "mortgage_rates": "Current mortgage rates vary by loan type and credit score. For the most accurate rates, I recommend:\n• Getting pre-approved\n• Speaking with our mortgage partners\n• Checking current market conditions\n\nWould you like help connecting with a mortgage specialist?",
     "documents_needed": "To buy a home, you'll typically need:\n• Pre-approval letter\n• Proof of income (pay stubs, tax returns)\n• Bank statements\n• Credit report\n• Down payment funds\n• ID and social security number\n\nNeed help with any specific document?",
-    "viewing_schedule": "To schedule a property viewing:\n• Call us at +1 (234) 567-8900\n• Use our online scheduling\n• Email us your preferred times\n• We can arrange same-day viewings\n\nWhat property interests you?",
+    "viewing_schedule": "To schedule a property viewing:\n• Call us at +1-412-977-7090\n• Use our online scheduling\n• Email us your preferred times\n• We can arrange same-day viewings\n\nWhat property interests you?",
     "market_conditions": "Pittsburgh real estate market is currently:\n• Strong buyer demand\n• Limited inventory\n• Competitive pricing\n• Good investment opportunities\n• Growing neighborhoods\n\nWould you like specific market data for your area?",
     
     // Default responses

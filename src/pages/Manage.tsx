@@ -357,7 +357,7 @@ const Manage = () => {
                       <label className="block text-sm font-medium text-slate-700 mb-2">
                         Phone Number *
                       </label>
-                      <Input placeholder="+1 (234) 567-8900" className="h-12" />
+                      <Input placeholder="+1-412-977-7090" className="h-12" />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-2">
@@ -487,7 +487,7 @@ const Manage = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" className="bg-white text-primary hover:bg-white/90">
               <Phone className="h-5 w-5 mr-2" />
-              Call (234) 567-8900
+              Call +1-412-977-7090
             </Button>
             <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-primary">
               <Mail className="h-5 w-5 mr-2" />

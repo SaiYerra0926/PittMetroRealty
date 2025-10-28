@@ -239,7 +239,7 @@ const Buy = () => {
                         <Label htmlFor="phone" className="text-sm font-semibold text-slate-700 mb-2 block">Phone Number *</Label>
                         <Input
                           id="phone"
-                          placeholder="(412) 555-0123"
+                          placeholder="+1-412-977-7090"
                           value={buyerInfo.phone}
                           onChange={(e) => setBuyerInfo({...buyerInfo, phone: e.target.value})}
                           className="h-12 border-2 border-slate-200 focus:border-primary"
@@ -525,7 +525,7 @@ const Buy = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" className="bg-white text-primary hover:bg-white/90">
               <Phone className="h-5 w-5 mr-2" />
-              Call (234) 567-8900
+              Call +1-412-977-7090
             </Button>
           </div>
         </div>

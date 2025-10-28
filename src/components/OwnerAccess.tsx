@@ -34,7 +34,7 @@ const OwnerAccess: React.FC<OwnerAccessProps> = ({
   const handleAccessSubmit = () => {
     if (validAccessCodes.includes(accessCode.toUpperCase())) {
       // Redirect to owner portal
-      window.location.href = '/owner-portal';
+      window.location.href = '/admin';
       if (onAccessGranted) {
         onAccessGranted();
       }
@@ -153,8 +153,8 @@ const OwnerAccess: React.FC<OwnerAccessProps> = ({
           <div className="text-center pt-4 border-t">
             <p className="text-xs text-slate-500">
               Don't have an access code? Contact Pitt Metro Realty at{' '}
-              <a href="tel:+12345678900" className="text-primary hover:underline">
-                (234) 567-8900
+              <a href="tel:+14129777090" className="text-primary hover:underline">
+                +1-412-977-7090
               </a>
             </p>
           </div>

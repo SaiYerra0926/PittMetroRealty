@@ -90,30 +90,30 @@ const Footer = () => {
             <h4 className="text-lg font-semibold mb-6 text-white">Contact Info</h4>
             <div className="space-y-4">
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center flex-shrink-0">
-                  <Phone className="h-4 w-4 text-primary" />
+                <div className="w-10 h-10 bg-white/10 border border-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Phone className="h-5 w-5 text-white" />
                 </div>
                 <div>
-                  <p className="text-white/80 text-sm font-medium">+1 (234) 567-8900</p>
-                  <p className="text-white/60 text-xs">Main Office</p>
+                  <p className="text-white font-semibold text-base">+1-412-977-7090</p>
+                  <p className="text-white/70 text-xs">Main Office</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center flex-shrink-0">
-                  <Mail className="h-4 w-4 text-primary" />
+                <div className="w-10 h-10 bg-white/10 border border-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Mail className="h-5 w-5 text-white" />
                 </div>
                 <div>
-                  <p className="text-white/80 text-sm font-medium">info@pittmetrorealty.com</p>
-                  <p className="text-white/60 text-xs">General Inquiries</p>
+                  <p className="text-white font-semibold text-base">aggarwal_a@hotmail.com</p>
+                  <p className="text-white/70 text-xs">General Inquiries</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center flex-shrink-0">
-                  <MapPin className="h-4 w-4 text-primary" />
+                <div className="w-10 h-10 bg-white/10 border border-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <MapPin className="h-5 w-5 text-white" />
                 </div>
                 <div>
-                  <p className="text-white/80 text-sm font-medium">123 Business Center</p>
-                  <p className="text-white/60 text-xs">Suite 456, Pittsburgh, PA 15213</p>
+                  <p className="text-white font-semibold text-base">201 Sonni Ln</p>
+                  <p className="text-white font-semibold text-base">McKees Rocks, PA 15136</p>
                 </div>
               </div>
             </div>
@@ -123,7 +123,7 @@ const Footer = () => {
         <div className="border-t border-white/10 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-white/60 text-sm">
-              © 2024 Pitt Metro Realty. All rights reserved.
+              © 2025 Pitt Metro Realty. All rights reserved.
             </p>
             <div className="flex gap-6 text-sm">
               <a href="#" className="text-white/60 hover:text-primary transition-colors">

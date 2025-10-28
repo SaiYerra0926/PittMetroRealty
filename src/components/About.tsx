@@ -99,71 +99,111 @@ const About = () => {
         </div>
 
         {/* Main Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-20">
-          {/* Left Content */}
-          <div className="animate-slide-in-left">
-            <h3 className="text-3xl font-bold text-primary mb-6">
-              Your Trusted Real Estate Partner
-            </h3>
-            <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-              We specialize in residential and commercial real estate, offering comprehensive services 
-              from buying and selling to property management and investment advisory. Our team of 
-              licensed professionals is dedicated to providing exceptional service, innovative 
-              solutions, and personalized attention to every client.
-            </p>
-            <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-              We believe in building long-term relationships and helping you achieve your real estate 
-              goals with confidence and success. Every transaction is handled with the utmost care 
-              and professionalism.
-            </p>
-            
-            {/* Contact Info */}
-            <div className="space-y-4 mb-8">
-              <div className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors duration-300">
-                <Phone className="h-5 w-5 text-primary" />
-                <span className="text-lg">(412) 555-0123</span>
-              </div>
-              <div className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors duration-300">
-                <Mail className="h-5 w-5 text-primary" />
-                <span className="text-lg">info@pittmetrorealty.com</span>
-              </div>
-              <div className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors duration-300">
-                <MapPin className="h-5 w-5 text-primary" />
-                <span className="text-lg">123 Real Estate Ave, Pittsburgh, PA 15213</span>
+        <div className="bg-white rounded-2xl shadow-2xl overflow-hidden mb-20">
+          <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr]">
+            {/* Left Column - Biography */}
+            <div className="p-10 lg:p-12 animate-slide-in-left">
+              <h3 className="text-2xl font-bold text-slate-900 mb-8 tracking-wide">
+                MEET YOUR AGENT
+              </h3>
+              <div className="prose prose-lg max-w-none text-slate-700">
+                <p className="leading-relaxed mb-6">
+                  With a stellar track record of over $125 million in sales from 2020 to 2024, 
+                  I bring over two decades of experience and hundreds of closed transactions to every client. 
+                  My approach is built on positivity, professionalism, and an unparalleled dedication to 
+                  delivering exceptional service and results.
+                </p>
+                <p className="leading-relaxed">
+                  My tenacious work ethic drives me to go above and beyond for my clients, persisting 
+                  where others might falter. I firmly believe in never taking no for an answer — where 
+                  there is a will, there is a way, and I am relentless in my pursuit of finding it.
+                </p>
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button className="btn-primary">
-                Schedule Consultation
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-              <Button variant="outline" className="btn-outline">
-                View Our Team
-              </Button>
-            </div>
-          </div>
+            {/* Right Column - Profile Card */}
+            <div className="bg-slate-50 p-10 lg:p-12 border-l border-slate-300 animate-slide-in-right">
+              <div className="flex flex-col items-center">
+                {/* Profile Image */}
+                <div className="w-36 h-36 rounded-full overflow-hidden border-2 border-slate-300 shadow-xl mb-6 bg-gradient-to-br from-slate-200 to-slate-100 flex items-center justify-center">
+                  <img 
+                    src="/amit-aggarwal-profile.jpg" 
+                    alt="Amit Aggarwal - Real Estate Expert"
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none';
+                      if (!target.parentElement?.querySelector('.fallback')) {
+                        const placeholder = document.createElement('div');
+                        placeholder.className = 'fallback w-full h-full bg-gradient-to-br from-primary/20 to-primary/10 text-slate-700 flex items-center justify-center font-bold text-3xl';
+                        placeholder.textContent = 'AA';
+                        target.parentElement?.appendChild(placeholder);
+                      }
+                    }}
+                  />
+                </div>
 
-          {/* Right Content - Stats */}
-          <div className="grid grid-cols-2 gap-6 animate-slide-in-right">
-            {stats.map((stat, index) => {
-              const Icon = stat.icon;
-              return (
-                <Card 
-                  key={stat.label} 
-                  className="text-center p-6 bg-white shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-                  style={{ animationDelay: `${index * 0.1}s` }}
-                >
-                  <CardContent className="p-0">
-                    <div className={`w-16 h-16 bg-gradient-to-r ${stat.color} rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg`}>
-                      <Icon className="h-8 w-8 text-white" />
+                {/* Name */}
+                <h4 className="text-xl font-bold text-slate-900 text-center mb-1.5">
+                  Amit Aggarwal
+                </h4>
+
+                {/* Title */}
+                <p className="text-sm font-medium text-slate-700 text-center mb-7">
+                  Real Estate Expert | Licensed Agent
+                </p>
+
+                {/* Contact Information */}
+                <div className="w-full space-y-4 mb-7">
+                  <div className="text-center">
+                    <p className="text-xs text-slate-500 mb-1 font-medium">Phone</p>
+                    <p className="text-sm font-semibold text-slate-900">+1-412-977-7090</p>
+                  </div>
+
+                  <div className="text-center">
+                    <p className="text-xs text-slate-500 mb-1 font-medium">Email</p>
+                    <p className="text-sm font-semibold text-slate-900 break-all">aggarwal_a@hotmail.com</p>
+                  </div>
+
+                  <div className="text-center">
+                    <p className="text-xs text-slate-500 mb-1 font-medium">Address</p>
+                    <p className="text-sm font-semibold text-slate-900">201 Sonni Ln</p>
+                    <p className="text-sm font-semibold text-slate-900">McKees Rocks, PA 15136</p>
+                  </div>
+
+                  <div className="text-center">
+                    <p className="text-xs text-slate-500 mb-1 font-medium">Website</p>
+                    <a href="https://pittmetrorealty.com" target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-slate-900 hover:text-primary transition-colors break-all">
+                      https://pittmetrorealty.com
+                    </a>
+                  </div>
+                </div>
+
+                {/* Social Media Icons */}
+                <div className="flex items-center gap-2.5 pt-5 border-t border-slate-300 w-full justify-center">
+                  {/* Facebook */}
+                  <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="group">
+                    <div className="w-8 h-8 bg-slate-700 rounded-full flex items-center justify-center hover:bg-blue-600 transition-all duration-300 shadow-md hover:shadow-lg hover:scale-110">
+                      <span className="text-white text-xs font-bold">f</span>
                     </div>
-                    <div className="text-3xl font-bold text-primary mb-2">{stat.number}</div>
-                    <div className="text-muted-foreground text-sm">{stat.label}</div>
-                  </CardContent>
-                </Card>
-              );
-            })}
+                  </a>
+                  
+                  {/* LinkedIn */}
+                  <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="group">
+                    <div className="w-8 h-8 bg-slate-700 rounded-full flex items-center justify-center hover:bg-blue-700 transition-all duration-300 shadow-md hover:shadow-lg hover:scale-110">
+                      <span className="text-white text-xs font-bold">in</span>
+                    </div>
+                  </a>
+                  
+                  {/* YouTube */}
+                  <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="group">
+                    <div className="w-8 h-8 bg-slate-700 rounded-full flex items-center justify-center hover:bg-red-600 transition-all duration-300 shadow-md hover:shadow-lg hover:scale-110">
+                      <span className="text-white text-xs">▶</span>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 

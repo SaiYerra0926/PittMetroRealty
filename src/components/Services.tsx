@@ -1,4 +1,4 @@
-import { Home, TrendingUp, Shield, Users, Calculator, MapPin, ArrowRight, Building2, FileText, Phone, Clock, Award, CheckCircle, Star, Zap } from "lucide-react";
+import { Home, TrendingUp, Shield, Users, Calculator, MapPin, ArrowRight, Building2, FileText, Phone, Clock, CheckCircle, Zap } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -62,13 +62,6 @@ const Services = () => {
     }
   ];
 
-  const stats = [
-    { icon: Building2, label: "Properties Managed", value: "500+" },
-    { icon: Users, label: "Happy Clients", value: "1,200+" },
-    { icon: Award, label: "Years Experience", value: "15+" },
-    { icon: Star, label: "Client Rating", value: "4.9/5" }
-  ];
-
   return (
     <section id="services" className="py-20 bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
       <div className="container mx-auto px-4">
@@ -77,26 +70,10 @@ const Services = () => {
           <h2 className="text-responsive-xl font-bold text-primary mb-6">
             Our Services
           </h2>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-8">
+          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             Comprehensive real estate services tailored to meet your unique needs and exceed your expectations. 
             Our expert team delivers exceptional results through innovative solutions and personalized service.
           </p>
-          
-          {/* Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto mb-8">
-            {stats.map((stat, index) => {
-              const Icon = stat.icon;
-              return (
-                <div key={stat.label} className="text-center animate-fade-in-up bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-gray-200 hover:border-primary/30 transition-all duration-300 hover:scale-105 group" style={{ animationDelay: `${index * 0.1}s` }}>
-                  <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:bg-primary/20 transition-all duration-300 group-hover:animate-bounce-subtle">
-                    <Icon className="w-6 h-6 text-primary" />
-                  </div>
-                  <div className="text-2xl font-bold text-primary mb-1">{stat.value}</div>
-                  <div className="text-sm text-gray-600">{stat.label}</div>
-                </div>
-              );
-            })}
-          </div>
         </div>
 
         {/* Services Grid */}

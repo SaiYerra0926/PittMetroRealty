@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, MapPin, Home, DollarSign, Bed, Bath, Car, ArrowRight, Star, Users, Award, Clock, TrendingUp, Filter, Map, Bookmark, Building2, Key } from "lucide-react";
+import { Search, MapPin, Home, DollarSign, Bed, Bath, Car, ArrowRight, Clock, TrendingUp, Filter, Map, Bookmark, Building2, Key, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -21,12 +21,6 @@ const Hero = () => {
     setActiveTab(tabId);
     navigate(href);
   };
-
-  const quickStats = [
-    { icon: Star, label: "Client Rating", value: "4.9/5" },
-    { icon: Users, label: "Happy Clients", value: "1,200+" },
-    { icon: Award, label: "Awards Won", value: "25+" }
-  ];
 
   return (
     <section id="home" className="relative min-h-screen flex items-center pt-20 lg:pt-24 overflow-hidden bg-gradient-to-br from-slate-800 via-gray-900 to-slate-900">
@@ -62,20 +56,6 @@ const Hero = () => {
               Premium properties and exceptional service with Pitt Metro Realty. 
               Your trusted partner in real estate excellence.
             </p>
-            
-            {/* Quick Stats */}
-            <div className="flex flex-wrap justify-center gap-6 mb-8 animate-fade-in-up">
-              {quickStats.map((stat, index) => {
-                const Icon = stat.icon;
-                return (
-                  <div key={stat.label} className="flex items-center gap-2 text-white/90" style={{ animationDelay: `${index * 0.1}s` }}>
-                    <Icon className="w-4 h-4 text-yellow-400" />
-                    <span className="text-sm font-medium">{stat.value}</span>
-                    <span className="text-xs text-white/70">{stat.label}</span>
-                  </div>
-                );
-              })}
-            </div>
           </div>
 
           {/* Enhanced Property Search Section */}

@@ -29,7 +29,7 @@ const App = () => (
             <Route path="/rent" element={<Rent />} />
             <Route path="/manage" element={<Manage />} />
             <Route path="/map" element={<MapView />} />
-            <Route path="/owner-portal" element={<PropertyOwnerPortal />} />
+            <Route path="/admin" element={<PropertyOwnerPortal />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

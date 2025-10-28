@@ -4,6 +4,7 @@
 
 /* Pitt Metro Realty Design System
 All colors MUST be HSL for proper theming.
+Modern tech blue and purple gradient theme.
 */
 
 /* Professional Business Website Animations */
@@ -372,34 +373,34 @@ All colors MUST be HSL for proper theming.
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 220 20% 10%;
+    --foreground: 222 47% 11%;
 
     --card: 0 0% 100%;
-    --card-foreground: 220 20% 10%;
+    --card-foreground: 222 47% 11%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 20% 10%;
+    --popover-foreground: 222 47% 11%;
 
     /* Professional real estate palette */
     --primary: 220 50% 15%;
     --primary-foreground: 0 0% 98%;
     --primary-light: 220 30% 25%;
 
-    --secondary: 45 60% 85%;
-    --secondary-foreground: 220 20% 10%;
+    --secondary: 262 83% 58%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 220 10% 96%;
-    --muted-foreground: 220 10% 45%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
 
-    --accent: 45 90% 60%;
-    --accent-foreground: 220 50% 15%;
+    --accent: 173 80% 40%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 220 15% 90%;
-    --input: 220 15% 94%;
-    --ring: 220 50% 15%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 221 83% 53%;
 
     /* Professional gradients */
     --gradient-hero: linear-gradient(135deg, hsl(220 50% 15%), hsl(220 40% 25%));
@@ -432,44 +433,34 @@ All colors MUST be HSL for proper theming.
   }
 
   .dark {
-    --background: 220 50% 8%;
-    --foreground: 220 10% 95%;
+    --background: 224 71% 4%;
+    --foreground: 210 40% 98%;
 
-    --card: 220 40% 10%;
-    --card-foreground: 220 10% 95%;
+    --card: 224 71% 4%;
+    --card-foreground: 210 40% 98%;
 
-    --popover: 220 40% 10%;
-    --popover-foreground: 220 10% 95%;
+    --popover: 224 71% 4%;
+    --popover-foreground: 210 40% 98%;
 
-    --primary: 45 90% 60%;
-    --primary-foreground: 220 50% 8%;
-    --primary-light: 45 80% 70%;
+    --primary: 221 83% 53%;
+    --primary-foreground: 0 0% 100%;
+    --primary-light: 221 83% 63%;
 
-    --secondary: 220 30% 15%;
-    --secondary-foreground: 220 10% 95%;
+    --secondary: 262 83% 58%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 220 30% 12%;
-    --muted-foreground: 220 10% 65%;
+    --muted: 223 47% 11%;
+    --muted-foreground: 215 20% 65%;
 
-    --accent: 45 90% 60%;
-    --accent-foreground: 220 50% 8%;
+    --accent: 173 80% 40%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 62.8% 50%;
-    --destructive-foreground: 220 10% 95%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
 
-    --border: 220 30% 18%;
-    --input: 220 30% 15%;
-    --ring: 45 90% 60%;
-
-    /* Dark mode gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(220 50% 8%), hsl(220 40% 15%));
-    --gradient-luxury: linear-gradient(135deg, hsl(45 90% 60%), hsl(45 80% 70%));
-    --gradient-card: linear-gradient(135deg, hsl(220 40% 10%), hsl(220 30% 12%));
-    
-    /* Dark mode shadows */
-    --shadow-luxury: 0 20px 60px -10px hsl(0 0% 0% / 0.4);
-    --shadow-card: 0 8px 30px -5px hsl(0 0% 0% / 0.3);
-    --shadow-hover: 0 25px 80px -10px hsl(0 0% 0% / 0.5);
+    --border: 223 47% 11%;
+    --input: 223 47% 11%;
+    --ring: 221 83% 53%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;

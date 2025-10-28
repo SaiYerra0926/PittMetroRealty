@@ -103,6 +103,7 @@ The website can be deployed to any static hosting service such as:
 For more information about Pitt Metro Realty services, visit our website or contact us directly.
 
 **Pitt Metro Realty**
-- Phone: (412) 555-0123
-- Email: info@pittmetrorealty.com
-- Address: Pittsburgh, Pennsylvania
+- Contact: Amit Aggarwal
+- Phone: +1-412-977-7090
+- Email: aggarwal_a@hotmail.com
+- Address: 201 Sonni Ln, McKees Rocks, PA 15136

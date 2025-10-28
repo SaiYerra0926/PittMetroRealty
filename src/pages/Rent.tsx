@@ -502,7 +502,7 @@ const Rent = () => {
           <div className="mb-8">
             <Button size="lg" className="bg-white text-primary hover:bg-white/90 px-6 py-3 text-base font-semibold shadow-xl">
               <Phone className="h-4 w-4 mr-2" />
-              Call (234) 567-8900
+              Call +1-412-977-7090
             </Button>
           </div>
           

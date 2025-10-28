@@ -11,7 +11,7 @@ const Contact = () => {
       icon: Phone,
       title: "Call Us",
       description: "Speak directly with our experts",
-      value: "(412) 555-0123",
+      value: "+1-412-977-7090",
       action: "Call Now",
       color: "from-blue-500 to-blue-600",
       bgColor: "bg-blue-50"
@@ -20,7 +20,7 @@ const Contact = () => {
       icon: Mail,
       title: "Email Us",
       description: "Get a detailed response",
-      value: "info@pittmetrorealty.com",
+      value: "aggarwal_a@hotmail.com",
       action: "Send Email",
       color: "from-green-500 to-green-600",
       bgColor: "bg-green-50"
@@ -201,7 +201,7 @@ const Contact = () => {
                   <div className="space-y-2">
                     <label className="block text-sm font-semibold text-primary">Phone Number</label>
                     <Input 
-                      placeholder="(412) 555-0123" 
+                      placeholder="+1-412-977-7090" 
                       className="form-input h-12 text-base"
                     />
                   </div>

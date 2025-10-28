@@ -217,7 +217,7 @@ const Sell = () => {
                       </Label>
                       <Input 
                         id="phone"
-                        placeholder="+1 (234) 567-8900" 
+                        placeholder="+1-412-977-7090" 
                         className={`h-12 border-2 focus:border-primary transition-all duration-300 ${errors.phone ? 'border-red-500 focus:border-red-500' : 'border-slate-200'}`}
                         value={formData.phone}
                         onChange={(e) => handleInputChange('phone', e.target.value)}
@@ -308,7 +308,7 @@ const Sell = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" className="bg-white text-primary hover:bg-white/90 shadow-lg hover:shadow-xl transition-all duration-300">
               <Phone className="h-5 w-5 mr-2" />
-              Call (234) 567-8900
+              Call +1-412-977-7090
             </Button>
             
           </div>

@@ -155,7 +155,7 @@ const ScheduleConsultation = () => {
                     <Input
                       id="phone"
                       type="tel"
-                      placeholder="+1 (234) 567-8900"
+                      placeholder="+1-412-977-7090"
                       className="pl-10 h-12 border-2 border-gray-200 focus:border-primary rounded-xl"
                       required
                     />

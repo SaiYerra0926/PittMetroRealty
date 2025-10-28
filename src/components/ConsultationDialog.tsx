@@ -122,7 +122,7 @@ const ConsultationDialog = () => {
                 type="tel"
                 value={formData.phone}
                 onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                placeholder="+1 (234) 567-8900"
+                placeholder="+1-412-977-7090"
                 className="pl-10 h-10"
                 required
               />
