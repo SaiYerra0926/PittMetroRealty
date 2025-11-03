@@ -63,14 +63,14 @@ const Services = () => {
   ];
 
   return (
-    <section id="services" className="py-20 bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
-      <div className="container mx-auto px-4">
+    <section id="services" className="py-12 sm:py-16 md:py-20 bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
+      <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-16 animate-fade-in-up">
-          <h2 className="text-responsive-xl font-bold text-primary mb-6">
+        <div className="text-center mb-10 sm:mb-12 md:mb-16 animate-fade-in-up">
+          <h2 className="text-responsive-xl font-bold text-primary mb-4 sm:mb-5 md:mb-6 px-2">
             Our Services
           </h2>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed px-3">
             Comprehensive real estate services tailored to meet your unique needs and exceed your expectations. 
             Our expert team delivers exceptional results through innovative solutions and personalized service.
           </p>
@@ -78,7 +78,7 @@ const Services = () => {
 
         {/* Services Grid */}
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
             {services.map((service, index) => {
               const Icon = service.icon;
               return (
@@ -87,28 +87,28 @@ const Services = () => {
                   className={`service-card group animate-fade-in-up`}
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
-                  <CardContent className="p-8">
+                  <CardContent className="p-5 sm:p-6 md:p-8">
                     {/* Icon */}
-                    <div className={`w-16 h-16 bg-gradient-to-r ${service.color} rounded-xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
-                      <Icon className="h-8 w-8 text-white" />
+                    <div className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-r ${service.color} rounded-lg sm:rounded-xl flex items-center justify-center mx-auto mb-4 sm:mb-5 md:mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
+                      <Icon className="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 text-white" />
                     </div>
                     
                     {/* Title */}
-                    <h3 className="text-xl font-bold text-primary mb-4 text-center group-hover:text-gray-700 transition-colors duration-300">
+                    <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-primary mb-3 sm:mb-4 text-center group-hover:text-gray-700 transition-colors duration-300">
                       {service.title}
                     </h3>
                     
                     {/* Description */}
-                    <p className="text-muted-foreground leading-relaxed mb-6 text-center">
+                    <p className="text-xs sm:text-sm md:text-base text-muted-foreground leading-relaxed mb-4 sm:mb-5 md:mb-6 text-center">
                       {service.description}
                     </p>
                     
                     {/* Features */}
-                    <ul className="space-y-3">
+                    <ul className="space-y-2 sm:space-y-3">
                       {service.features.map((feature, idx) => (
-                        <li key={idx} className="flex items-center gap-3 text-muted-foreground group-hover:text-gray-600 transition-colors duration-300">
-                          <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-                          <span className="text-sm">{feature}</span>
+                        <li key={idx} className="flex items-center gap-2 sm:gap-3 text-muted-foreground group-hover:text-gray-600 transition-colors duration-300">
+                          <CheckCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-green-500 flex-shrink-0" />
+                          <span className="text-xs sm:text-sm">{feature}</span>
                         </li>
                       ))}
                     </ul>
@@ -123,21 +123,21 @@ const Services = () => {
         </div>
 
         {/* Property Owner Access Section */}
-        <div className="mt-20">
-          <div className="text-center mb-12">
-            <Badge variant="outline" className="mb-4 text-sm">
-              <Shield className="h-3 w-3 mr-1" />
+        <div className="mt-12 sm:mt-16 md:mt-20">
+          <div className="text-center mb-8 sm:mb-10 md:mb-12 px-3">
+            <Badge variant="outline" className="mb-3 sm:mb-4 text-xs sm:text-sm">
+              <Shield className="h-3 w-3 mr-1 flex-shrink-0" />
               Property Owner Services
             </Badge>
-            <h2 className="text-3xl font-bold text-slate-800 mb-4">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-800 mb-3 sm:mb-4">
               Owner Portal Access
             </h2>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+            <p className="text-sm sm:text-base md:text-lg text-slate-600 max-w-2xl mx-auto">
               Property owners can access our secure portal to manage listings, upload photos, and track their properties.
             </p>
           </div>
           
-          <div className="max-w-md mx-auto">
+          <div className="max-w-md mx-auto px-3 sm:px-4">
             <OwnerAccess />
           </div>
         </div>

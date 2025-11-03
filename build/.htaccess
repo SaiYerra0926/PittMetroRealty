@@ -1,0 +1,15 @@
+# Enable Rewrite Engine
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+# If deploying in a subfolder, change the base accordingly, e.g. /myapp/
+RewriteBase /
+
+# Allow direct access to existing files and directories
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Redirect all other requests to index.html (SPA fallback)
+RewriteRule ^ index.html [L]
+</IfModule>

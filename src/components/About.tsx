@@ -63,20 +63,20 @@ const About = () => {
   ];
 
   return (
-    <section id="about" className="py-20 bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
-      <div className="container mx-auto px-4">
+    <section id="about" className="py-12 sm:py-16 md:py-20 bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
+      <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-16 animate-fade-in-up">
-          <h2 className="text-responsive-xl font-bold text-primary mb-6">
+        <div className="text-center mb-10 sm:mb-12 md:mb-16 animate-fade-in-up">
+          <h2 className="text-responsive-xl font-bold text-primary mb-4 sm:mb-5 md:mb-6 px-2">
             About Pitt Metro Realty
           </h2>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-8">
+          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-6 sm:mb-7 md:mb-8 px-3">
             With over 15 years of experience in the real estate industry, Pitt Metro Realty has been 
             the trusted partner for thousands of clients in their property journey.
           </p>
           
           {/* Trust Badges */}
-          <div className="flex flex-wrap justify-center gap-6 mb-8">
+          <div className="flex flex-wrap justify-center gap-3 sm:gap-4 md:gap-6 mb-6 sm:mb-7 md:mb-8 px-2">
             <Badge variant="outline" className="px-6 py-3 text-sm flex items-center gap-3 bg-white/80 backdrop-blur-sm border-primary/30 hover:bg-primary/10 transition-all duration-300 hover:scale-105 group">
               <div className="w-6 h-6 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-all duration-300">
                 <Award className="w-4 h-4 text-primary" />
@@ -99,21 +99,21 @@ const About = () => {
         </div>
 
         {/* Main Content */}
-        <div className="bg-white rounded-2xl shadow-2xl overflow-hidden mb-20">
+        <div className="bg-white rounded-xl sm:rounded-2xl shadow-2xl overflow-hidden mb-12 sm:mb-16 md:mb-20">
           <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr]">
             {/* Left Column - Biography */}
-            <div className="p-10 lg:p-12 animate-slide-in-left">
-              <h3 className="text-2xl font-bold text-slate-900 mb-8 tracking-wide">
+            <div className="p-6 sm:p-8 md:p-10 lg:p-12 animate-slide-in-left">
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-6 sm:mb-7 md:mb-8 tracking-wide">
                 MEET YOUR AGENT
               </h3>
-              <div className="prose prose-lg max-w-none text-slate-700">
-                <p className="leading-relaxed mb-6">
+              <div className="prose prose-sm sm:prose-base md:prose-lg max-w-none text-slate-700">
+                <p className="text-sm sm:text-base md:text-lg leading-relaxed mb-4 sm:mb-5 md:mb-6">
                   With a stellar track record of over $125 million in sales from 2020 to 2024, 
                   I bring over two decades of experience and hundreds of closed transactions to every client. 
                   My approach is built on positivity, professionalism, and an unparalleled dedication to 
                   delivering exceptional service and results.
                 </p>
-                <p className="leading-relaxed">
+                <p className="text-sm sm:text-base md:text-lg leading-relaxed">
                   My tenacious work ethic drives me to go above and beyond for my clients, persisting 
                   where others might falter. I firmly believe in never taking no for an answer — where 
                   there is a will, there is a way, and I am relentless in my pursuit of finding it.
@@ -122,10 +122,10 @@ const About = () => {
             </div>
 
             {/* Right Column - Profile Card */}
-            <div className="bg-slate-50 p-10 lg:p-12 border-l border-slate-300 animate-slide-in-right">
+            <div className="bg-slate-50 p-6 sm:p-8 md:p-10 lg:p-12 border-t lg:border-t-0 lg:border-l border-slate-300 animate-slide-in-right">
               <div className="flex flex-col items-center">
                 {/* Profile Image */}
-                <div className="w-36 h-36 rounded-full overflow-hidden border-2 border-slate-300 shadow-xl mb-6 bg-gradient-to-br from-slate-200 to-slate-100 flex items-center justify-center">
+                <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36 rounded-full overflow-hidden border-2 border-slate-300 shadow-xl mb-4 sm:mb-5 md:mb-6 bg-gradient-to-br from-slate-200 to-slate-100 flex items-center justify-center">
                   <img 
                     src="/amit-aggarwal-profile.jpg" 
                     alt="Amit Aggarwal - Real Estate Expert"
@@ -144,61 +144,61 @@ const About = () => {
                 </div>
 
                 {/* Name */}
-                <h4 className="text-xl font-bold text-slate-900 text-center mb-1.5">
+                <h4 className="text-lg sm:text-xl md:text-2xl font-bold text-slate-900 text-center mb-1 sm:mb-1.5">
                   Amit Aggarwal
                 </h4>
 
                 {/* Title */}
-                <p className="text-sm font-medium text-slate-700 text-center mb-7">
+                <p className="text-xs sm:text-sm md:text-base font-medium text-slate-700 text-center mb-5 sm:mb-6 md:mb-7 px-2">
                   Real Estate Expert | Licensed Agent
                 </p>
 
                 {/* Contact Information */}
-                <div className="w-full space-y-4 mb-7">
+                <div className="w-full space-y-3 sm:space-y-4 mb-5 sm:mb-6 md:mb-7">
                   <div className="text-center">
-                    <p className="text-xs text-slate-500 mb-1 font-medium">Phone</p>
-                    <p className="text-sm font-semibold text-slate-900">+1-412-977-7090</p>
+                    <p className="text-[10px] sm:text-xs text-slate-500 mb-0.5 sm:mb-1 font-medium">Phone</p>
+                    <a href="tel:+14129777090" className="text-xs sm:text-sm md:text-base font-semibold text-slate-900 hover:text-primary transition-colors touch-target block">+1-412-977-7090</a>
                   </div>
 
                   <div className="text-center">
-                    <p className="text-xs text-slate-500 mb-1 font-medium">Email</p>
-                    <p className="text-sm font-semibold text-slate-900 break-all">aggarwal_a@hotmail.com</p>
+                    <p className="text-[10px] sm:text-xs text-slate-500 mb-0.5 sm:mb-1 font-medium">Email</p>
+                    <a href="mailto:aggarwal_a@hotmail.com" className="text-xs sm:text-sm md:text-base font-semibold text-slate-900 break-all hover:text-primary transition-colors touch-target block">aggarwal_a@hotmail.com</a>
                   </div>
 
                   <div className="text-center">
-                    <p className="text-xs text-slate-500 mb-1 font-medium">Address</p>
-                    <p className="text-sm font-semibold text-slate-900">201 Sonni Ln</p>
-                    <p className="text-sm font-semibold text-slate-900">McKees Rocks, PA 15136</p>
+                    <p className="text-[10px] sm:text-xs text-slate-500 mb-0.5 sm:mb-1 font-medium">Address</p>
+                    <p className="text-xs sm:text-sm md:text-base font-semibold text-slate-900">201 Sonni Ln</p>
+                    <p className="text-xs sm:text-sm md:text-base font-semibold text-slate-900">McKees Rocks, PA 15136</p>
                   </div>
 
                   <div className="text-center">
-                    <p className="text-xs text-slate-500 mb-1 font-medium">Website</p>
-                    <a href="https://pittmetrorealty.com" target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-slate-900 hover:text-primary transition-colors break-all">
+                    <p className="text-[10px] sm:text-xs text-slate-500 mb-0.5 sm:mb-1 font-medium">Website</p>
+                    <a href="https://pittmetrorealty.com" target="_blank" rel="noopener noreferrer" className="text-xs sm:text-sm md:text-base font-semibold text-slate-900 hover:text-primary transition-colors break-all touch-target block">
                       https://pittmetrorealty.com
                     </a>
                   </div>
                 </div>
 
                 {/* Social Media Icons */}
-                <div className="flex items-center gap-2.5 pt-5 border-t border-slate-300 w-full justify-center">
+                <div className="flex items-center gap-2 sm:gap-2.5 pt-4 sm:pt-5 border-t border-slate-300 w-full justify-center">
                   {/* Facebook */}
-                  <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="group">
-                    <div className="w-8 h-8 bg-slate-700 rounded-full flex items-center justify-center hover:bg-blue-600 transition-all duration-300 shadow-md hover:shadow-lg hover:scale-110">
-                      <span className="text-white text-xs font-bold">f</span>
+                  <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="group touch-target">
+                    <div className="w-9 h-9 sm:w-10 sm:h-10 bg-slate-700 rounded-full flex items-center justify-center hover:bg-blue-600 transition-all duration-300 shadow-md hover:shadow-lg hover:scale-110">
+                      <span className="text-white text-xs sm:text-sm font-bold">f</span>
                     </div>
                   </a>
                   
                   {/* LinkedIn */}
-                  <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="group">
-                    <div className="w-8 h-8 bg-slate-700 rounded-full flex items-center justify-center hover:bg-blue-700 transition-all duration-300 shadow-md hover:shadow-lg hover:scale-110">
-                      <span className="text-white text-xs font-bold">in</span>
+                  <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="group touch-target">
+                    <div className="w-9 h-9 sm:w-10 sm:h-10 bg-slate-700 rounded-full flex items-center justify-center hover:bg-blue-700 transition-all duration-300 shadow-md hover:shadow-lg hover:scale-110">
+                      <span className="text-white text-xs sm:text-sm font-bold">in</span>
                     </div>
                   </a>
                   
                   {/* YouTube */}
-                  <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="group">
-                    <div className="w-8 h-8 bg-slate-700 rounded-full flex items-center justify-center hover:bg-red-600 transition-all duration-300 shadow-md hover:shadow-lg hover:scale-110">
-                      <span className="text-white text-xs">▶</span>
+                  <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="group touch-target">
+                    <div className="w-9 h-9 sm:w-10 sm:h-10 bg-slate-700 rounded-full flex items-center justify-center hover:bg-red-600 transition-all duration-300 shadow-md hover:shadow-lg hover:scale-110">
+                      <span className="text-white text-xs sm:text-sm">▶</span>
                     </div>
                   </a>
                 </div>
@@ -208,29 +208,29 @@ const About = () => {
         </div>
 
         {/* Our Values */}
-        <div className="mb-20">
-          <div className="text-center mb-12 animate-fade-in-up">
-            <h3 className="text-3xl font-bold text-primary mb-4">Our Core Values</h3>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+        <div className="mb-12 sm:mb-16 md:mb-20">
+          <div className="text-center mb-8 sm:mb-10 md:mb-12 animate-fade-in-up px-2">
+            <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-3 sm:mb-4">Our Core Values</h3>
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto px-3">
               The principles that guide everything we do and every relationship we build.
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-6">
             {values.map((value, index) => {
               const Icon = value.icon;
               return (
                 <Card 
                   key={value.title}
-                  className="text-center p-6 bg-white shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in-up"
+                  className="text-center p-4 sm:p-5 md:p-6 bg-white shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in-up"
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
                   <CardContent className="p-0">
-                    <div className={`w-16 h-16 bg-gradient-to-r ${value.color} rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg`}>
-                      <Icon className="h-8 w-8 text-white" />
+                    <div className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-r ${value.color} rounded-lg sm:rounded-xl flex items-center justify-center mx-auto mb-3 sm:mb-4 shadow-lg`}>
+                      <Icon className="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 text-white" />
                     </div>
-                    <h4 className="text-lg font-bold text-primary mb-3">{value.title}</h4>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{value.description}</p>
+                    <h4 className="text-base sm:text-lg md:text-xl font-bold text-primary mb-2 sm:mb-3">{value.title}</h4>
+                    <p className="text-xs sm:text-sm md:text-base text-muted-foreground leading-relaxed">{value.description}</p>
                   </CardContent>
                 </Card>
               );
@@ -240,21 +240,21 @@ const About = () => {
 
 
         {/* Mission Statement */}
-        <div className="text-center animate-fade-in-up">
-          <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100 max-w-4xl mx-auto">
-            <div className="w-16 h-16 bg-gradient-to-r from-primary to-primary/80 rounded-xl flex items-center justify-center mx-auto mb-6">
-              <Building2 className="h-8 w-8 text-white" />
+        <div className="text-center animate-fade-in-up px-3 sm:px-4">
+          <div className="bg-white rounded-xl sm:rounded-2xl p-6 sm:p-7 md:p-8 shadow-lg border border-gray-100 max-w-4xl mx-auto">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-r from-primary to-primary/80 rounded-lg sm:rounded-xl flex items-center justify-center mx-auto mb-4 sm:mb-5 md:mb-6">
+              <Building2 className="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 text-white" />
             </div>
-            <h3 className="text-3xl font-bold text-primary mb-6">Our Mission</h3>
-            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed italic">
+            <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-4 sm:mb-5 md:mb-6">Our Mission</h3>
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground leading-relaxed italic">
               "To provide exceptional real estate services that exceed our clients' expectations, 
               while building lasting relationships based on trust, integrity, and professional excellence. 
               We are committed to helping our clients achieve their property goals with innovative solutions 
               and personalized service."
             </p>
-            <div className="mt-6 flex justify-center">
-              <div className="flex items-center gap-2 text-primary">
-                <CheckCircle className="w-5 h-5" />
+            <div className="mt-4 sm:mt-5 md:mt-6 flex justify-center">
+              <div className="flex items-center gap-2 text-primary text-xs sm:text-sm md:text-base">
+                <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
                 <span className="font-semibold">Licensed • Insured • Trusted</span>
               </div>
             </div>

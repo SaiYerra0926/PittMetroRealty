@@ -6,6 +6,8 @@ import { Badge } from "@/components/ui/badge";
 import property1 from "@/assets/property-1.jpg";
 import property2 from "@/assets/property-2.jpg";
 import property3 from "@/assets/property-3.jpg";
+import { LazyLoadImage } from 'react-lazy-load-image-component'
+import 'react-lazy-load-image-component/src/effects/blur.css'
 
 const FeaturedProperties = () => {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
@@ -158,45 +160,45 @@ const FeaturedProperties = () => {
   };
 
   return (
-    <section id="properties" className="py-20 bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
-      <div className="container mx-auto px-4">
+    <section id="properties" className="py-12 sm:py-16 md:py-20 bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
+      <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-16 animate-fade-in-up">
-          <h2 className="text-responsive-xl font-bold text-primary mb-6">
+        <div className="text-center mb-10 sm:mb-12 md:mb-16 animate-fade-in-up">
+          <h2 className="text-responsive-xl font-bold text-primary mb-4 sm:mb-5 md:mb-6 px-2">
             Featured Properties
           </h2>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-8">
+          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-6 sm:mb-7 md:mb-8 px-3">
             Discover exceptional properties in Pittsburgh's most desirable neighborhoods. 
             Each home is carefully selected for its quality, location, and value.
           </p>
           
           {/* Stats */}
-          <div className="flex flex-wrap justify-center gap-8 mb-8">
-            <div className="flex items-center gap-3 text-gray-600 bg-white/80 backdrop-blur-sm rounded-xl px-6 py-3 border border-gray-200 hover:border-primary/30 transition-all duration-300 hover:scale-105 group">
-              <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-all duration-300">
-                <Calendar className="w-4 h-4 text-primary" />
+          <div className="flex flex-wrap justify-center gap-4 sm:gap-6 md:gap-8 mb-6 sm:mb-7 md:mb-8 px-2">
+            <div className="flex items-center gap-2 sm:gap-3 text-gray-600 bg-white/80 backdrop-blur-sm rounded-lg sm:rounded-xl px-4 sm:px-5 md:px-6 py-2.5 sm:py-3 border border-gray-200 hover:border-primary/30 transition-all duration-300 hover:scale-105 group touch-target">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-all duration-300 flex-shrink-0">
+                <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary" />
               </div>
               <div className="text-left">
-                <div className="text-sm font-semibold text-gray-800">Updated Daily</div>
-                <div className="text-xs text-gray-500">Fresh listings</div>
+                <div className="text-xs sm:text-sm font-semibold text-gray-800">Updated Daily</div>
+                <div className="text-[10px] sm:text-xs text-gray-500">Fresh listings</div>
               </div>
             </div>
-            <div className="flex items-center gap-3 text-gray-600 bg-white/80 backdrop-blur-sm rounded-xl px-6 py-3 border border-gray-200 hover:border-primary/30 transition-all duration-300 hover:scale-105 group">
-              <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-200 transition-all duration-300">
-                <Users className="w-4 h-4 text-blue-600" />
+            <div className="flex items-center gap-2 sm:gap-3 text-gray-600 bg-white/80 backdrop-blur-sm rounded-lg sm:rounded-xl px-4 sm:px-5 md:px-6 py-2.5 sm:py-3 border border-gray-200 hover:border-primary/30 transition-all duration-300 hover:scale-105 group touch-target">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-200 transition-all duration-300 flex-shrink-0">
+                <Users className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-600" />
               </div>
               <div className="text-left">
-                <div className="text-sm font-semibold text-gray-800">Expert Agents</div>
-                <div className="text-xs text-gray-500">Professional team</div>
+                <div className="text-xs sm:text-sm font-semibold text-gray-800">Expert Agents</div>
+                <div className="text-[10px] sm:text-xs text-gray-500">Professional team</div>
               </div>
             </div>
-            <div className="flex items-center gap-3 text-gray-600 bg-white/80 backdrop-blur-sm rounded-xl px-6 py-3 border border-gray-200 hover:border-primary/30 transition-all duration-300 hover:scale-105 group">
-              <div className="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center group-hover:bg-yellow-200 transition-all duration-300">
-                <Star className="w-4 h-4 text-yellow-600" />
+            <div className="flex items-center gap-2 sm:gap-3 text-gray-600 bg-white/80 backdrop-blur-sm rounded-lg sm:rounded-xl px-4 sm:px-5 md:px-6 py-2.5 sm:py-3 border border-gray-200 hover:border-primary/30 transition-all duration-300 hover:scale-105 group touch-target">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 bg-yellow-100 rounded-lg flex items-center justify-center group-hover:bg-yellow-200 transition-all duration-300 flex-shrink-0">
+                <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-yellow-600" />
               </div>
               <div className="text-left">
-                <div className="text-sm font-semibold text-gray-800">Verified Listings</div>
-                <div className="text-xs text-gray-500">Quality assured</div>
+                <div className="text-xs sm:text-sm font-semibold text-gray-800">Verified Listings</div>
+                <div className="text-[10px] sm:text-xs text-gray-500">Quality assured</div>
               </div>
             </div>
           </div>
@@ -204,7 +206,7 @@ const FeaturedProperties = () => {
 
         {/* Properties Grid */}
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
           {properties.map((property, index) => (
             <Card 
               key={property.id}
@@ -217,9 +219,13 @@ const FeaturedProperties = () => {
             >
               {/* Image Section */}
               <div className="relative overflow-hidden">
-                <img
+                <LazyLoadImage
                   src={property.image}
                   alt={property.address}
+                  effect="blur"
+                  width="100%"
+                  height="auto"
+                  placeholderSrc="/placeholder.svg"
                   className="property-image"
                 />
                 
@@ -255,75 +261,76 @@ const FeaturedProperties = () => {
               </div>
 
               {/* Content */}
-              <CardContent className="p-6">
+              <CardContent className="p-4 sm:p-5 md:p-6">
                 {/* Price */}
-                <div className="mb-4">
-                  <h3 className="text-2xl font-bold text-primary mb-1">
+                <div className="mb-3 sm:mb-4">
+                  <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-primary mb-1 sm:mb-1.5">
                     {property.price}
                   </h3>
-                  <p className="text-sm text-gray-600 flex items-center gap-1">
-                    <MapPin className="w-4 h-4" />
-                    {property.address}
+                  <p className="text-xs sm:text-sm text-gray-600 flex items-start sm:items-center gap-1 leading-tight sm:leading-normal">
+                    <MapPin className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0 mt-0.5 sm:mt-0" />
+                    <span className="break-words">{property.address}</span>
                   </p>
                 </div>
 
                 {/* Property Details */}
-                <div className="grid grid-cols-4 gap-4 mb-4">
+                <div className="grid grid-cols-4 gap-2 sm:gap-3 md:gap-4 mb-3 sm:mb-4">
                   <div className="text-center">
-                    <Bed className="w-5 h-5 text-gray-400 mx-auto mb-1" />
-                    <span className="text-sm font-medium text-gray-700">{property.bedrooms}</span>
-                    <p className="text-xs text-gray-500">Beds</p>
+                    <Bed className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 mx-auto mb-1" />
+                    <span className="text-xs sm:text-sm font-medium text-gray-700 block">{property.bedrooms}</span>
+                    <p className="text-[10px] sm:text-xs text-gray-500">Beds</p>
                   </div>
                   <div className="text-center">
-                    <Bath className="w-5 h-5 text-gray-400 mx-auto mb-1" />
-                    <span className="text-sm font-medium text-gray-700">{property.bathrooms}</span>
-                    <p className="text-xs text-gray-500">Baths</p>
+                    <Bath className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 mx-auto mb-1" />
+                    <span className="text-xs sm:text-sm font-medium text-gray-700 block">{property.bathrooms}</span>
+                    <p className="text-[10px] sm:text-xs text-gray-500">Baths</p>
                   </div>
                   <div className="text-center">
-                    <Square className="w-5 h-5 text-gray-400 mx-auto mb-1" />
-                    <span className="text-sm font-medium text-gray-700">{property.sqft}</span>
-                    <p className="text-xs text-gray-500">Sq Ft</p>
+                    <Square className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 mx-auto mb-1" />
+                    <span className="text-xs sm:text-sm font-medium text-gray-700 block">{property.sqft}</span>
+                    <p className="text-[10px] sm:text-xs text-gray-500">Sq Ft</p>
                   </div>
                   <div className="text-center">
-                    <Car className="w-5 h-5 text-gray-400 mx-auto mb-1" />
-                    <span className="text-sm font-medium text-gray-700">2</span>
-                    <p className="text-xs text-gray-500">Garage</p>
+                    <Car className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 mx-auto mb-1" />
+                    <span className="text-xs sm:text-sm font-medium text-gray-700 block">2</span>
+                    <p className="text-[10px] sm:text-xs text-gray-500">Garage</p>
                   </div>
                 </div>
 
                 {/* Description */}
-                <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+                <p className="text-xs sm:text-sm text-gray-600 mb-3 sm:mb-4 line-clamp-2 leading-relaxed">
                   {property.description}
                 </p>
 
                 {/* Features */}
-                <div className="flex flex-wrap gap-2 mb-4">
+                <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-3 sm:mb-4">
                   {property.features.slice(0, 3).map((feature, idx) => (
-                    <Badge key={idx} variant="outline" className="text-xs">
+                    <Badge key={idx} variant="outline" className="text-[10px] sm:text-xs px-2 py-0.5 sm:px-2.5 sm:py-1">
                       {feature}
                     </Badge>
                   ))}
                 </div>
 
                 {/* Agent Info */}
-                <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                      <span className="text-white text-xs font-semibold">
+                <div className="flex items-center justify-between pt-3 sm:pt-4 border-t border-gray-100 gap-2 sm:gap-3">
+                  <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
+                    <div className="w-7 h-7 sm:w-8 sm:h-8 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-white text-[10px] sm:text-xs font-semibold">
                         {property.agent.split(' ').map(n => n[0]).join('')}
                       </span>
                     </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-900">{property.agent}</p>
+                    <div className="min-w-0">
+                      <p className="text-xs sm:text-sm font-medium text-gray-900 truncate">{property.agent}</p>
                       <div className="flex items-center gap-1">
-                        <Star className="w-3 h-3 text-yellow-400 fill-current" />
-                        <span className="text-xs text-gray-600">{property.rating}</span>
+                        <Star className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-yellow-400 fill-current flex-shrink-0" />
+                        <span className="text-[10px] sm:text-xs text-gray-600">{property.rating}</span>
                       </div>
                     </div>
                   </div>
-                  <Button size="sm" className="btn-primary">
-                    <Eye className="w-4 h-4 mr-1" />
-                    View
+                  <Button size="sm" className="btn-primary text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2 touch-target min-h-[36px] sm:min-h-[40px] flex-shrink-0">
+                    <Eye className="w-3 h-3 sm:w-4 sm:h-4 mr-1 flex-shrink-0" />
+                    <span className="hidden sm:inline">View</span>
+                    <span className="sm:hidden">View</span>
                   </Button>
                 </div>
               </CardContent>

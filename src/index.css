@@ -339,17 +339,34 @@ Modern tech blue and purple gradient theme.
   transform: translateY(0);
 }
 
-/* Responsive Typography */
+/* Responsive Typography - Mobile First */
 .text-responsive-xl {
-  @apply text-2xl md:text-3xl lg:text-4xl xl:text-5xl;
+  @apply text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl;
 }
 
 .text-responsive-lg {
-  @apply text-xl md:text-2xl lg:text-3xl;
+  @apply text-xl sm:text-2xl md:text-3xl lg:text-4xl;
 }
 
 .text-responsive-md {
-  @apply text-lg md:text-xl lg:text-2xl;
+  @apply text-lg sm:text-xl md:text-2xl lg:text-3xl;
+}
+
+.text-responsive-base {
+  @apply text-sm sm:text-base md:text-lg lg:text-xl;
+}
+
+/* Mobile-First Text Sizes */
+.text-mobile-lg {
+  @apply text-lg sm:text-xl md:text-2xl;
+}
+
+.text-mobile-base {
+  @apply text-base sm:text-lg md:text-xl;
+}
+
+.text-mobile-sm {
+  @apply text-sm sm:text-base md:text-lg;
 }
 
 /* Interactive Elements */
@@ -752,18 +769,18 @@ Modern tech blue and purple gradient theme.
     @apply flex gap-3 lg:gap-4;
   }
 
-  /* Responsive Spacing */
-  @media (max-width: 768px) {
+  /* Enhanced Responsive Spacing - Mobile First */
+  @media (max-width: 640px) {
     .section-spacing {
-      @apply py-8;
+      @apply py-8 px-4;
     }
     
     .section-spacing-lg {
-      @apply py-12;
+      @apply py-12 px-4;
     }
     
     .section-spacing-xl {
-      @apply py-16;
+      @apply py-16 px-4;
     }
     
     .card-spacing {
@@ -776,6 +793,60 @@ Modern tech blue and purple gradient theme.
     
     .form-spacing {
       @apply space-y-3;
+    }
+
+    /* Touch-friendly button sizes on mobile */
+    button, .btn-primary, .btn-secondary, .btn-outline {
+      @apply min-h-[44px] min-w-[44px];
+    }
+  }
+
+  /* Tablet-specific adjustments */
+  @media (min-width: 641px) and (max-width: 1024px) {
+    .section-spacing {
+      @apply py-10 px-6;
+    }
+    
+    .section-spacing-lg {
+      @apply py-14 px-6;
+    }
+    
+    .section-spacing-xl {
+      @apply py-18 px-6;
+    }
+  }
+
+  /* Enhanced Container Spacing */
+  .container-responsive {
+    @apply w-full mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16;
+  }
+
+  /* Responsive Images */
+  img, .responsive-image {
+    @apply max-w-full h-auto;
+  }
+
+  /* Touch-friendly targets */
+  .touch-target {
+    @apply min-h-[44px] min-w-[44px];
+  }
+
+  /* Safe Area Insets for Mobile Devices */
+  @supports (padding: max(0px)) {
+    .safe-top {
+      padding-top: max(1rem, env(safe-area-inset-top));
+    }
+    
+    .safe-bottom {
+      padding-bottom: max(1rem, env(safe-area-inset-bottom));
+    }
+    
+    .safe-left {
+      padding-left: max(1rem, env(safe-area-inset-left));
+    }
+    
+    .safe-right {
+      padding-right: max(1rem, env(safe-area-inset-right));
     }
   }
 
