@@ -1,16 +1,39 @@
-import { useState } from "react";
-import { Search, MapPin, Home, DollarSign, Bed, Bath, Car, ArrowRight, Clock, TrendingUp, Filter, Map, Bookmark, Building2, Key, Users } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useState, useEffect } from "react";
+import { TrendingUp, Building2, Users } from "lucide-react";
+import { Home } from "lucide-react";
 import heroImage from "@/assets/hero-property.jpg";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 import 'react-lazy-load-image-component/src/effects/blur.css'
 
 const Hero = () => {
-  const [activeTab, setActiveTab] = useState("buy");
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  // Determine active tab based on current route
+  const getActiveTabFromRoute = () => {
+    const path = location.pathname;
+    // Only set active tab if we're on a specific page, not on landing page
+    if (path.includes('/sell')) return 'sell';
+    if (path.includes('/buy')) return 'buy';
+    if (path.includes('/rent')) return 'rent';
+    if (path.includes('/manage')) return 'manage';
+    return null; // No tab selected on landing page
+  };
+
+  const [activeTab, setActiveTab] = useState<string | null>(getActiveTabFromRoute());
+
+  // Update active tab when route changes (only if on specific page, not landing)
+  useEffect(() => {
+    const routeTab = getActiveTabFromRoute();
+    // Only update if we're on a specific page (not landing page)
+    if (routeTab !== null) {
+      setActiveTab(routeTab);
+    } else {
+      // On landing page, reset to no selection
+      setActiveTab(null);
+    }
+  }, [location.pathname]);
 
   const tabs = [
     { id: "sell", label: "Sell", href: "/sell", icon: TrendingUp },
@@ -19,10 +42,17 @@ const Hero = () => {
     { id: "manage", label: "Manage", href: "/manage", icon: Users },
   ];
 
-  const handleTabClick = (tabId: string, href: string) => {
+  const handleTabClick = (tabId: string) => {
+    // Update the active tab state when user clicks
     setActiveTab(tabId);
-    navigate(href);
+    
+    // Navigate directly to the selected tab's page
+    const tab = tabs.find(t => t.id === tabId);
+    if (tab) {
+      navigate(tab.href);
+    }
   };
+
 
   return (
     <section id="home" className="relative min-h-screen flex items-center pt-16 sm:pt-20 md:pt-22 lg:pt-24 overflow-hidden bg-gradient-to-br from-slate-800 via-gray-900 to-slate-900 safe-top">
@@ -41,11 +71,11 @@ const Hero = () => {
         <div className="absolute inset-0 bg-gradient-to-br from-slate-800/85 via-gray-900/75 to-slate-900/85" />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-800/70 via-transparent to-transparent" />
         
-        {/* Floating Elements */}
-        <div className="absolute top-20 left-10 w-20 h-20 bg-white/5 rounded-full animate-float-1"></div>
-        <div className="absolute top-40 right-20 w-16 h-16 bg-primary/10 rounded-full animate-float-2"></div>
-        <div className="absolute bottom-40 left-20 w-24 h-24 bg-yellow-400/10 rounded-full animate-float-3"></div>
-        <div className="absolute bottom-20 right-10 w-12 h-12 bg-white/10 rounded-full animate-float-4"></div>
+        {/* Floating Elements - Hidden on mobile for better performance */}
+        <div className="hidden sm:block absolute top-20 left-10 w-20 h-20 bg-white/5 rounded-full animate-float-1"></div>
+        <div className="hidden md:block absolute top-40 right-20 w-16 h-16 bg-primary/10 rounded-full animate-float-2"></div>
+        <div className="hidden lg:block absolute bottom-40 left-20 w-24 h-24 bg-yellow-400/10 rounded-full animate-float-3"></div>
+        <div className="hidden sm:block absolute bottom-20 right-10 w-12 h-12 bg-white/10 rounded-full animate-float-4"></div>
       </div>
 
       <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 relative z-10 w-full py-8 sm:py-12 md:py-16">
@@ -64,127 +94,42 @@ const Hero = () => {
             </p>
           </div>
 
-          {/* Enhanced Property Search Section */}
-          <div className="bg-white/95 backdrop-blur-md rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 lg:p-8 shadow-2xl border border-white/20 animate-scale-in mx-2 sm:mx-4">
-            {/* Search Tabs */}
-            <div className="flex justify-center mb-6 sm:mb-7 md:mb-8">
-              <div className="flex flex-wrap justify-center gap-1 sm:gap-2 bg-gray-100 rounded-lg p-1 sm:p-1.5 md:p-2 w-full max-w-full overflow-x-auto">
-                {tabs.map((tab) => {
-                  const Icon = tab.icon;
-                  return (
-                    <button
-                      key={tab.id}
-                      onClick={() => handleTabClick(tab.id, tab.href)}
-                      className={`px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 rounded-md font-medium transition-all text-xs sm:text-sm md:text-base flex items-center gap-1.5 sm:gap-2 touch-target min-h-[44px] whitespace-nowrap ${
-                        activeTab === tab.id
-                          ? "bg-white text-primary shadow-sm"
-                          : "text-gray-600 hover:text-gray-800"
-                      }`}
-                    >
-                      <Icon className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 flex-shrink-0" />
-                      <span className="text-xs sm:text-sm md:text-base">{tab.label}</span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Search Form */}
-            <div className="space-y-4 sm:space-y-5 md:space-y-6">
-              {/* Main Search Input */}
-              <div className="relative">
-                <MapPin className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-gray-400 z-10" />
-                <Input
-                  placeholder="Enter property address, suburb, or postcode"
-                  className="pl-10 sm:pl-12 pr-24 sm:pr-28 md:pr-32 h-11 sm:h-12 md:h-14 text-sm sm:text-base border-2 border-gray-200 focus:border-primary rounded-lg sm:rounded-xl transition-all duration-300 hover:border-gray-300"
-                />
-                <Button 
-                  size="lg" 
-                  className="absolute right-1.5 sm:right-2 top-1/2 transform -translate-y-1/2 h-8 sm:h-9 md:h-10 px-3 sm:px-4 md:px-6 text-xs sm:text-sm md:text-base bg-primary hover:bg-primary/90 transition-all duration-300 hover:scale-105 touch-target whitespace-nowrap"
-                >
-                  <Search className="h-3 w-3 sm:h-4 sm:w-4 md:mr-2 flex-shrink-0" />
-                  <span className="hidden sm:inline">Search</span>
-                </Button>
-              </div>
-
-              {/* Advanced Filters */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-                <Select>
-                  <SelectTrigger className="h-11 sm:h-12 md:h-14 text-sm sm:text-base border-2 border-gray-200 focus:border-primary rounded-lg sm:rounded-xl transition-all duration-300 hover:border-gray-300 touch-target">
-                    <Home className="h-3 w-3 sm:h-4 sm:w-4 text-gray-400 mr-2 flex-shrink-0" />
-                    <SelectValue placeholder="Property Type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="house">House</SelectItem>
-                    <SelectItem value="apartment">Apartment</SelectItem>
-                    <SelectItem value="townhouse">Townhouse</SelectItem>
-                    <SelectItem value="land">Land</SelectItem>
-                    <SelectItem value="commercial">Commercial</SelectItem>
-                  </SelectContent>
-                </Select>
-
-                <Select>
-                  <SelectTrigger className="h-11 sm:h-12 md:h-14 text-sm sm:text-base border-2 border-gray-200 focus:border-primary rounded-lg sm:rounded-xl transition-all duration-300 hover:border-gray-300 touch-target">
-                    <DollarSign className="h-3 w-3 sm:h-4 sm:w-4 text-gray-400 mr-2 flex-shrink-0" />
-                    <SelectValue placeholder="Price Range" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="0-500k">$0 - $500k</SelectItem>
-                    <SelectItem value="500k-750k">$500k - $750k</SelectItem>
-                    <SelectItem value="750k-1m">$750k - $1M</SelectItem>
-                    <SelectItem value="1m-1.5m">$1M - $1.5M</SelectItem>
-                    <SelectItem value="1.5m-2m">$1.5M - $2M</SelectItem>
-                    <SelectItem value="2m+">$2M+</SelectItem>
-                  </SelectContent>
-                </Select>
-
-                <Select>
-                  <SelectTrigger className="h-11 sm:h-12 md:h-14 text-sm sm:text-base border-2 border-gray-200 focus:border-primary rounded-lg sm:rounded-xl transition-all duration-300 hover:border-gray-300 touch-target">
-                    <Bed className="h-3 w-3 sm:h-4 sm:w-4 text-gray-400 mr-2 flex-shrink-0" />
-                    <SelectValue placeholder="Bedrooms" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="any">Any</SelectItem>
-                    <SelectItem value="1">1+</SelectItem>
-                    <SelectItem value="2">2+</SelectItem>
-                    <SelectItem value="3">3+</SelectItem>
-                    <SelectItem value="4">4+</SelectItem>
-                    <SelectItem value="5">5+</SelectItem>
-                  </SelectContent>
-                </Select>
-
-                <Select>
-                  <SelectTrigger className="h-11 sm:h-12 md:h-14 text-sm sm:text-base border-2 border-gray-200 focus:border-primary rounded-lg sm:rounded-xl transition-all duration-300 hover:border-gray-300 touch-target">
-                    <Bath className="h-3 w-3 sm:h-4 sm:w-4 text-gray-400 mr-2 flex-shrink-0" />
-                    <SelectValue placeholder="Bathrooms" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="any">Any</SelectItem>
-                    <SelectItem value="1">1+</SelectItem>
-                    <SelectItem value="2">2+</SelectItem>
-                    <SelectItem value="3">3+</SelectItem>
-                    <SelectItem value="4">4+</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* Additional Options */}
-              <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 md:gap-4 pt-3 sm:pt-4 border-t border-gray-200">
-                <Button variant="ghost" className="text-primary hover:text-primary/80 text-xs sm:text-sm md:text-base font-medium flex items-center gap-1.5 sm:gap-2 touch-target min-h-[44px] px-3 sm:px-4">
-                  <Filter className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
-                  <span className="hidden sm:inline">Advanced Filters</span>
-                  <span className="sm:hidden">Filters</span>
-                </Button>
-                <Button variant="ghost" className="text-gray-600 hover:text-gray-800 text-xs sm:text-sm md:text-base font-medium flex items-center gap-1.5 sm:gap-2 touch-target min-h-[44px] px-3 sm:px-4">
-                  <Map className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
-                  <span className="hidden sm:inline">Map View</span>
-                  <span className="sm:hidden">Map</span>
-                </Button>
-                <Button variant="outline" size="sm" className="text-xs sm:text-sm md:text-base font-medium flex items-center gap-1.5 sm:gap-2 touch-target min-h-[44px] px-3 sm:px-4">
-                  <Bookmark className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
-                  <span className="hidden sm:inline">Save Search</span>
-                  <span className="sm:hidden">Save</span>
-                </Button>
+          {/* Enhanced Category Selection Section - Professional UI/UX */}
+          <div className="bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10 lg:p-12 shadow-2xl border border-white/20 animate-scale-in mx-2 sm:mx-4">
+            <div className="flex justify-center">
+              <div className="w-full max-w-4xl">
+                <p className="text-sm sm:text-base md:text-lg text-gray-600 mb-6 sm:mb-8 md:mb-10 text-center font-semibold">
+                  Select a category to search
+                </p>
+                <div className="flex flex-wrap justify-center gap-3 sm:gap-4 md:gap-5 bg-white/10 backdrop-blur-md rounded-2xl p-3 sm:p-4 md:p-5 shadow-xl border border-white/20">
+                  {tabs.map((tab) => {
+                    const Icon = tab.icon;
+                    const isActive = activeTab === tab.id;
+                    return (
+                      <button
+                        key={tab.id}
+                        onClick={() => handleTabClick(tab.id)}
+                        className={`px-6 sm:px-8 md:px-10 lg:px-12 py-4 sm:py-5 md:py-6 rounded-xl font-bold transition-all duration-300 text-sm sm:text-base md:text-lg flex items-center justify-center gap-2 sm:gap-3 touch-target min-h-[56px] sm:min-h-[60px] md:min-h-[64px] whitespace-nowrap relative group shadow-lg ${
+                          isActive
+                            ? "bg-white text-primary shadow-2xl scale-105 ring-4 ring-primary/30 transform"
+                            : "bg-white text-gray-700 hover:text-primary hover:bg-white/90 hover:shadow-xl hover:scale-105"
+                        }`}
+                        aria-pressed={isActive}
+                        title={`Click to explore ${tab.label.toLowerCase()} properties`}
+                      >
+                        <Icon className={`w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 flex-shrink-0 transition-transform duration-300 ${
+                          isActive ? 'scale-110 text-primary' : 'text-gray-600 group-hover:scale-110 group-hover:text-primary'
+                        }`} />
+                        <span className={`text-sm sm:text-base md:text-lg font-bold transition-colors duration-300 ${
+                          isActive ? 'text-primary' : 'text-gray-700 group-hover:text-primary'
+                        }`}>{tab.label}</span>
+                        {isActive && (
+                          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-16 h-1.5 bg-primary rounded-full animate-in fade-in duration-300 shadow-lg shadow-primary/50"></div>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             </div>
           </div>

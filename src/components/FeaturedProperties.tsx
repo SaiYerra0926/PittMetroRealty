@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MapPin, Bed, Bath, Car, Square, Heart, Share2, Eye, Star, Calendar, Users, Clock, TrendingUp } from "lucide-react";
+import { MapPin, Bed, Bath, Car, Square, Eye, Star, Calendar, Users, Clock, TrendingUp, Home, Key, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -8,9 +8,11 @@ import property2 from "@/assets/property-2.jpg";
 import property3 from "@/assets/property-3.jpg";
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 import 'react-lazy-load-image-component/src/effects/blur.css'
+import PropertyDetailsModal from "@/components/PropertyDetailsModal";
 
 const FeaturedProperties = () => {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const [selectedProperty, setSelectedProperty] = useState<any | null>(null);
 
   const properties = [
     {
@@ -26,6 +28,7 @@ const FeaturedProperties = () => {
       features: ["Modern Kitchen", "Hardwood Floors", "Garage"],
       amenities: ["Pool", "Gym", "Parking"],
       status: "For Sale",
+      listingType: "buy", // "buy", "rent", or "sell"
       daysOnMarket: 15,
       rating: 4.9,
       agent: "Sarah Johnson",
@@ -45,6 +48,7 @@ const FeaturedProperties = () => {
       features: ["Open Floor Plan", "Balcony", "Storage"],
       amenities: ["Rooftop", "Concierge", "Storage"],
       status: "For Sale",
+      listingType: "buy",
       daysOnMarket: 8,
       rating: 4.8,
       agent: "Mike Chen",
@@ -64,6 +68,7 @@ const FeaturedProperties = () => {
       features: ["Chef's Kitchen", "Wine Cellar", "Library"],
       amenities: ["Pool", "Tennis Court", "Garden"],
       status: "For Sale",
+      listingType: "rent",
       daysOnMarket: 22,
       rating: 4.9,
       agent: "Emily Rodriguez",
@@ -83,6 +88,7 @@ const FeaturedProperties = () => {
       features: ["City Views", "Modern Design", "Balcony"],
       amenities: ["Gym", "Concierge", "Rooftop"],
       status: "For Sale",
+      listingType: "sell",
       daysOnMarket: 5,
       rating: 4.7,
       agent: "David Kim",
@@ -102,6 +108,7 @@ const FeaturedProperties = () => {
       features: ["Mountain Views", "Deck", "Fireplace"],
       amenities: ["Parking", "Storage", "Garden"],
       status: "For Sale",
+      listingType: "buy",
       daysOnMarket: 12,
       rating: 4.8,
       agent: "Lisa Thompson",
@@ -121,6 +128,7 @@ const FeaturedProperties = () => {
       features: ["Gourmet Kitchen", "Home Office", "Walk-in Closets"],
       amenities: ["Pool", "Tennis Court", "Guest House"],
       status: "For Sale",
+      listingType: "rent",
       daysOnMarket: 18,
       rating: 4.9,
       agent: "Robert Wilson",
@@ -232,29 +240,26 @@ const FeaturedProperties = () => {
                 {/* Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 
-                {/* Status Badge */}
-                <Badge className={`absolute top-4 left-4 ${getStatusColor(property.status)} border`}>
-                  {property.status}
-                </Badge>
-                
-                {/* Type Badge */}
-                <Badge className={`absolute top-4 right-4 ${getTypeColor(property.type)}`}>
-                  {property.type}
-                </Badge>
-                
-                {/* Action Buttons */}
-                <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <Button size="sm" variant="secondary" className="w-8 h-8 p-0 rounded-full">
-                    <Heart className="w-4 h-4" />
-                  </Button>
-                  <Button size="sm" variant="secondary" className="w-8 h-8 p-0 rounded-full">
-                    <Share2 className="w-4 h-4" />
-                  </Button>
+                {/* Listing Type Icon Badge - Top Left */}
+                <div className={`absolute top-2 sm:top-3 left-2 sm:left-3 z-10 flex items-center gap-1.5 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg backdrop-blur-sm shadow-lg transition-all duration-300 ${
+                  property.listingType === 'buy' ? 'bg-blue-500/95 text-white hover:bg-blue-600/95' :
+                  property.listingType === 'rent' ? 'bg-green-500/95 text-white hover:bg-green-600/95' :
+                  'bg-primary/95 text-white hover:bg-primary'
+                }`}>
+                  {property.listingType === 'buy' ? (
+                    <Home className="w-3 h-3 sm:w-3.5 sm:h-3.5 flex-shrink-0" />
+                  ) : property.listingType === 'rent' ? (
+                    <Key className="w-3 h-3 sm:w-3.5 sm:h-3.5 flex-shrink-0" />
+                  ) : (
+                    <TrendingUp className="w-3 h-3 sm:w-3.5 sm:h-3.5 flex-shrink-0" />
+                  )}
+                  <span className="text-[10px] sm:text-xs font-semibold uppercase tracking-wide">
+                    {property.listingType === 'buy' ? 'Buy' : property.listingType === 'rent' ? 'Rent' : 'Sell'}
+                  </span>
                 </div>
-                
                 {/* Days on Market */}
-                <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg px-3 py-1">
-                  <span className="text-xs font-medium text-gray-700">
+                <div className="absolute bottom-2 sm:bottom-3 md:bottom-4 left-2 sm:left-3 md:left-4 bg-white/90 backdrop-blur-sm rounded-lg px-2 sm:px-2.5 md:px-3 py-0.5 sm:py-1">
+                  <span className="text-[10px] sm:text-xs font-medium text-gray-700">
                     {property.daysOnMarket} days on market
                   </span>
                 </div>
@@ -327,7 +332,11 @@ const FeaturedProperties = () => {
                       </div>
                     </div>
                   </div>
-                  <Button size="sm" className="btn-primary text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2 touch-target min-h-[36px] sm:min-h-[40px] flex-shrink-0">
+                  <Button 
+                    size="sm" 
+                    onClick={() => setSelectedProperty(property)}
+                    className="bg-primary text-white hover:bg-primary/90 text-xs sm:text-sm px-4 sm:px-5 py-2 sm:py-2.5 rounded-lg font-semibold transition-all duration-300 touch-target min-h-[44px] flex-shrink-0 shadow-md hover:shadow-lg"
+                  >
                     <Eye className="w-3 h-3 sm:w-4 sm:h-4 mr-1 flex-shrink-0" />
                     <span className="hidden sm:inline">View</span>
                     <span className="sm:hidden">View</span>
@@ -340,6 +349,13 @@ const FeaturedProperties = () => {
         </div>
 
       </div>
+
+      {/* Property Details Modal */}
+      <PropertyDetailsModal
+        property={selectedProperty}
+        open={!!selectedProperty}
+        onClose={() => setSelectedProperty(null)}
+      />
     </section>
   );
 };

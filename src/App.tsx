@@ -6,6 +6,7 @@ import { HashRouter, Routes, Route } from "react-router-dom";
 import { WorkflowProvider } from "@/contexts/WorkflowContext";
 import { lazy } from "react";
 import { LazyLoad } from "./components/LazyLoad";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 // Lazy load pages
 const Index = lazy(() => import("./pages/Index"));
@@ -20,27 +21,29 @@ const PropertyOwnerPortal = lazy(() => import("./pages/PropertyOwnerPortal"));
 const queryClient = new QueryClient();
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <WorkflowProvider>
-        <Toaster />
-        <Sonner />
-        <HashRouter>
-          <Routes>
-            <Route path="/" element={<LazyLoad><Index /></LazyLoad>} />
-            <Route path="/sell" element={<LazyLoad><Sell /></LazyLoad>} />
-            <Route path="/buy" element={<LazyLoad><Buy /></LazyLoad>} />
-            <Route path="/rent" element={<LazyLoad><Rent /></LazyLoad>} />
-            <Route path="/manage" element={<LazyLoad><Manage /></LazyLoad>} />
-            <Route path="/map" element={<LazyLoad><MapView /></LazyLoad>} />
-            <Route path="/admin" element={<LazyLoad><PropertyOwnerPortal /></LazyLoad>} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<LazyLoad><NotFound /></LazyLoad>} />
-          </Routes>
-        </HashRouter>
-      </WorkflowProvider>
-    </TooltipProvider>
-  </QueryClientProvider>
+  <ErrorBoundary>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <WorkflowProvider>
+          <Toaster />
+          <Sonner />
+          <HashRouter>
+            <Routes>
+              <Route path="/" element={<LazyLoad><Index /></LazyLoad>} />
+              <Route path="/sell" element={<LazyLoad><Sell /></LazyLoad>} />
+              <Route path="/buy" element={<LazyLoad><Buy /></LazyLoad>} />
+              <Route path="/rent" element={<LazyLoad><Rent /></LazyLoad>} />
+              <Route path="/manage" element={<LazyLoad><Manage /></LazyLoad>} />
+              <Route path="/map" element={<LazyLoad><MapView /></LazyLoad>} />
+              <Route path="/admin" element={<LazyLoad><PropertyOwnerPortal /></LazyLoad>} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<LazyLoad><NotFound /></LazyLoad>} />
+            </Routes>
+          </HashRouter>
+        </WorkflowProvider>
+      </TooltipProvider>
+    </QueryClientProvider>
+  </ErrorBoundary>
 );
 
 export default App;

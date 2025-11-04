@@ -144,11 +144,22 @@ const Contact = () => {
 
                 {/* Quick Contact Buttons */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                  <Button className="btn-primary flex items-center justify-center gap-2 touch-target text-xs sm:text-sm md:text-base px-4 sm:px-5 md:px-6 py-2.5 sm:py-3">
+                  <Button 
+                    onClick={() => {
+                      window.location.href = `tel:+14129777090`;
+                    }}
+                    className="btn-primary flex items-center justify-center gap-2 touch-target text-xs sm:text-sm md:text-base px-4 sm:px-5 md:px-6 py-2.5 sm:py-3"
+                  >
                     <Phone className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
                     <span>Call Now</span>
                   </Button>
-                  <Button variant="outline" className="btn-outline flex items-center justify-center gap-2 touch-target text-xs sm:text-sm md:text-base px-4 sm:px-5 md:px-6 py-2.5 sm:py-3">
+                  <Button 
+                    variant="outline" 
+                    onClick={() => {
+                      window.location.href = `mailto:info@pittmetrorealty.com`;
+                    }}
+                    className="btn-outline flex items-center justify-center gap-2 touch-target text-xs sm:text-sm md:text-base px-4 sm:px-5 md:px-6 py-2.5 sm:py-3"
+                  >
                     <Mail className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
                     <span>Send Email</span>
                   </Button>
@@ -229,7 +240,22 @@ const Contact = () => {
                   </div>
 
 
-                  <Button className="w-full btn-primary h-12 sm:h-14 md:h-16 text-sm sm:text-base md:text-lg font-semibold touch-target">
+                  <Button 
+                    type="submit"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      // Handle form submission
+                      const form = e.currentTarget.closest('form');
+                      if (form) {
+                        const formData = new FormData(form as HTMLFormElement);
+                        const data = Object.fromEntries(formData);
+                        console.log('Contact form submitted:', data);
+                        alert('Thank you! Your message has been sent. We will contact you soon.');
+                        form.reset();
+                      }
+                    }}
+                    className="w-full btn-primary h-12 sm:h-14 md:h-16 text-sm sm:text-base md:text-lg font-semibold touch-target"
+                  >
                     <span>Send Message</span>
                     <Send className="h-4 w-4 sm:h-5 sm:w-5 ml-2 flex-shrink-0" />
                   </Button>

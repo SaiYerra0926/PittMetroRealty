@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Home, Upload, Eye, Save, ArrowLeft, CheckCircle, Lock, User, Shield, Camera, DollarSign, MapPin, Bed, Bath } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,6 +10,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import PhotoUpload from '@/components/PhotoUpload';
+import { PropertiesAPI } from '@/lib/api/properties';
+import { useToast } from '@/hooks/use-toast';
 
 const PropertyOwnerPortal = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -17,6 +19,10 @@ const PropertyOwnerPortal = () => {
   const [submittedListings, setSubmittedListings] = useState<any[]>([]);
   const [showSuccess, setShowSuccess] = useState(false);
   const [loginData, setLoginData] = useState({ username: '', password: '' });
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingListings, setIsLoadingListings] = useState(false);
+  const { toast } = useToast();
+  const propertiesApi = new PropertiesAPI();
   const [formData, setFormData] = useState({
     // Basic Information
     title: '',
@@ -138,32 +144,93 @@ const PropertyOwnerPortal = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  // Fetch listings when authenticated
+  useEffect(() => {
+    if (isAuthenticated && loginData.username) {
+      fetchListings();
+    }
+  }, [isAuthenticated, loginData.username]);
+
+  const fetchListings = async () => {
+    setIsLoadingListings(true);
+    try {
+      const response = await propertiesApi.getPropertiesByOwner(loginData.username);
+      setSubmittedListings(response.listings || []);
+    } catch (error) {
+      console.error('Error fetching listings:', error);
+      toast({
+        title: "Error",
+        description: "Failed to load your listings. Please try again.",
+        variant: "destructive",
+      });
+      // Fallback to localStorage if available
+      const localListings = localStorage.getItem('owner_listings');
+      if (localListings) {
+        setSubmittedListings(JSON.parse(localListings));
+      }
+    } finally {
+      setIsLoadingListings(false);
+    }
+  };
+
   const handleSubmit = async () => {
     if (!validateForm()) {
+      toast({
+        title: "Validation Error",
+        description: "Please fill in all required fields correctly.",
+        variant: "destructive",
+      });
       return;
     }
     
+    setIsLoading(true);
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Add to submitted listings
-      const newListing = {
-        ...formData,
-        id: Date.now(),
-        status: 'Pending Review',
-        submittedAt: new Date().toISOString(),
+      // Prepare listing data for API
+      const listingData = {
+        title: formData.title,
+        description: formData.description,
+        address: formData.address,
+        city: formData.city,
+        state: formData.state,
+        zipCode: formData.zipCode,
+        propertyType: formData.propertyType,
+        bedrooms: formData.bedrooms,
+        bathrooms: formData.bathrooms,
+        squareFeet: formData.squareFeet,
+        yearBuilt: formData.yearBuilt,
+        lotSize: formData.lotSize || 0,
+        price: formData.price,
+        listingType: formData.listingType as 'rent' | 'sell' | 'buy',
+        features: formData.features,
+        amenities: formData.amenities,
+        status: 'Pending Review' as const,
+        availableDate: formData.availableDate || undefined,
         photos: formData.photos.map((file: File, index: number) => ({
           id: index,
           name: file.name,
-          url: URL.createObjectURL(file),
-          size: file.size
-        }))
+          url: '', // Will be set by API after upload
+          size: file.size,
+          file: file
+        })),
+        ownerName: formData.ownerName,
+        ownerEmail: formData.ownerEmail,
+        ownerPhone: formData.ownerPhone,
+        ownerPreferredContact: formData.ownerPreferredContact || 'email'
       };
+
+      // Submit to API
+      const newListing = await propertiesApi.createProperty(listingData);
       
-      setSubmittedListings(prev => [newListing, ...prev]);
+      // Refresh listings
+      await fetchListings();
+      
       setShowSuccess(true);
       setActiveTab('manage');
+      
+      toast({
+        title: "Success!",
+        description: "Property listing submitted successfully! Our team will review it within 24 hours.",
+      });
       
       // Reset form
       setFormData({
@@ -196,6 +263,13 @@ const PropertyOwnerPortal = () => {
       setTimeout(() => setShowSuccess(false), 5000);
     } catch (error) {
       console.error('Error submitting listing:', error);
+      toast({
+        title: "Submission Failed",
+        description: error instanceof Error ? error.message : "There was an error submitting your listing. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -761,9 +835,19 @@ const PropertyOwnerPortal = () => {
                       size="lg"
                       onClick={handleSubmit}
                       className="min-w-[200px]"
+                      disabled={isLoading}
                     >
-                      <Save className="h-4 w-4 mr-2" />
-                      Submit Listing
+                      {isLoading ? (
+                        <>
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                          Submitting...
+                        </>
+                      ) : (
+                        <>
+                          <Save className="h-4 w-4 mr-2" />
+                          Submit Listing
+                        </>
+                      )}
                     </Button>
                   </div>
                 </div>
@@ -782,7 +866,14 @@ const PropertyOwnerPortal = () => {
               </p>
             </div>
 
-            {submittedListings.length === 0 ? (
+            {isLoadingListings ? (
+              <Card>
+                <CardContent className="p-8 text-center">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+                  <p className="text-slate-600">Loading your listings...</p>
+                </CardContent>
+              </Card>
+            ) : submittedListings.length === 0 ? (
               <Card>
                 <CardContent className="p-8 text-center">
                   <div className="text-slate-400 mb-4">
@@ -840,7 +931,7 @@ const PropertyOwnerPortal = () => {
                           <div className="flex justify-between">
                             <span>Price:</span>
                             <span className="font-medium text-primary">
-                              ${listing.price.toLocaleString()}
+                              ${(listing.price || 0).toLocaleString()}
                             </span>
                           </div>
                           <div className="flex justify-between">

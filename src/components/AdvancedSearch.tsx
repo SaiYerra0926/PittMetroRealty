@@ -111,8 +111,8 @@ const AdvancedSearch = () => {
                       className="w-full"
                     />
                     <div className="flex justify-between mt-2 text-sm text-muted-foreground">
-                      <span>${priceRange[0].toLocaleString()}</span>
-                      <span>${priceRange[1].toLocaleString()}</span>
+                      <span>${(priceRange && priceRange[0] ? priceRange[0] : 200000).toLocaleString()}</span>
+                      <span>${(priceRange && priceRange[1] ? priceRange[1] : 2000000).toLocaleString()}</span>
                     </div>
                   </div>
                 </div>
@@ -183,8 +183,8 @@ const AdvancedSearch = () => {
                       className="w-full"
                     />
                     <div className="flex justify-between mt-2 text-sm text-muted-foreground">
-                      <span>{sqftRange[0].toLocaleString()} sq ft</span>
-                      <span>{sqftRange[1].toLocaleString()} sq ft</span>
+                      <span>{(sqftRange && sqftRange[0] ? sqftRange[0] : 1000).toLocaleString()} sq ft</span>
+                      <span>{(sqftRange && sqftRange[1] ? sqftRange[1] : 5000).toLocaleString()} sq ft</span>
                     </div>
                   </div>
                 </div>

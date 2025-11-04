@@ -17,7 +17,12 @@ interface AdvancedFiltersProps {
 
 const AdvancedFilters = ({ onFiltersChange, onClose }: AdvancedFiltersProps) => {
   const { state, actions } = useWorkflow();
-  const [filters, setFilters] = useState(state.currentFilters);
+  const [filters, setFilters] = useState({
+    ...state.currentFilters,
+    amenities: state.currentFilters.amenities || [],
+    features: state.currentFilters.features || [],
+    accessibility: state.currentFilters.accessibility || []
+  });
 
   const amenities = [
     { icon: Wifi, label: "High-Speed Internet", category: "Technology" },
@@ -78,27 +83,27 @@ const AdvancedFilters = ({ onFiltersChange, onClose }: AdvancedFiltersProps) => 
   const handleAmenityToggle = (amenity: string) => {
     setFilters(prev => ({
       ...prev,
-      amenities: prev.amenities.includes(amenity)
-        ? prev.amenities.filter(a => a !== amenity)
-        : [...prev.amenities, amenity]
+      amenities: (prev.amenities || []).includes(amenity)
+        ? (prev.amenities || []).filter(a => a !== amenity)
+        : [...(prev.amenities || []), amenity]
     }));
   };
 
   const handleFeatureToggle = (feature: string) => {
     setFilters(prev => ({
       ...prev,
-      features: prev.features.includes(feature)
-        ? prev.features.filter(f => f !== feature)
-        : [...prev.features, feature]
+      features: (prev.features || []).includes(feature)
+        ? (prev.features || []).filter(f => f !== feature)
+        : [...(prev.features || []), feature]
     }));
   };
 
   const handleAccessibilityToggle = (accessibility: string) => {
     setFilters(prev => ({
       ...prev,
-      accessibility: prev.accessibility.includes(accessibility)
-        ? prev.accessibility.filter(a => a !== accessibility)
-        : [...prev.accessibility, accessibility]
+      accessibility: (prev.accessibility || []).includes(accessibility)
+        ? (prev.accessibility || []).filter(a => a !== accessibility)
+        : [...(prev.accessibility || []), accessibility]
     }));
   };
 
@@ -116,7 +121,9 @@ const AdvancedFilters = ({ onFiltersChange, onClose }: AdvancedFiltersProps) => 
 
   const getActiveFiltersCount = () => {
     let count = 0;
-    if (filters.priceMin[0] > 0 || filters.priceMax[0] < 2000000) count++;
+    const priceMinValue = Array.isArray(filters.priceMin) ? filters.priceMin[0] : (filters.priceMin || 0);
+    const priceMaxValue = Array.isArray(filters.priceMax) ? filters.priceMax[0] : (filters.priceMax || 2000000);
+    if (priceMinValue > 0 || priceMaxValue < 2000000) count++;
     if (filters.bedrooms) count++;
     if (filters.bathrooms) count++;
     if (filters.propertyType) count++;
@@ -125,9 +132,9 @@ const AdvancedFilters = ({ onFiltersChange, onClose }: AdvancedFiltersProps) => 
     if (filters.neighborhood) count++;
     if (filters.schoolDistrict) count++;
     if (filters.zipCode) count++;
-    if (filters.amenities.length > 0) count++;
-    if (filters.features.length > 0) count++;
-    if (filters.accessibility.length > 0) count++;
+    if (filters.amenities && filters.amenities.length > 0) count++;
+    if (filters.features && filters.features.length > 0) count++;
+    if (filters.accessibility && filters.accessibility.length > 0) count++;
     if (filters.daysOnMarket) count++;
     if (filters.priceReduction || filters.newListing || filters.openHouse) count++;
     return count;
@@ -185,7 +192,7 @@ const AdvancedFilters = ({ onFiltersChange, onClose }: AdvancedFiltersProps) => 
                   className="w-full"
                 />
                 <div className="text-sm text-slate-600">
-                  ${filters.priceMin[0].toLocaleString()}
+                  ${(Array.isArray(filters.priceMin) ? filters.priceMin[0] : (filters.priceMin || 0)).toLocaleString()}
                 </div>
               </div>
               <div className="space-y-2">
@@ -199,7 +206,7 @@ const AdvancedFilters = ({ onFiltersChange, onClose }: AdvancedFiltersProps) => 
                   className="w-full"
                 />
                 <div className="text-sm text-slate-600">
-                  ${filters.priceMax[0].toLocaleString()}
+                  ${(Array.isArray(filters.priceMax) ? filters.priceMax[0] : (filters.priceMax || 2000000)).toLocaleString()}
                 </div>
               </div>
             </CardContent>
@@ -378,7 +385,7 @@ const AdvancedFilters = ({ onFiltersChange, onClose }: AdvancedFiltersProps) => 
                   <div
                     key={amenity.label}
                     className={`p-3 rounded-lg border-2 cursor-pointer transition-all duration-300 ${
-                      filters.amenities.includes(amenity.label)
+                      (filters.amenities || []).includes(amenity.label)
                         ? 'border-primary bg-primary/5 text-primary'
                         : 'border-slate-200 hover:border-slate-300'
                     }`}
@@ -405,7 +412,7 @@ const AdvancedFilters = ({ onFiltersChange, onClose }: AdvancedFiltersProps) => 
                   <div
                     key={feature}
                     className={`p-3 rounded-lg border cursor-pointer transition-all duration-300 ${
-                      filters.features.includes(feature)
+                      (filters.features || []).includes(feature)
                         ? 'border-primary bg-primary/5 text-primary'
                         : 'border-slate-200 hover:border-slate-300'
                     }`}
@@ -490,7 +497,7 @@ const AdvancedFilters = ({ onFiltersChange, onClose }: AdvancedFiltersProps) => 
                   <div
                     key={feature}
                     className={`p-3 rounded-lg border cursor-pointer transition-all duration-300 ${
-                      filters.accessibility.includes(feature)
+                      (filters.accessibility || []).includes(feature)
                         ? 'border-primary bg-primary/5 text-primary'
                         : 'border-slate-200 hover:border-slate-300'
                     }`}

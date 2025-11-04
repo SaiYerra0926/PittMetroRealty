@@ -190,7 +190,14 @@ export const WorkflowProvider = ({ children }: { children: ReactNode }) => {
     updateFilters: (filters: Partial<SearchFilters>) => {
       setState(prev => ({
         ...prev,
-        currentFilters: { ...prev.currentFilters, ...filters },
+        currentFilters: { 
+          ...prev.currentFilters, 
+          ...filters,
+          // Ensure arrays are never undefined
+          amenities: filters.amenities !== undefined ? filters.amenities : (prev.currentFilters.amenities || []),
+          features: filters.features !== undefined ? filters.features : (prev.currentFilters.features || []),
+          accessibility: filters.accessibility !== undefined ? filters.accessibility : (prev.currentFilters.accessibility || [])
+        },
         workflowProgress: Math.min(100, prev.workflowProgress + 10)
       }));
     },

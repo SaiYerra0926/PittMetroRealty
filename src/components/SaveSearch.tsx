@@ -25,7 +25,7 @@ const BookmarkSearch = ({ currentFilters, onBookmark }: BookmarkSearchProps) => 
     frequency: "daily"
   });
 
-  const [savedSearches, setBookmarkdSearches] = useState(state.savedSearches);
+  const [savedSearches, setBookmarkdSearches] = useState(state.savedSearches || []);
 
   const notificationFrequencies = [
     { value: "immediate", label: "Immediate" },
@@ -64,9 +64,10 @@ const BookmarkSearch = ({ currentFilters, onBookmark }: BookmarkSearchProps) => 
       {/* Bookmark Search Dialog */}
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
-          <Button variant="outline" className="h-12">
-            <Bookmark className="h-4 w-4 mr-2" />
-            Bookmark Search
+          <Button variant="outline" className="text-xs sm:text-sm md:text-base font-medium flex items-center gap-1.5 sm:gap-2 touch-target min-h-[44px] px-3 sm:px-4 h-auto py-2 sm:py-2.5">
+            <Bookmark className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
+            <span className="hidden sm:inline">Save Search</span>
+            <span className="sm:hidden">Save</span>
           </Button>
         </DialogTrigger>
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
@@ -149,11 +150,11 @@ const BookmarkSearch = ({ currentFilters, onBookmark }: BookmarkSearchProps) => 
                   )}
                 </div>
                 
-                {searchData.amenities.length > 0 && (
+                {searchData.amenities && searchData.amenities.length > 0 && (
                   <div>
                     <span className="text-slate-600 text-sm">Amenities:</span>
                     <div className="flex flex-wrap gap-1 mt-1">
-                      {searchData.amenities.map((amenity, index) => (
+                      {(searchData.amenities || []).map((amenity, index) => (
                         <Badge key={index} variant="outline" className="text-xs">
                           {amenity}
                         </Badge>
@@ -224,7 +225,7 @@ const BookmarkSearch = ({ currentFilters, onBookmark }: BookmarkSearchProps) => 
       <div className="space-y-4">
         <h3 className="text-lg font-semibold text-slate-800">Your Bookmarkd Searches</h3>
         
-        {state.savedSearches.length === 0 ? (
+        {(state.savedSearches && state.savedSearches.length === 0) || !state.savedSearches ? (
           <Card>
             <CardContent className="p-8 text-center">
               <Search className="h-12 w-12 text-slate-400 mx-auto mb-4" />
@@ -240,7 +241,7 @@ const BookmarkSearch = ({ currentFilters, onBookmark }: BookmarkSearchProps) => 
           </Card>
         ) : (
           <div className="space-y-4">
-            {state.savedSearches.map((search) => (
+            {(state.savedSearches || []).map((search) => (
               <Card key={search.id} className="hover:shadow-md transition-all duration-300">
                 <CardContent className="p-6">
                   <div className="flex justify-between items-start mb-4">

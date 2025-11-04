@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Search, MapPin, Home, DollarSign, Bed, Bath, Calendar, Star, Heart, Share2, Phone, Mail, Filter, Clock, Users, Shield, Wifi } from "lucide-react";
+import { Search, MapPin, Home, DollarSign, Bed, Bath, Calendar, Star, Phone, Mail, Filter, Clock, Users, Shield, Wifi, Key, TrendingUp, Eye } from "lucide-react";
+import PropertyDetailsModal from "@/components/PropertyDetailsModal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -7,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const Rent = () => {
+  const [selectedProperty, setSelectedProperty] = useState<any | null>(null);
   const [searchFilters, setSearchFilters] = useState({
     location: "",
     priceMin: "",
@@ -16,6 +18,8 @@ const Rent = () => {
     propertyType: "",
     leaseLength: ""
   });
+  const [filteredProperties, setFilteredProperties] = useState<any[]>([]);
+  const [isSearchActive, setIsSearchActive] = useState(false);
 
   const rentalProperties = [
     {
@@ -120,51 +124,142 @@ const Rent = () => {
     }
   ];
 
+  const handleSearch = () => {
+    // Filter properties based on search criteria
+    let filtered = [...rentalProperties];
+
+    // Filter by location
+    if (searchFilters.location.trim()) {
+      const locationLower = searchFilters.location.toLowerCase().trim();
+      filtered = filtered.filter(property =>
+        property.address.toLowerCase().includes(locationLower)
+      );
+    }
+
+    // Filter by price range
+    if (searchFilters.priceMin) {
+      const minPrice = parseInt(searchFilters.priceMin);
+      filtered = filtered.filter(property => {
+        const propertyPrice = parseInt(property.price.replace(/[^0-9]/g, ''));
+        return propertyPrice >= minPrice;
+      });
+    }
+    if (searchFilters.priceMax) {
+      const maxPrice = parseInt(searchFilters.priceMax);
+      filtered = filtered.filter(property => {
+        const propertyPrice = parseInt(property.price.replace(/[^0-9]/g, ''));
+        return propertyPrice <= maxPrice;
+      });
+    }
+
+    // Filter by bedrooms
+    if (searchFilters.bedrooms && searchFilters.bedrooms !== 'any') {
+      const beds = searchFilters.bedrooms === 'studio' ? 0 : parseInt(searchFilters.bedrooms);
+      filtered = filtered.filter(property => {
+        if (searchFilters.bedrooms === 'studio') return property.bedrooms === 0;
+        return property.bedrooms >= beds;
+      });
+    }
+
+    // Filter by bathrooms
+    if (searchFilters.bathrooms && searchFilters.bathrooms !== 'any') {
+      const baths = parseFloat(searchFilters.bathrooms);
+      filtered = filtered.filter(property => property.bathrooms >= baths);
+    }
+
+    // Filter by property type
+    if (searchFilters.propertyType && searchFilters.propertyType !== 'any') {
+      filtered = filtered.filter(property => {
+        const type = property.type.toLowerCase();
+        const filterType = searchFilters.propertyType.toLowerCase();
+        if (filterType === 'house') return type.includes('single family') || type.includes('house');
+        if (filterType === 'studio') return property.bedrooms === 0;
+        return type.includes(filterType);
+      });
+    }
+
+    // Filter by lease length
+    if (searchFilters.leaseLength && searchFilters.leaseLength !== 'any') {
+      const leaseMonths = parseInt(searchFilters.leaseLength);
+      filtered = filtered.filter(property => {
+        if (searchFilters.leaseLength === 'flexible') return true;
+        const propertyLease = parseInt(property.leaseLength.replace(/[^0-9]/g, ''));
+        return propertyLease >= leaseMonths;
+      });
+    }
+
+    // Update filtered properties and activate search
+    setFilteredProperties(filtered);
+    setIsSearchActive(true);
+
+    // Scroll to properties section
+    setTimeout(() => {
+      const propertiesSection = document.getElementById('properties');
+      if (propertiesSection) {
+        propertiesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
+  };
+
+  // Clear search and show all properties
+  const handleClearSearch = () => {
+    setSearchFilters({
+      location: "",
+      priceMin: "",
+      priceMax: "",
+      bedrooms: "",
+      bathrooms: "",
+      propertyType: "",
+      leaseLength: ""
+    });
+    setFilteredProperties([]);
+    setIsSearchActive(false);
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-slate-50 to-slate-100">
       {/* Hero Section */}
-      <section className="relative pt-24 pb-16 bg-gradient-to-br from-primary via-primary-light to-primary text-white overflow-hidden">
+      <section className="relative pt-16 sm:pt-20 md:pt-24 pb-12 sm:pb-14 md:pb-16 bg-gradient-to-br from-primary via-primary-light to-primary text-white overflow-hidden safe-top">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fill-opacity%3D%220.1%22%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%222%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')]"></div>
         </div>
         
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="max-w-6xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 relative z-10">
           <div className="text-center max-w-4xl mx-auto">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium mb-6">
               <Shield className="h-4 w-4" />
               Trusted by 10,000+ Pittsburgh Renters
             </div>
             
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 md:mb-5 leading-tight px-2">
               Find Your Perfect
               <span className="block bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">
                 Rental Home
               </span>
             </h1>
             
-            <p className="text-lg md:text-xl text-white/90 mb-8 leading-relaxed max-w-2xl mx-auto">
+            <p className="text-sm sm:text-base md:text-lg text-white/90 mb-5 sm:mb-6 md:mb-7 leading-relaxed max-w-2xl mx-auto px-3 sm:px-4">
               Discover premium rental properties in Pittsburgh with flexible lease terms, 
               exceptional amenities, and transparent pricing.
             </p>
             
-            <div className="flex flex-wrap justify-center gap-4">
-              <div className="flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full">
-                <Clock className="h-4 w-4 text-yellow-300" />
-                <span className="font-medium text-sm">Flexible Leases</span>
+            <div className="flex flex-wrap justify-center gap-2 sm:gap-3 md:gap-4 px-2">
+              <div className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full touch-target">
+                <Clock className="h-3 w-3 sm:h-4 sm:w-4 text-yellow-300 flex-shrink-0" />
+                <span className="font-medium text-xs sm:text-sm">Flexible Leases</span>
               </div>
-              <div className="flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full">
-                <Shield className="h-4 w-4 text-green-300" />
-                <span className="font-medium text-sm">Pet Friendly</span>
+              <div className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full touch-target">
+                <Shield className="h-3 w-3 sm:h-4 sm:w-4 text-green-300 flex-shrink-0" />
+                <span className="font-medium text-xs sm:text-sm">Pet Friendly</span>
               </div>
-              <div className="flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full">
-                <Wifi className="h-4 w-4 text-blue-300" />
-                <span className="font-medium text-sm">Modern Amenities</span>
+              <div className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full touch-target">
+                <Wifi className="h-3 w-3 sm:h-4 sm:w-4 text-blue-300 flex-shrink-0" />
+                <span className="font-medium text-xs sm:text-sm">Modern Amenities</span>
               </div>
-              <div className="flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full">
-                <Users className="h-4 w-4 text-purple-300" />
-                <span className="font-medium text-sm">24/7 Support</span>
+              <div className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full touch-target">
+                <Users className="h-3 w-3 sm:h-4 sm:w-4 text-purple-300 flex-shrink-0" />
+                <span className="font-medium text-xs sm:text-sm">24/7 Support</span>
               </div>
             </div>
           </div>
@@ -177,47 +272,55 @@ const Rent = () => {
       </section>
 
       {/* Search Section */}
-      <section className="py-16 -mt-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Card className="shadow-2xl border-0 bg-white/95 backdrop-blur-sm">
-            <CardContent className="p-10">
-              <div className="text-center mb-10">
-                <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full text-sm font-medium text-primary mb-6">
-                  <Search className="h-4 w-4" />
-                  Advanced Search
+      <section className="py-12 sm:py-16 md:py-20 -mt-8 sm:-mt-10 md:-mt-12">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
+          <Card className="shadow-xl border border-slate-200/50 bg-white/90 backdrop-blur-sm">
+            <CardContent className="p-5 sm:p-6 md:p-8 lg:p-10">
+              <div className="text-center mb-8 sm:mb-10">
+                <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-primary/10 rounded-full text-xs sm:text-sm font-medium text-primary mb-4 sm:mb-5 md:mb-6">
+                  <Search className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                  <span>Advanced Search</span>
                 </div>
-                <h2 className="text-4xl font-bold text-slate-800 mb-4">
+                <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 px-2">
                   Find Your Dream Rental
                 </h2>
-                <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+                <p className="text-xs sm:text-sm md:text-base text-slate-600 max-w-2xl mx-auto px-3">
                   Use our comprehensive search tools to find the perfect rental property that matches your lifestyle and budget
                 </p>
               </div>
 
-              <div className="space-y-8">
+              <div className="space-y-6 sm:space-y-7 md:space-y-8">
                 {/* Main Search */}
                 <div className="relative">
-                  <MapPin className="absolute left-4 top-1/2 transform -translate-y-1/2 h-6 w-6 text-gray-400" />
+                  <MapPin className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 text-gray-400 z-10" />
                   <Input
                     placeholder="Enter city, neighborhood, or ZIP code"
-                    className="pl-14 h-16 text-lg border-2 border-gray-200 focus:border-primary rounded-2xl shadow-sm"
+                    className="pl-10 sm:pl-12 md:pl-14 pr-24 sm:pr-28 md:pr-32 h-11 sm:h-12 md:h-14 text-sm sm:text-base border-2 border-gray-200 focus:border-primary rounded-lg sm:rounded-xl shadow-sm touch-target min-h-[48px]"
                     value={searchFilters.location}
                     onChange={(e) => setSearchFilters({...searchFilters, location: e.target.value})}
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter') {
+                        handleSearch();
+                      }
+                    }}
                   />
                   <Button 
                     size="lg" 
-                    className="absolute right-3 top-3 h-10 px-8 bg-primary hover:bg-primary/90 rounded-xl"
+                    onClick={() => {
+                      handleSearch();
+                    }}
+                    className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 h-9 sm:h-10 md:h-12 px-4 sm:px-5 md:px-6 text-xs sm:text-sm md:text-base bg-primary hover:bg-primary/90 rounded-lg sm:rounded-xl touch-target min-h-[40px] sm:min-h-[44px]"
                   >
-                    <Search className="h-5 w-5 mr-2" />
-                    Search
+                    <Search className="h-3 w-3 sm:h-4 sm:w-4 md:mr-2 flex-shrink-0" />
+                    <span className="hidden sm:inline">Search</span>
                   </Button>
                 </div>
 
                 {/* Filters */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-7 gap-3 sm:gap-4">
                   <Select value={searchFilters.priceMin} onValueChange={(value) => setSearchFilters({...searchFilters, priceMin: value})}>
-                    <SelectTrigger className="h-14 border-2 border-gray-200 focus:border-primary rounded-xl">
-                      <DollarSign className="h-5 w-5 text-gray-400 mr-2" />
+                    <SelectTrigger className="h-11 sm:h-12 md:h-14 text-sm sm:text-base border-2 border-gray-200 focus:border-primary rounded-lg sm:rounded-xl touch-target">
+                      <DollarSign className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-gray-400 mr-2 flex-shrink-0" />
                       <SelectValue placeholder="Min Rent" />
                     </SelectTrigger>
                     <SelectContent>
@@ -231,8 +334,8 @@ const Rent = () => {
                   </Select>
 
                   <Select value={searchFilters.priceMax} onValueChange={(value) => setSearchFilters({...searchFilters, priceMax: value})}>
-                    <SelectTrigger className="h-14 border-2 border-gray-200 focus:border-primary rounded-xl">
-                      <DollarSign className="h-5 w-5 text-gray-400 mr-2" />
+                    <SelectTrigger className="h-11 sm:h-12 md:h-14 text-sm sm:text-base border-2 border-gray-200 focus:border-primary rounded-lg sm:rounded-xl touch-target">
+                      <DollarSign className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-gray-400 mr-2 flex-shrink-0" />
                       <SelectValue placeholder="Max Rent" />
                     </SelectTrigger>
                     <SelectContent>
@@ -246,8 +349,8 @@ const Rent = () => {
                   </Select>
 
                   <Select value={searchFilters.bedrooms} onValueChange={(value) => setSearchFilters({...searchFilters, bedrooms: value})}>
-                    <SelectTrigger className="h-14 border-2 border-gray-200 focus:border-primary rounded-xl">
-                      <Bed className="h-5 w-5 text-gray-400 mr-2" />
+                    <SelectTrigger className="h-11 sm:h-12 md:h-14 text-sm sm:text-base border-2 border-gray-200 focus:border-primary rounded-lg sm:rounded-xl touch-target">
+                      <Bed className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-gray-400 mr-2 flex-shrink-0" />
                       <SelectValue placeholder="Bedrooms" />
                     </SelectTrigger>
                     <SelectContent>
@@ -261,8 +364,8 @@ const Rent = () => {
                   </Select>
 
                   <Select value={searchFilters.bathrooms} onValueChange={(value) => setSearchFilters({...searchFilters, bathrooms: value})}>
-                    <SelectTrigger className="h-14 border-2 border-gray-200 focus:border-primary rounded-xl">
-                      <Bath className="h-5 w-5 text-gray-400 mr-2" />
+                    <SelectTrigger className="h-11 sm:h-12 md:h-14 text-sm sm:text-base border-2 border-gray-200 focus:border-primary rounded-lg sm:rounded-xl touch-target">
+                      <Bath className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-gray-400 mr-2 flex-shrink-0" />
                       <SelectValue placeholder="Bathrooms" />
                     </SelectTrigger>
                     <SelectContent>
@@ -275,8 +378,8 @@ const Rent = () => {
                   </Select>
 
                   <Select value={searchFilters.propertyType} onValueChange={(value) => setSearchFilters({...searchFilters, propertyType: value})}>
-                    <SelectTrigger className="h-14 border-2 border-gray-200 focus:border-primary rounded-xl">
-                      <Home className="h-5 w-5 text-gray-400 mr-2" />
+                    <SelectTrigger className="h-11 sm:h-12 md:h-14 text-sm sm:text-base border-2 border-gray-200 focus:border-primary rounded-lg sm:rounded-xl touch-target">
+                      <Home className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-gray-400 mr-2 flex-shrink-0" />
                       <SelectValue placeholder="Property Type" />
                     </SelectTrigger>
                     <SelectContent>
@@ -289,8 +392,8 @@ const Rent = () => {
                   </Select>
 
                   <Select value={searchFilters.leaseLength} onValueChange={(value) => setSearchFilters({...searchFilters, leaseLength: value})}>
-                    <SelectTrigger className="h-14 border-2 border-gray-200 focus:border-primary rounded-xl">
-                      <Calendar className="h-5 w-5 text-gray-400 mr-2" />
+                    <SelectTrigger className="h-11 sm:h-12 md:h-14 text-sm sm:text-base border-2 border-gray-200 focus:border-primary rounded-lg sm:rounded-xl touch-target">
+                      <Calendar className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-gray-400 mr-2 flex-shrink-0" />
                       <SelectValue placeholder="Lease Length" />
                     </SelectTrigger>
                     <SelectContent>
@@ -302,17 +405,37 @@ const Rent = () => {
                     </SelectContent>
                   </Select>
 
-                  <Button variant="outline" className="h-14 border-2 border-gray-200 hover:border-primary rounded-xl">
-                    <Filter className="h-5 w-5 mr-2" />
-                    More Filters
+                  <Button 
+                    variant="outline" 
+                    onClick={() => {
+                      // Handle more filters - could open advanced filters dialog
+                      console.log('More filters clicked');
+                    }}
+                    className="h-11 sm:h-12 md:h-14 text-sm sm:text-base border-2 border-gray-200 hover:border-primary rounded-lg sm:rounded-xl touch-target min-h-[48px]"
+                  >
+                    <Filter className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 mr-2 flex-shrink-0" />
+                    <span className="hidden sm:inline">More Filters</span>
+                    <span className="sm:hidden">Filters</span>
                   </Button>
                 </div>
 
                 {/* Results */}
-                <div className="flex justify-between items-center pt-6 border-t border-gray-100">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pt-6 border-t border-gray-100">
                   <div className="text-slate-600 font-medium">
-                    Showing {rentalProperties.length} rental properties
+                    {isSearchActive 
+                      ? `Showing ${filteredProperties.length} of ${rentalProperties.length} rental properties`
+                      : `Showing ${rentalProperties.length} rental properties`
+                    }
                   </div>
+                  {isSearchActive && (
+                    <Button
+                      onClick={handleClearSearch}
+                      variant="outline"
+                      className="border-2 border-primary text-primary hover:bg-primary hover:text-white min-h-[44px] touch-target text-sm"
+                    >
+                      Clear Filters
+                    </Button>
+                  )}
                   <div className="text-sm text-slate-500 flex items-center gap-2">
                     <Clock className="h-4 w-4" />
                     Updated daily with new listings
@@ -325,40 +448,49 @@ const Rent = () => {
       </section>
 
       {/* Rental Properties Grid */}
-      <section className="py-20 bg-gradient-to-b from-white to-slate-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full text-sm font-medium text-primary mb-6">
-              <Home className="h-4 w-4" />
-              Featured Rentals
+      <section id="properties" className="py-10 sm:py-12 md:py-16 bg-slate-50/80 backdrop-blur-sm">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
+          <div className="text-center mb-10 sm:mb-12 md:mb-16">
+            <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-primary/10 rounded-full text-xs sm:text-sm font-medium text-primary mb-4 sm:mb-5 md:mb-6">
+              <Home className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+              <span>Featured Rentals</span>
             </div>
-            <h2 className="text-4xl font-bold text-slate-800 mb-4">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 md:mb-5 px-2">
               Available Properties
             </h2>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+            <p className="text-xs sm:text-sm md:text-base text-slate-600 max-w-3xl mx-auto leading-relaxed px-3">
               Discover our carefully curated selection of premium rental properties across Pittsburgh
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {rentalProperties.map((property) => (
-              <Card key={property.id} className="group hover:shadow-2xl transition-all duration-500 overflow-hidden bg-white border-0 shadow-lg hover:-translate-y-2">
+          {/* Search Results Info */}
+          {isSearchActive && filteredProperties.length === 0 && (
+            <div className="mb-8 p-6 bg-yellow-50 border-2 border-yellow-200 rounded-xl text-center">
+              <p className="text-lg font-semibold text-yellow-800 mb-2">No properties found</p>
+              <p className="text-sm text-yellow-700 mb-4">Try adjusting your search filters to see more results.</p>
+              <Button
+                onClick={handleClearSearch}
+                variant="outline"
+                className="border-2 border-yellow-400 text-yellow-800 hover:bg-yellow-100 min-h-[44px] touch-target"
+              >
+                Clear All Filters
+              </Button>
+            </div>
+          )}
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
+            {(isSearchActive ? filteredProperties : rentalProperties).map((property) => (
+              <Card key={property.id} className="group hover:shadow-2xl transition-all duration-500 overflow-hidden bg-white/90 backdrop-blur-sm border border-slate-200/50 shadow-md hover:-translate-y-1">
                 <div className="relative overflow-hidden">
                   <div className="w-full h-72 bg-gradient-to-br from-slate-200 via-slate-300 to-slate-400 flex items-center justify-center">
                     <Home className="h-20 w-20 text-slate-500" />
                   </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-                  <div className="absolute top-4 right-4 flex gap-2">
-                    <Button size="sm" variant="secondary" className="rounded-full p-2 bg-white/90 backdrop-blur-sm hover:bg-white">
-                      <Heart className="h-4 w-4" />
-                    </Button>
-                    <Button size="sm" variant="secondary" className="rounded-full p-2 bg-white/90 backdrop-blur-sm hover:bg-white">
-                      <Share2 className="h-4 w-4" />
-                    </Button>
+                  {/* Listing Type Icon Badge */}
+                  <div className="absolute top-4 left-4 z-10 flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg backdrop-blur-sm shadow-lg bg-green-500/95 text-white hover:bg-green-600/95 transition-all duration-300">
+                    <Key className="w-3.5 h-3.5 flex-shrink-0" />
+                    <span className="text-xs font-semibold uppercase tracking-wide">Rent</span>
                   </div>
-                  <Badge className="absolute top-4 left-4 bg-green-500 text-white px-3 py-1 font-medium">
-                    {property.status}
-                  </Badge>
                   <div className="absolute bottom-4 left-4 right-4">
                     <div className="text-3xl font-bold text-white drop-shadow-lg">
                       {property.price}
@@ -425,14 +557,23 @@ const Rent = () => {
                     </div>
                   </div>
 
-                  <div className="flex gap-3">
-                    <Button className="flex-1 bg-primary hover:bg-primary/90">
-                      <Calendar className="h-4 w-4 mr-2" />
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <Button 
+                      onClick={() => {
+                        window.location.href = `tel:+14129777090`;
+                      }}
+                      className="flex-1 bg-primary hover:bg-primary/90 h-12 px-6 py-3 text-sm font-semibold min-h-[48px] touch-target"
+                    >
+                      <Calendar className="h-4 w-4 mr-2 flex-shrink-0" />
                       Schedule Tour
                     </Button>
-                    <Button variant="outline" className="flex-1 border-primary text-primary hover:bg-primary hover:text-white">
-                      <Phone className="h-4 w-4 mr-2" />
-                      Contact
+                    <Button 
+                      variant="outline" 
+                      onClick={() => setSelectedProperty(property)}
+                      className="flex-1 border-2 border-primary text-primary hover:bg-primary hover:text-white h-12 px-6 py-3 text-sm font-semibold min-h-[48px] touch-target"
+                    >
+                      <Eye className="h-4 w-4 mr-2 flex-shrink-0" />
+                      View Details
                     </Button>
                   </div>
                   
@@ -446,7 +587,20 @@ const Rent = () => {
 
           {/* Load More */}
           <div className="text-center mt-16">
-            <Button size="lg" variant="outline" className="px-8 py-4 text-lg font-semibold border-2 border-primary text-primary hover:bg-primary hover:text-white">
+            <Button 
+              size="lg" 
+              variant="outline" 
+              onClick={() => {
+                // Handle load more - could load more properties
+                console.log('Load more rentals');
+                // Scroll to top of properties section
+                const propertiesSection = document.getElementById('properties');
+                if (propertiesSection) {
+                  propertiesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+              }}
+              className="px-8 py-4 text-lg font-semibold border-2 border-primary text-primary hover:bg-primary hover:text-white touch-target"
+            >
               Load More Rentals
             </Button>
           </div>
@@ -455,58 +609,64 @@ const Rent = () => {
 
 
       {/* CTA Section */}
-      <section className="relative py-12 bg-gradient-to-br from-primary via-primary-light to-primary text-white overflow-hidden">
+      <section className="relative py-12 sm:py-16 md:py-20 bg-gradient-to-br from-primary via-primary-light to-primary text-white overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fill-opacity%3D%220.1%22%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%222%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')]"></div>
         </div>
         
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/10 backdrop-blur-sm rounded-full text-xs font-medium mb-4">
-            <Phone className="h-3 w-3" />
-            Ready to Get Started?
+        <div className="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 text-center relative z-10">
+          <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-5 md:mb-6">
+            <Phone className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+            <span>Ready to Get Started?</span>
           </div>
           
-          <h2 className="text-2xl md:text-3xl font-bold mb-3 leading-tight">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 sm:mb-4 md:mb-5 leading-tight px-2">
             Ready to Find Your
             <span className="block bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">
               Next Home?
             </span>
           </h2>
           
-          <p className="text-base text-white/90 mb-6 leading-relaxed max-w-xl mx-auto">
+          <p className="text-xs sm:text-sm md:text-base text-white/90 mb-5 sm:mb-6 md:mb-7 leading-relaxed max-w-2xl mx-auto px-3 sm:px-4">
             Our experienced team is here to help you find the perfect rental property 
             that fits your lifestyle and budget.
           </p>
           
-          <div className="mb-8">
-            <Button size="lg" className="bg-white text-primary hover:bg-white/90 px-6 py-3 text-base font-semibold shadow-xl">
-              <Phone className="h-4 w-4 mr-2" />
+          <div className="mb-8 flex justify-center">
+            <Button 
+              size="lg" 
+              onClick={() => {
+                window.location.href = `tel:+14129777090`;
+              }}
+              className="bg-white text-primary hover:bg-white/90 h-14 px-10 py-3.5 text-base font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 min-h-[56px] touch-target"
+            >
+              <Phone className="h-5 w-5 mr-2" />
               Call +1-412-977-7090
             </Button>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-3xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 max-w-3xl mx-auto">
             <div className="text-center">
-              <div className="w-10 h-10 mx-auto mb-2 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center">
-                <Clock className="h-5 w-5 text-yellow-300" />
+              <div className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-2 sm:mb-3 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center">
+                <Clock className="h-5 w-5 sm:h-6 sm:w-6 text-yellow-300" />
               </div>
-              <h3 className="text-sm font-semibold mb-1">24/7 Support</h3>
-              <p className="text-white/80 text-xs">Round-the-clock assistance for all your rental needs</p>
+              <h3 className="text-xs sm:text-sm font-semibold mb-1 sm:mb-2">24/7 Support</h3>
+              <p className="text-white/80 text-[10px] sm:text-xs">Round-the-clock assistance for all your rental needs</p>
             </div>
             <div className="text-center">
-              <div className="w-10 h-10 mx-auto mb-2 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center">
-                <Shield className="h-5 w-5 text-green-300" />
+              <div className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-2 sm:mb-3 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center">
+                <Shield className="h-5 w-5 sm:h-6 sm:w-6 text-green-300" />
               </div>
-              <h3 className="text-sm font-semibold mb-1">Verified Properties</h3>
-              <p className="text-white/80 text-xs">All listings are verified and meet our quality standards</p>
+              <h3 className="text-xs sm:text-sm font-semibold mb-1 sm:mb-2">Verified Properties</h3>
+              <p className="text-white/80 text-[10px] sm:text-xs">All listings are verified and meet our quality standards</p>
             </div>
             <div className="text-center">
-              <div className="w-10 h-10 mx-auto mb-2 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center">
-                <Users className="h-5 w-5 text-blue-300" />
+              <div className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-2 sm:mb-3 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center">
+                <Users className="h-5 w-5 sm:h-6 sm:w-6 text-blue-300" />
               </div>
-              <h3 className="text-sm font-semibold mb-1">Expert Guidance</h3>
-              <p className="text-white/80 text-xs">Professional agents to guide you through the process</p>
+              <h3 className="text-xs sm:text-sm font-semibold mb-1 sm:mb-2">Expert Guidance</h3>
+              <p className="text-white/80 text-[10px] sm:text-xs">Professional agents to guide you through the process</p>
             </div>
           </div>
         </div>
@@ -516,6 +676,13 @@ const Rent = () => {
         <div className="absolute bottom-6 right-6 w-16 h-16 bg-yellow-300/10 rounded-full blur-2xl"></div>
         <div className="absolute top-1/2 left-1/3 w-8 h-8 bg-blue-300/10 rounded-full blur-xl"></div>
       </section>
+
+      {/* Property Details Modal */}
+      <PropertyDetailsModal
+        property={selectedProperty}
+        open={!!selectedProperty}
+        onClose={() => setSelectedProperty(null)}
+      />
     </div>
   );
 };

@@ -83,7 +83,7 @@ const Sell = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-slate-50 to-slate-100">
       {/* Hero Section */}
       <section className="hero-section relative text-white overflow-hidden bg-gradient-to-br from-primary via-primary-light to-primary">
         {/* Background Pattern */}
@@ -98,14 +98,14 @@ const Sell = () => {
               Maximize Your Property Value
             </div>
             
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-5 md:mb-6 leading-tight">
               Sell Your Property
               <span className="block bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">
                 With Confidence
               </span>
             </h1>
             
-            <p className="text-lg md:text-xl text-white/90 mb-8 leading-relaxed max-w-2xl mx-auto">
+            <p className="text-sm sm:text-base md:text-lg text-white/90 mb-6 sm:mb-7 md:mb-8 leading-relaxed max-w-2xl mx-auto">
               Get maximum value for your property with our proven selling strategy, 
               expert market analysis, and professional marketing.
             </p>
@@ -148,12 +148,12 @@ const Sell = () => {
 
 
           {/* Form Content */}
-          <Card className="max-w-4xl mx-auto shadow-2xl border-0 bg-white/75 backdrop-blur-sm">
-            <CardHeader className="text-center pb-6 lg:pb-8 bg-gradient-to-r from-slate-50 via-blue-50 to-indigo-30 rounded-t-lg border-b border-slate-200">
-              <CardTitle className="text-3xl font-bold text-slate-800">
+          <Card className="max-w-4xl mx-auto shadow-xl border border-slate-200/50 bg-white/90 backdrop-blur-sm">
+            <CardHeader className="text-center pb-6 lg:pb-8 bg-gradient-to-r from-slate-50/80 via-slate-50/60 to-slate-50/80 rounded-t-lg border-b border-slate-200">
+              <CardTitle className="text-xl sm:text-2xl font-bold text-slate-800">
                 Personal Information
               </CardTitle>
-              <p className="text-slate-600 text-md">
+              <p className="text-slate-600 text-sm">
                 Tell us about yourself
               </p>
             </CardHeader>
@@ -163,8 +163,8 @@ const Sell = () => {
                     <div className="w-20 h-20 bg-gradient-to-br from-primary/10 to-primary-light/20 rounded-full flex items-center justify-center mx-auto mb-4">
                       <User className="h-10 w-10 text-primary" />
                     </div>
-                    <h3 className="text-2xl font-bold text-slate-800 mb-2">Let's Get to Know You</h3>
-                    <p className="text-slate-600">We'll use this information to provide personalized service</p>
+                    <h3 className="text-lg sm:text-xl font-bold text-slate-800 mb-2">Let's Get to Know You</h3>
+                    <p className="text-slate-600 text-sm">We'll use this information to provide personalized service</p>
                   </div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -175,7 +175,7 @@ const Sell = () => {
                       <Input 
                         id="firstName"
                         placeholder="John" 
-                        className={`h-12 border-2 focus:border-primary transition-all duration-300 ${errors.firstName ? 'border-red-500 focus:border-red-500' : 'border-slate-200'}`}
+                        className={`h-11 px-4 py-3 text-sm border-2 focus:border-primary rounded-lg transition-all duration-300 ${errors.firstName ? 'border-red-500 focus:border-red-500' : 'border-slate-200'}`}
                         value={formData.firstName}
                         onChange={(e) => handleInputChange('firstName', e.target.value)}
                       />
@@ -188,7 +188,7 @@ const Sell = () => {
                       <Input 
                         id="lastName"
                         placeholder="Doe" 
-                        className={`h-12 border-2 focus:border-primary transition-all duration-300 ${errors.lastName ? 'border-red-500 focus:border-red-500' : 'border-slate-200'}`}
+                        className={`h-11 px-4 py-3 text-sm border-2 focus:border-primary rounded-lg transition-all duration-300 ${errors.lastName ? 'border-red-500 focus:border-red-500' : 'border-slate-200'}`}
                         value={formData.lastName}
                         onChange={(e) => handleInputChange('lastName', e.target.value)}
                       />
@@ -205,7 +205,7 @@ const Sell = () => {
                         id="email"
                         type="email"
                         placeholder="john@example.com" 
-                        className={`h-12 border-2 focus:border-primary transition-all duration-300 ${errors.email ? 'border-red-500 focus:border-red-500' : 'border-slate-200'}`}
+                        className={`h-11 px-4 py-3 text-sm border-2 focus:border-primary rounded-lg transition-all duration-300 ${errors.email ? 'border-red-500 focus:border-red-500' : 'border-slate-200'}`}
                         value={formData.email}
                         onChange={(e) => handleInputChange('email', e.target.value)}
                       />
@@ -218,7 +218,7 @@ const Sell = () => {
                       <Input 
                         id="phone"
                         placeholder="+1-412-977-7090" 
-                        className={`h-12 border-2 focus:border-primary transition-all duration-300 ${errors.phone ? 'border-red-500 focus:border-red-500' : 'border-slate-200'}`}
+                        className={`h-11 px-4 py-3 text-sm border-2 focus:border-primary rounded-lg transition-all duration-300 ${errors.phone ? 'border-red-500 focus:border-red-500' : 'border-slate-200'}`}
                         value={formData.phone}
                         onChange={(e) => handleInputChange('phone', e.target.value)}
                       />
@@ -235,7 +235,7 @@ const Sell = () => {
                       <Textarea 
                         id="description"
                         placeholder="Tell us about your property and selling requirements..." 
-                        className={`min-h-[120px] border-2 focus:border-primary transition-all duration-300 ${errors.description ? 'border-red-500 focus:border-red-500' : 'border-slate-200'}`}
+                        className={`min-h-[120px] px-4 py-3 text-sm border-2 focus:border-primary rounded-lg transition-all duration-300 ${errors.description ? 'border-red-500 focus:border-red-500' : 'border-slate-200'}`}
                         value={formData.description}
                         onChange={(e) => handleInputChange('description', e.target.value)}
                       />
@@ -279,7 +279,7 @@ const Sell = () => {
               <div className="flex justify-center pt-8 border-t border-slate-200">
                 <Button 
                   onClick={handleSubmit}
-                  className="px-12 py-4 h-14 bg-gradient-to-r from-primary to-primary-light hover:from-primary/90 hover:to-primary-light/90 transition-all duration-300 shadow-lg hover:shadow-xl text-lg font-semibold"
+                  className="px-10 py-3.5 h-14 bg-gradient-to-r from-primary to-primary-light hover:from-primary/90 hover:to-primary-light/90 transition-all duration-300 shadow-lg hover:shadow-xl text-base font-semibold min-h-[56px] touch-target"
                 >
                   Submit Application
                   <ArrowRight className="h-5 w-5 ml-2" />
@@ -295,7 +295,7 @@ const Sell = () => {
 
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-primary to-primary-light text-white relative overflow-hidden">
+      <section className="py-16 sm:py-20 bg-gradient-to-r from-primary to-primary-light text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-black/10"></div>
         <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary-light/90"></div>
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -305,12 +305,17 @@ const Sell = () => {
           <p className="text-xl text-white/90 mb-8 drop-shadow-md">
             Start your selling journey today with Pitt Metro Realty
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-white text-primary hover:bg-white/90 shadow-lg hover:shadow-xl transition-all duration-300">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Button 
+              size="lg" 
+              onClick={() => {
+                window.location.href = `tel:+14129777090`;
+              }}
+              className="bg-white text-primary hover:bg-white/90 h-12 px-8 py-3 text-sm sm:text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-300 min-h-[48px] touch-target"
+            >
               <Phone className="h-5 w-5 mr-2" />
               Call +1-412-977-7090
             </Button>
-            
           </div>
         </div>
       </section>

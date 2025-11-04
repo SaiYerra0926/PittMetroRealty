@@ -113,15 +113,15 @@ const Manage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-slate-50 to-slate-100">
       {/* Hero Section */}
       <section className="pt-32 pb-20 bg-gradient-to-r from-primary via-primary-light to-primary text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-4xl mx-auto">
-            <h1 className="text-5xl md:text-6xl font-bold mb-6">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-5 md:mb-6">
               Professional Property Management
             </h1>
-            <p className="text-xl md:text-2xl text-white/90 mb-8 leading-relaxed">
+            <p className="text-sm sm:text-base md:text-lg text-white/90 mb-6 sm:mb-7 md:mb-8 leading-relaxed">
               Maximize your rental income with our comprehensive property management services. 
               We handle everything so you don't have to.
             </p>
@@ -144,13 +144,13 @@ const Manage = () => {
       </section>
 
       {/* Steps Section */}
-      <section className="py-20">
+      <section className="py-10 sm:py-12 md:py-16 bg-slate-50/80 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-slate-800 mb-4">
+          <div className="text-center mb-12 sm:mb-14 md:mb-16">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4">
               Get Started in 4 Simple Steps
             </h2>
-            <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+            <p className="text-xs sm:text-sm md:text-base text-slate-600 max-w-3xl mx-auto">
               Our streamlined process makes it easy to start managing your property professionally
             </p>
           </div>
@@ -164,7 +164,7 @@ const Manage = () => {
                   }`}>
                     {step.id}
                   </div>
-                  <h3 className="text-xl font-semibold mb-3">{step.title}</h3>
+                  <h3 className="text-base sm:text-lg font-semibold mb-3">{step.title}</h3>
                   <p className="text-slate-600">{step.description}</p>
                 </CardContent>
               </Card>
@@ -172,12 +172,12 @@ const Manage = () => {
           </div>
 
           {/* Step Content */}
-          <Card className="max-w-4xl mx-auto shadow-xl">
-            <CardHeader className="text-center pb-8">
-              <CardTitle className="text-3xl font-bold text-slate-800">
+          <Card className="max-w-4xl mx-auto shadow-xl border border-slate-200/50 bg-white/90 backdrop-blur-sm">
+            <CardHeader className="text-center pb-6 sm:pb-8">
+              <CardTitle className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800">
                 {steps[currentStep - 1].title}
               </CardTitle>
-              <p className="text-slate-600 text-lg">
+              <p className="text-slate-600 text-sm sm:text-base">
                 {steps[currentStep - 1].description}
               </p>
             </CardHeader>
@@ -196,7 +196,7 @@ const Manage = () => {
                         Property Type *
                       </label>
                       <Select>
-                        <SelectTrigger className="h-12">
+                        <SelectTrigger className="h-11 px-4 py-3 text-sm border-2 border-gray-200 focus:border-primary rounded-lg transition-all duration-300 min-h-[44px]">
                           <SelectValue placeholder="Select property type" />
                         </SelectTrigger>
                         <SelectContent>
@@ -214,29 +214,29 @@ const Manage = () => {
                       <label className="block text-sm font-medium text-slate-700 mb-2">
                         Number of Units
                       </label>
-                      <Input placeholder="1" className="h-12" />
+                      <Input placeholder="1" className="h-11 px-4 py-3 text-sm border-2 border-gray-200 focus:border-primary rounded-lg transition-all duration-300" />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-2">
                         Current Rent
                       </label>
-                      <Input placeholder="$2,500" className="h-12" />
+                      <Input placeholder="$2,500" className="h-11 px-4 py-3 text-sm border-2 border-gray-200 focus:border-primary rounded-lg transition-all duration-300" />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-2">
                         Property Value
                       </label>
-                      <Input placeholder="$400,000" className="h-12" />
+                      <Input placeholder="$400,000" className="h-11 px-4 py-3 text-sm border-2 border-gray-200 focus:border-primary rounded-lg transition-all duration-300" />
                     </div>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-2">
                       Property Description
                     </label>
-                    <Textarea 
-                      placeholder="Tell us about your property's features, amenities, and any special requirements..."
-                      className="min-h-[120px]"
-                    />
+                      <Textarea 
+                        placeholder="Tell us about your property's features, amenities, and any special requirements..."
+                        className="min-h-[120px] px-4 py-3 text-sm border-2 border-gray-200 focus:border-primary rounded-lg transition-all duration-300"
+                      />
                   </div>
                 </div>
               )}
@@ -268,7 +268,14 @@ const Manage = () => {
                                 </li>
                               ))}
                             </ul>
-                            <Button className={`w-full ${plan.popular ? 'bg-primary hover:bg-primary/90' : 'bg-slate-600 hover:bg-slate-700'}`}>
+                            <Button 
+                              onClick={() => {
+                                // Handle plan selection - move to next step
+                                console.log('Selected plan:', plan.name);
+                                setCurrentStep(3);
+                              }}
+                              className={`w-full min-h-[48px] touch-target ${plan.popular ? 'bg-primary hover:bg-primary/90' : 'bg-slate-600 hover:bg-slate-700'}`}
+                            >
                               Choose {plan.name}
                             </Button>
                           </div>
@@ -302,7 +309,7 @@ const Manage = () => {
                         Pet Policy
                       </label>
                       <Select>
-                        <SelectTrigger className="h-12">
+                        <SelectTrigger className="h-11 px-4 py-3 text-sm border-2 border-gray-200 focus:border-primary rounded-lg transition-all duration-300 min-h-[44px]">
                           <SelectValue placeholder="Select pet policy" />
                         </SelectTrigger>
                         <SelectContent>
@@ -318,7 +325,7 @@ const Manage = () => {
                         Smoking Policy
                       </label>
                       <Select>
-                        <SelectTrigger className="h-12">
+                        <SelectTrigger className="h-11 px-4 py-3 text-sm border-2 border-gray-200 focus:border-primary rounded-lg transition-all duration-300 min-h-[44px]">
                           <SelectValue placeholder="Select smoking policy" />
                         </SelectTrigger>
                         <SelectContent>
@@ -333,10 +340,10 @@ const Manage = () => {
                     <label className="block text-sm font-medium text-slate-700 mb-2">
                       Additional Requirements
                     </label>
-                    <Textarea 
-                      placeholder="Any specific tenant requirements or preferences..."
-                      className="min-h-[100px]"
-                    />
+                      <Textarea 
+                        placeholder="Any specific tenant requirements or preferences..."
+                        className="min-h-[100px] px-4 py-3 text-sm border-2 border-gray-200 focus:border-primary rounded-lg transition-all duration-300"
+                      />
                   </div>
                 </div>
               )}
@@ -351,25 +358,25 @@ const Manage = () => {
                       <label className="block text-sm font-medium text-slate-700 mb-2">
                         Owner Name *
                       </label>
-                      <Input placeholder="John Doe" className="h-12" />
+                      <Input placeholder="John Doe" className="h-11 px-4 py-3 text-sm border-2 border-gray-200 focus:border-primary rounded-lg transition-all duration-300" />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-2">
                         Phone Number *
                       </label>
-                      <Input placeholder="+1-412-977-7090" className="h-12" />
+                      <Input placeholder="+1-412-977-7090" className="h-11 px-4 py-3 text-sm border-2 border-gray-200 focus:border-primary rounded-lg transition-all duration-300" />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-2">
                         Email Address *
                       </label>
-                      <Input placeholder="john@example.com" className="h-12" />
+                      <Input placeholder="john@example.com" className="h-11 px-4 py-3 text-sm border-2 border-gray-200 focus:border-primary rounded-lg transition-all duration-300" />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-2">
                         Preferred Start Date
                       </label>
-                      <Input type="date" className="h-12" />
+                      <Input type="date" className="h-11 px-4 py-3 text-sm border-2 border-gray-200 focus:border-primary rounded-lg transition-all duration-300" />
                     </div>
                   </div>
                   <div>
@@ -393,8 +400,18 @@ const Manage = () => {
                   Previous
                 </Button>
                 <Button 
-                  onClick={() => setCurrentStep(Math.min(4, currentStep + 1))}
-                  disabled={currentStep === 4}
+                  onClick={() => {
+                    if (currentStep === 4) {
+                      // Handle form submission
+                      alert('Thank you! Your property management application has been submitted. We will contact you within 24 hours.');
+                      // Optionally reset form or navigate
+                      setCurrentStep(1);
+                    } else {
+                      setCurrentStep(Math.min(4, currentStep + 1));
+                    }
+                  }}
+                  disabled={false}
+                  className="min-h-[48px] touch-target"
                 >
                   {currentStep === 4 ? 'Submit Application' : 'Next'}
                   <ArrowRight className="h-4 w-4 ml-2" />
@@ -476,20 +493,33 @@ const Manage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-primary to-primary-light text-white">
+      <section className="py-16 sm:py-20 bg-gradient-to-r from-primary to-primary-light text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl font-bold mb-6">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-5 md:mb-6">
             Ready to Maximize Your Rental Income?
           </h2>
-          <p className="text-xl text-white/90 mb-8">
+          <p className="text-sm sm:text-base md:text-lg text-white/90 mb-6 sm:mb-7 md:mb-8">
             Let us handle the complexities of property management while you enjoy the benefits
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-white text-primary hover:bg-white/90">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Button 
+              size="lg" 
+              onClick={() => {
+                window.location.href = `tel:+14129777090`;
+              }}
+              className="bg-white text-primary hover:bg-white/90 h-12 px-8 py-3 text-sm sm:text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-300 min-h-[48px] touch-target"
+            >
               <Phone className="h-5 w-5 mr-2" />
               Call +1-412-977-7090
             </Button>
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-primary">
+            <Button 
+              size="lg" 
+              variant="outline" 
+              onClick={() => {
+                window.location.href = `mailto:info@pittmetrorealty.com`;
+              }}
+              className="border-2 border-white text-white hover:bg-white hover:text-primary h-14 px-10 py-3.5 text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-300 min-h-[56px] touch-target"
+            >
               <Mail className="h-5 w-5 mr-2" />
               Get Free Consultation
             </Button>

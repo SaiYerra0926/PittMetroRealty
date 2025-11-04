@@ -112,8 +112,8 @@ const PropertyMap = () => {
           .bindPopup(`
             <div class="p-2 text-center">
               <h3 class="font-bold text-primary text-sm">${property.name}</h3>
-              <p class="text-lg font-bold text-primary">$${property.price.toLocaleString()}</p>
-              <p class="text-xs text-gray-600">${property.beds}B ${property.baths}BA • ${property.sqft.toLocaleString()} sq ft</p>
+              <p class="text-lg font-bold text-primary">$${(property.price || 0).toLocaleString()}</p>
+              <p class="text-xs text-gray-600">${property.beds}B ${property.baths}BA • ${(property.sqft || 0).toLocaleString()} sq ft</p>
             </div>
           `);
 
@@ -233,7 +233,7 @@ const PropertyMap = () => {
                           <p className="text-xs text-muted-foreground">{property.address}</p>
                         </div>
                         <div className="text-right">
-                          <div className="text-sm font-bold text-primary">${property.price.toLocaleString()}</div>
+                          <div className="text-sm font-bold text-primary">${(property.price || 0).toLocaleString()}</div>
                           <div className="text-xs text-muted-foreground">{property.beds}B {property.baths}BA</div>
                         </div>
                       </div>
@@ -279,7 +279,7 @@ const PropertyMap = () => {
                       </div>
                       
                       <div className="text-2xl font-bold text-primary mb-4">
-                        ${properties[selectedProperty].price.toLocaleString()}
+                        ${((properties[selectedProperty]?.price) || 0).toLocaleString()}
                       </div>
                       
                       <div className="grid grid-cols-3 gap-4 mb-4">
@@ -295,7 +295,7 @@ const PropertyMap = () => {
                         </div>
                         <div className="text-center">
                           <DollarSign className="h-5 w-5 text-muted-foreground mx-auto mb-1" />
-                          <div className="text-sm font-semibold">{properties[selectedProperty].sqft.toLocaleString()}</div>
+                          <div className="text-sm font-semibold">{((properties[selectedProperty]?.sqft) || 0).toLocaleString()}</div>
                           <div className="text-xs text-muted-foreground">Sq Ft</div>
                         </div>
                       </div>
@@ -343,13 +343,13 @@ const PropertyMap = () => {
                   <div className="flex justify-between">
                     <span className="text-sm text-muted-foreground">Average Price</span>
                     <span className="text-sm font-semibold">
-                      ${Math.round(properties.reduce((sum, p) => sum + p.price, 0) / properties.length).toLocaleString()}
+                      ${properties.length > 0 ? Math.round(properties.reduce((sum, p) => sum + (p.price || 0), 0) / properties.length).toLocaleString() : '0'}
                     </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-sm text-muted-foreground">Price Range</span>
                     <span className="text-sm font-semibold">
-                      ${Math.min(...properties.map(p => p.price)).toLocaleString()} - ${Math.max(...properties.map(p => p.price)).toLocaleString()}
+                      {properties.length > 0 ? `$${Math.min(...properties.map(p => p.price || 0)).toLocaleString()} - $${Math.max(...properties.map(p => p.price || 0)).toLocaleString()}` : '$0 - $0'}
                     </span>
                   </div>
                 </div>
