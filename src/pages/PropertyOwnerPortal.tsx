@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Home, Upload, Eye, Save, ArrowLeft, CheckCircle, Lock, User, Shield, Camera, DollarSign, MapPin, Bed, Bath } from 'lucide-react';
+import { Home, Upload, Eye, Save, ArrowLeft, CheckCircle, Lock, User, Shield, Camera, DollarSign, MapPin, Bed, Bath, Edit, Trash2, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -21,6 +21,8 @@ const PropertyOwnerPortal = () => {
   const [loginData, setLoginData] = useState({ username: '', password: '' });
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingListings, setIsLoadingListings] = useState(false);
+  const [editingListing, setEditingListing] = useState<any | null>(null);
+  const [isUpdating, setIsUpdating] = useState(false);
   const { toast } = useToast();
   const propertiesApi = new PropertiesAPI();
   const [formData, setFormData] = useState({
@@ -271,6 +273,181 @@ const PropertyOwnerPortal = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleEditListing = (listing: any) => {
+    setEditingListing(listing);
+    // Populate form with existing listing data
+    setFormData({
+      title: listing.title || '',
+      description: listing.description || '',
+      address: listing.address || '',
+      city: listing.city || '',
+      state: listing.state || '',
+      zipCode: listing.zipCode || '',
+      propertyType: listing.propertyType || '',
+      bedrooms: listing.bedrooms || 0,
+      bathrooms: listing.bathrooms || 0,
+      squareFeet: listing.squareFeet || 0,
+      yearBuilt: listing.yearBuilt || new Date().getFullYear(),
+      lotSize: listing.lotSize || 0,
+      price: listing.price || 0,
+      listingType: listing.listingType || 'rent',
+      features: listing.features || [],
+      amenities: listing.amenities || [],
+      status: listing.status || 'Draft',
+      availableDate: listing.availableDate || '',
+      photos: listing.photos || [],
+      ownerName: listing.ownerName || '',
+      ownerEmail: listing.ownerEmail || '',
+      ownerPhone: listing.ownerPhone || '',
+      ownerPreferredContact: listing.ownerPreferredContact || 'email'
+    });
+    setActiveTab('list');
+  };
+
+  const handleCancelEdit = () => {
+    setEditingListing(null);
+    // Reset form
+    setFormData({
+      title: '',
+      description: '',
+      address: '',
+      city: '',
+      state: '',
+      zipCode: '',
+      propertyType: '',
+      bedrooms: 0,
+      bathrooms: 0,
+      squareFeet: 0,
+      yearBuilt: new Date().getFullYear(),
+      lotSize: 0,
+      price: 0,
+      listingType: 'rent',
+      features: [],
+      amenities: [],
+      status: 'Draft',
+      availableDate: '',
+      photos: [],
+      ownerName: '',
+      ownerEmail: '',
+      ownerPhone: '',
+      ownerPreferredContact: 'email'
+    });
+  };
+
+  const handleUpdateListing = async () => {
+    if (!editingListing || !editingListing.id) {
+      toast({
+        title: "Error",
+        description: "No listing selected for update.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!validateForm()) {
+      toast({
+        title: "Validation Error",
+        description: "Please fill in all required fields correctly.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsUpdating(true);
+    try {
+      // Prepare updated listing data
+      const updatedData: any = {
+        title: formData.title,
+        description: formData.description,
+        address: formData.address,
+        city: formData.city,
+        state: formData.state,
+        zipCode: formData.zipCode,
+        propertyType: formData.propertyType,
+        bedrooms: formData.bedrooms,
+        bathrooms: formData.bathrooms,
+        squareFeet: formData.squareFeet,
+        yearBuilt: formData.yearBuilt,
+        lotSize: formData.lotSize || 0,
+        price: formData.price,
+        listingType: formData.listingType as 'rent' | 'sell' | 'buy',
+        features: formData.features,
+        amenities: formData.amenities,
+        availableDate: formData.availableDate || undefined,
+        ownerName: formData.ownerName,
+        ownerEmail: formData.ownerEmail,
+        ownerPhone: formData.ownerPhone,
+        ownerPreferredContact: formData.ownerPreferredContact || 'email'
+      };
+
+      // Process photos - keep existing photos and add new ones
+      const existingPhotos = formData.photos.filter((p: any) => p.url && !p.file);
+      const newPhotos = formData.photos.filter((p: any) => p.file);
+      
+      // Convert new File objects to base64 format
+      const processedNewPhotos = await Promise.all(
+        newPhotos.map(async (photo: any) => {
+          if (photo.file) {
+            const base64 = await propertiesApi['fileToBase64'](photo.file);
+            return {
+              name: photo.name,
+              url: base64,
+              size: photo.size,
+              isBase64: true,
+            };
+          }
+          return photo;
+        })
+      );
+
+      updatedData.photos = [...existingPhotos, ...processedNewPhotos];
+
+      // Update via API
+      await propertiesApi.updateProperty(editingListing.id, updatedData);
+      
+      // Refresh listings
+      await fetchListings();
+      
+      toast({
+        title: "Success!",
+        description: "Property listing updated successfully!",
+      });
+      
+      // Reset editing state
+      handleCancelEdit();
+      
+    } catch (error) {
+      console.error('Error updating listing:', error);
+      toast({
+        title: "Update Failed",
+        description: error instanceof Error ? error.message : "There was an error updating your listing. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
+  const handleDeletePhoto = (photoIndex: number) => {
+    setFormData(prev => ({
+      ...prev,
+      photos: prev.photos.filter((_: any, index: number) => index !== photoIndex)
+    }));
+  };
+
+  const handleAddPhotos = (newPhotos: File[]) => {
+    setFormData(prev => ({
+      ...prev,
+      photos: [...prev.photos, ...newPhotos.map((file, index) => ({
+        id: prev.photos.length + index,
+        name: file.name,
+        url: '',
+        size: file.size,
+        file: file
+      }))]
+    }));
   };
 
   const propertyTypes = [
@@ -548,16 +725,18 @@ const PropertyOwnerPortal = () => {
 
           {/* List Property Tab */}
           <TabsContent value="list" className="space-y-6">
-            <Card className="shadow-xl">
-              <CardHeader className="text-center pb-8">
-                <CardTitle className="text-3xl font-bold text-slate-800 flex items-center justify-center space-x-3">
-                  <Home className="h-8 w-8 text-primary" />
-                  <span>List Your Property</span>
-                </CardTitle>
-                <p className="text-slate-600 text-lg">
-                  Create a professional listing with photos to attract potential {formData.listingType === 'rent' ? 'tenants' : 'buyers'}
-                </p>
-              </CardHeader>
+              <Card className="shadow-xl">
+                <CardHeader className="text-center pb-8">
+                  <CardTitle className="text-3xl font-bold text-slate-800 flex items-center justify-center space-x-3">
+                    <Home className="h-8 w-8 text-primary" />
+                    <span>{editingListing ? 'Edit Property Listing' : 'List Your Property'}</span>
+                  </CardTitle>
+                  <p className="text-slate-600 text-lg">
+                    {editingListing 
+                      ? 'Update your property details and photos below'
+                      : `Create a professional listing with photos to attract potential ${formData.listingType === 'rent' ? 'tenants' : 'buyers'}`}
+                  </p>
+                </CardHeader>
 
               <CardContent className="p-8">
                 <div className="space-y-8">
@@ -762,9 +941,53 @@ const PropertyOwnerPortal = () => {
                   {/* Photo Upload */}
                   <div className="space-y-6">
                     <h3 className="text-xl font-semibold text-slate-800">Property Photos</h3>
+                    
+                    {/* Display existing photos with delete option */}
+                    {formData.photos.length > 0 && (
+                      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-4">
+                        {formData.photos.map((photo: any, index: number) => (
+                          <div key={index} className="relative group">
+                            <div className="aspect-square rounded-lg overflow-hidden border-2 border-slate-200 bg-slate-100">
+                              {photo.url ? (
+                                <img
+                                  src={photo.url}
+                                  alt={photo.name || `Photo ${index + 1}`}
+                                  className="w-full h-full object-cover"
+                                />
+                              ) : photo.file ? (
+                                <img
+                                  src={URL.createObjectURL(photo.file)}
+                                  alt={photo.name || `Photo ${index + 1}`}
+                                  className="w-full h-full object-cover"
+                                />
+                              ) : (
+                                <div className="w-full h-full flex items-center justify-center">
+                                  <Camera className="h-8 w-8 text-slate-400" />
+                                </div>
+                              )}
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => handleDeletePhoto(index)}
+                              className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity shadow-lg hover:bg-red-600"
+                              title="Delete photo"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </button>
+                            {photo.name && (
+                              <p className="text-xs text-slate-600 mt-1 truncate" title={photo.name}>
+                                {photo.name}
+                              </p>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    
+                    {/* Photo Upload Component */}
                     <PhotoUpload
-                      photos={formData.photos}
-                      onPhotosChange={(photos) => handleInputChange('photos', photos)}
+                      photos={formData.photos.filter((p: any) => p.file)}
+                      onPhotosChange={(photos) => handleAddPhotos(photos)}
                       maxPhotos={20}
                       maxSizePerPhoto={10}
                     />
@@ -829,23 +1052,35 @@ const PropertyOwnerPortal = () => {
                     </div>
                   </div>
 
-                  {/* Submit Button */}
-                  <div className="flex justify-center pt-6 border-t">
+                  {/* Submit/Update Button */}
+                  <div className="flex justify-center gap-4 pt-6 border-t">
+                    {editingListing && (
+                      <Button
+                        variant="outline"
+                        size="lg"
+                        onClick={handleCancelEdit}
+                        className="min-w-[150px]"
+                        disabled={isUpdating}
+                      >
+                        <X className="h-4 w-4 mr-2" />
+                        Cancel
+                      </Button>
+                    )}
                     <Button
                       size="lg"
-                      onClick={handleSubmit}
+                      onClick={editingListing ? handleUpdateListing : handleSubmit}
                       className="min-w-[200px]"
-                      disabled={isLoading}
+                      disabled={isLoading || isUpdating}
                     >
-                      {isLoading ? (
+                      {(isLoading || isUpdating) ? (
                         <>
                           <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                          Submitting...
+                          {editingListing ? 'Updating...' : 'Submitting...'}
                         </>
                       ) : (
                         <>
                           <Save className="h-4 w-4 mr-2" />
-                          Submit Listing
+                          {editingListing ? 'Update Listing' : 'Submit Listing'}
                         </>
                       )}
                     </Button>
@@ -953,10 +1188,19 @@ const PropertyOwnerPortal = () => {
                         </div>
                         
                         <div className="mt-4 pt-4 border-t">
-                          <div className="flex justify-between text-xs text-slate-500">
+                          <div className="flex justify-between text-xs text-slate-500 mb-3">
                             <span>Submitted:</span>
-                            <span>{new Date(listing.submittedAt).toLocaleDateString()}</span>
+                            <span>{listing.submittedAt ? new Date(listing.submittedAt).toLocaleDateString() : 'N/A'}</span>
                           </div>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="w-full"
+                            onClick={() => handleEditListing(listing)}
+                          >
+                            <Edit className="h-4 w-4 mr-2" />
+                            Edit Listing
+                          </Button>
                         </div>
                       </div>
                     </CardContent>

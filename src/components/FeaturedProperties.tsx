@@ -168,32 +168,32 @@ const FeaturedProperties = () => {
   };
 
   return (
-    <section id="properties" className="py-12 sm:py-16 md:py-20 bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
+    <section id="properties" className="py-8 sm:py-10 md:py-12 bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
       <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-10 sm:mb-12 md:mb-16 animate-fade-in-up">
-          <h2 className="text-responsive-xl font-bold text-primary mb-4 sm:mb-5 md:mb-6 px-2">
+        <div className="text-center mb-6 sm:mb-8 md:mb-10 animate-fade-in-up">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-primary mb-2 sm:mb-3 md:mb-4 px-2">
             Featured Properties
           </h2>
-          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-6 sm:mb-7 md:mb-8 px-3">
+          <p className="text-xs sm:text-sm md:text-base text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-4 sm:mb-5 px-3">
             Discover exceptional properties in Pittsburgh's most desirable neighborhoods. 
             Each home is carefully selected for its quality, location, and value.
           </p>
           
           {/* Stats */}
-          <div className="flex flex-wrap justify-center gap-4 sm:gap-6 md:gap-8 mb-6 sm:mb-7 md:mb-8 px-2">
-            <div className="flex items-center gap-2 sm:gap-3 text-gray-600 bg-white/80 backdrop-blur-sm rounded-lg sm:rounded-xl px-4 sm:px-5 md:px-6 py-2.5 sm:py-3 border border-gray-200 hover:border-primary/30 transition-all duration-300 hover:scale-105 group touch-target">
-              <div className="w-7 h-7 sm:w-8 sm:h-8 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-all duration-300 flex-shrink-0">
-                <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary" />
+          <div className="flex flex-wrap justify-center gap-3 sm:gap-4 md:gap-5 mb-4 sm:mb-5 md:mb-6 px-2">
+            <div className="flex items-center gap-2 sm:gap-2.5 text-gray-600 bg-white/80 backdrop-blur-sm rounded-lg sm:rounded-xl px-3 sm:px-4 md:px-5 py-2 sm:py-2.5 border border-gray-200 hover:border-primary/30 transition-all duration-300 hover:scale-105 group touch-target">
+              <div className="w-6 h-6 sm:w-7 sm:h-7 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-all duration-300 flex-shrink-0">
+                <Calendar className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-primary" />
               </div>
               <div className="text-left">
                 <div className="text-xs sm:text-sm font-semibold text-gray-800">Updated Daily</div>
-                <div className="text-[10px] sm:text-xs text-gray-500">Fresh listings</div>
+                <div className="text-[9px] sm:text-[10px] text-gray-500">Fresh listings</div>
               </div>
             </div>
-            <div className="flex items-center gap-2 sm:gap-3 text-gray-600 bg-white/80 backdrop-blur-sm rounded-lg sm:rounded-xl px-4 sm:px-5 md:px-6 py-2.5 sm:py-3 border border-gray-200 hover:border-primary/30 transition-all duration-300 hover:scale-105 group touch-target">
-              <div className="w-7 h-7 sm:w-8 sm:h-8 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-200 transition-all duration-300 flex-shrink-0">
-                <Users className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-600" />
+            <div className="flex items-center gap-2 sm:gap-2.5 text-gray-600 bg-white/80 backdrop-blur-sm rounded-lg sm:rounded-xl px-3 sm:px-4 md:px-5 py-2 sm:py-2.5 border border-gray-200 hover:border-primary/30 transition-all duration-300 hover:scale-105 group touch-target">
+              <div className="w-6 h-6 sm:w-7 sm:h-7 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-200 transition-all duration-300 flex-shrink-0">
+                <Users className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-blue-600" />
               </div>
               <div className="text-left">
                 <div className="text-xs sm:text-sm font-semibold text-gray-800">Expert Agents</div>
@@ -269,7 +269,7 @@ const FeaturedProperties = () => {
               <CardContent className="p-4 sm:p-5 md:p-6">
                 {/* Price */}
                 <div className="mb-3 sm:mb-4">
-                  <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-primary mb-1 sm:mb-1.5">
+                  <h3 className="text-base sm:text-lg md:text-xl font-bold text-primary mb-1 sm:mb-1.5">
                     {property.price}
                   </h3>
                   <p className="text-xs sm:text-sm text-gray-600 flex items-start sm:items-center gap-1 leading-tight sm:leading-normal">

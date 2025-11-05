@@ -31,26 +31,27 @@ const Footer = () => {
 
   return (
     <footer className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white safe-bottom">
-      <div className="max-w-7xl mx-auto px-4 sm:px-5 md:px-6 lg:px-8 py-10 sm:py-12 md:py-14 lg:py-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 md:gap-10 lg:gap-12">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-5 lg:px-6 py-2.5 sm:py-3 md:py-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3 md:gap-3 lg:gap-4">
           {/* Company Info */}
           <div className="sm:col-span-2 lg:col-span-1">
-            <div className="mb-4 sm:mb-5 md:mb-6">
+            <div className="mb-1 sm:mb-1.5">
               <Logo size="lg" theme="dark" />
             </div>
-            <p className="text-white/80 mb-4 sm:mb-5 md:mb-6 leading-relaxed text-xs sm:text-sm md:text-base max-w-sm">
+            <p className="text-white/55 mb-1.5 sm:mb-2 leading-snug text-xs sm:text-sm max-w-sm">
               Your trusted partner in real estate excellence. Delivering exceptional service 
               and results for over 15 years in Pittsburgh and surrounding areas.
             </p>
-            <div className="flex gap-2 sm:gap-3 flex-wrap">
+            <div className="flex gap-1 sm:gap-1.5 flex-wrap mt-2">
               {socialLinks.map((social, index) => (
                 <a
                   key={index}
                   href={social.href}
-                  className="w-10 h-10 sm:w-12 sm:h-12 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary hover:text-white transition-all duration-300 group touch-target"
+                  className="w-6 h-6 sm:w-7 sm:h-7 bg-white/10 hover:bg-primary rounded-md flex items-center justify-center hover:text-white transition-all duration-150 group touch-target border border-white/10 hover:border-primary/50 shadow-sm hover:shadow-md hover:scale-105"
                   aria-label={social.label}
+                  title={social.label}
                 >
-                  <social.icon className="h-4 w-4 sm:h-5 sm:w-5 group-hover:scale-110 transition-transform" />
+                  <social.icon className="h-2.5 w-2.5 sm:h-3 sm:w-3 group-hover:scale-110 transition-transform" />
                 </a>
               ))}
             </div>
@@ -58,14 +59,15 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-base sm:text-lg md:text-xl font-semibold mb-4 sm:mb-5 md:mb-6 text-white">Quick Links</h4>
-            <ul className="space-y-2 sm:space-y-3">
+            <h4 className="text-[10px] sm:text-xs font-bold mb-1 sm:mb-1.5 text-white uppercase tracking-wider">Quick Links</h4>
+            <ul className="space-y-0 sm:space-y-0.5">
               {quickLinks.map((link) => (
                 <li key={link.label}>
                   <a
                     href={link.href}
-                    className="text-white/80 hover:text-primary transition-colors text-xs sm:text-sm md:text-base hover:translate-x-1 transform duration-200 inline-block touch-target py-1 sm:py-2"
+                    className="text-white/55 hover:text-primary transition-all text-xs sm:text-sm hover:translate-x-0.5 transform duration-150 inline-flex items-center gap-1 touch-target py-0.5 group"
                   >
+                    <span className="w-0.5 h-0.5 bg-primary/0 group-hover:bg-primary rounded-full transition-all duration-150"></span>
                     {link.label}
                   </a>
                 </li>
@@ -75,11 +77,14 @@ const Footer = () => {
 
           {/* Services */}
           <div>
-            <h4 className="text-base sm:text-lg md:text-xl font-semibold mb-4 sm:mb-5 md:mb-6 text-white">Our Services</h4>
-            <ul className="space-y-2 sm:space-y-3">
+            <h4 className="text-[10px] sm:text-xs font-bold mb-1 sm:mb-1.5 text-white uppercase tracking-wider">Our Services</h4>
+            <ul className="space-y-0 sm:space-y-0.5">
               {services.map((service) => (
-                <li key={service} className="text-white/80 text-xs sm:text-sm md:text-base">
-                  {service}
+                <li key={service}>
+                  <span className="text-white/55 hover:text-primary transition-colors text-xs sm:text-sm inline-flex items-center gap-1 cursor-pointer group">
+                    <span className="w-0.5 h-0.5 bg-primary/0 group-hover:bg-primary rounded-full transition-all duration-150"></span>
+                    {service}
+                  </span>
                 </li>
               ))}
             </ul>
@@ -87,52 +92,54 @@ const Footer = () => {
 
           {/* Contact Info */}
           <div>
-            <h4 className="text-base sm:text-lg md:text-xl font-semibold mb-4 sm:mb-5 md:mb-6 text-white">Contact Info</h4>
-            <div className="space-y-3 sm:space-y-4">
-              <a href="tel:+14129777090" className="flex items-start gap-2 sm:gap-3 hover:opacity-90 transition-opacity touch-target">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white/10 border border-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Phone className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+            <h4 className="text-[10px] sm:text-xs font-bold mb-1 sm:mb-1.5 text-white uppercase tracking-wider">Contact Info</h4>
+            <div className="space-y-0.5 sm:space-y-1">
+              <a href="tel:+14129777090" className="flex items-start gap-1.5 sm:gap-1.5 hover:translate-x-0.5 transition-all touch-target group">
+                <div className="w-5 h-5 sm:w-5 sm:h-5 bg-white/10 group-hover:bg-primary/20 border border-white/20 group-hover:border-primary/50 rounded-md flex items-center justify-center flex-shrink-0 transition-all duration-150 shadow-sm group-hover:shadow">
+                  <Phone className="h-2.5 w-2.5 sm:h-2.5 sm:w-2.5 text-white group-hover:text-primary transition-colors" />
                 </div>
-                <div>
-                  <p className="text-white font-semibold text-sm sm:text-base">+1-412-977-7090</p>
-                  <p className="text-white/70 text-xs sm:text-sm">Main Office</p>
-                </div>
-              </a>
-              <a href="mailto:aggarwal_a@hotmail.com" className="flex items-start gap-2 sm:gap-3 hover:opacity-90 transition-opacity touch-target">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white/10 border border-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Mail className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
-                </div>
-                <div>
-                  <p className="text-white font-semibold text-xs sm:text-sm md:text-base break-all">aggarwal_a@hotmail.com</p>
-                  <p className="text-white/70 text-xs sm:text-sm">General Inquiries</p>
+                <div className="flex-1 min-w-0">
+                  <p className="text-white font-medium text-xs sm:text-sm group-hover:text-primary transition-colors leading-tight">+1-412-977-7090</p>
+                  <p className="text-white/45 text-[9px] sm:text-[10px] leading-tight">Main Office</p>
                 </div>
               </a>
-              <div className="flex items-start gap-2 sm:gap-3">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white/10 border border-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <MapPin className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+              <a href="mailto:aggarwal_a@hotmail.com" className="flex items-start gap-1.5 sm:gap-1.5 hover:translate-x-0.5 transition-all touch-target group">
+                <div className="w-5 h-5 sm:w-5 sm:h-5 bg-white/10 group-hover:bg-primary/20 border border-white/20 group-hover:border-primary/50 rounded-md flex items-center justify-center flex-shrink-0 transition-all duration-150 shadow-sm group-hover:shadow">
+                  <Mail className="h-2.5 w-2.5 sm:h-2.5 sm:w-2.5 text-white group-hover:text-primary transition-colors" />
                 </div>
-                <div>
-                  <p className="text-white font-semibold text-sm sm:text-base">201 Sonni Ln</p>
-                  <p className="text-white font-semibold text-sm sm:text-base">McKees Rocks, PA 15136</p>
+                <div className="flex-1 min-w-0">
+                  <p className="text-white font-medium text-xs sm:text-sm break-all group-hover:text-primary transition-colors leading-tight">aggarwal_a@hotmail.com</p>
+                  <p className="text-white/45 text-[9px] sm:text-[10px] leading-tight">General Inquiries</p>
+                </div>
+              </a>
+              <div className="flex items-start gap-1.5 sm:gap-1.5">
+                <div className="w-5 h-5 sm:w-5 sm:h-5 bg-white/10 border border-white/20 rounded-md flex items-center justify-center flex-shrink-0 shadow-sm">
+                  <MapPin className="h-2.5 w-2.5 sm:h-2.5 sm:w-2.5 text-white" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-white font-medium text-xs sm:text-sm leading-tight">201 Sonni Ln</p>
+                  <p className="text-white font-medium text-xs sm:text-sm leading-tight">McKees Rocks, PA 15136</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="border-t border-white/10 mt-8 sm:mt-10 md:mt-12 pt-6 sm:pt-7 md:pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4 sm:gap-6">
-            <p className="text-white/60 text-xs sm:text-sm md:text-base text-center md:text-left">
+        <div className="border-t border-white/10 mt-2 sm:mt-2.5 pt-2 sm:pt-2.5">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-1 sm:gap-1.5">
+            <p className="text-white/35 text-[9px] sm:text-[10px] text-center md:text-left">
               © 2025 Pitt Metro Realty. All rights reserved.
             </p>
-            <div className="flex flex-wrap justify-center gap-4 sm:gap-6 text-xs sm:text-sm md:text-base">
-              <a href="#" className="text-white/60 hover:text-primary transition-colors touch-target py-1 sm:py-2">
+            <div className="flex flex-wrap justify-center gap-1 sm:gap-1.5 text-[9px] sm:text-[10px]">
+              <a href="#" className="text-white/35 hover:text-primary transition-colors touch-target py-0.5 px-0.5 hover:underline">
                 Privacy Policy
               </a>
-              <a href="#" className="text-white/60 hover:text-primary transition-colors touch-target py-1 sm:py-2">
+              <span className="text-white/15">•</span>
+              <a href="#" className="text-white/35 hover:text-primary transition-colors touch-target py-0.5 px-0.5 hover:underline">
                 Terms of Service
               </a>
-              <a href="#" className="text-white/60 hover:text-primary transition-colors touch-target py-1 sm:py-2">
+              <span className="text-white/15">•</span>
+              <a href="#" className="text-white/35 hover:text-primary transition-colors touch-target py-0.5 px-0.5 hover:underline">
                 Cookie Policy
               </a>
             </div>

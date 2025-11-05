@@ -104,7 +104,7 @@ const PropertyDetailsModal = ({ property, open, onClose }: PropertyDetailsModalP
         <div className="absolute top-0 left-0 right-0 z-50 bg-white/98 backdrop-blur-sm border-b border-slate-200 px-4 sm:px-6 py-3 flex items-center justify-between flex-shrink-0">
           <div className="flex items-center gap-3 flex-1 min-w-0">
             <div className="flex-1 min-w-0">
-              <h1 className="text-xl sm:text-2xl font-bold text-primary truncate leading-tight">
+              <h1 className="text-base sm:text-lg md:text-xl font-bold text-primary truncate leading-tight">
                 {property.price}
                 {property.period && <span className="text-sm font-normal text-slate-600 ml-1">{property.period}</span>}
               </h1>
@@ -216,7 +216,7 @@ const PropertyDetailsModal = ({ property, open, onClose }: PropertyDetailsModalP
                   <Card className="border border-slate-200 hover:border-primary/50 transition-colors">
                     <CardContent className="p-3 text-center">
                       <Bed className="h-4 w-4 text-primary mx-auto mb-1" />
-                      <div className="text-lg font-bold text-slate-800">{property.bedrooms}</div>
+                      <div className="text-sm sm:text-base font-bold text-slate-800">{property.bedrooms}</div>
                       <div className="text-[10px] text-slate-600 font-medium">Beds</div>
                     </CardContent>
                   </Card>
@@ -225,7 +225,7 @@ const PropertyDetailsModal = ({ property, open, onClose }: PropertyDetailsModalP
                   <Card className="border border-slate-200 hover:border-primary/50 transition-colors">
                     <CardContent className="p-3 text-center">
                       <Bath className="h-4 w-4 text-primary mx-auto mb-1" />
-                      <div className="text-lg font-bold text-slate-800">{property.bathrooms}</div>
+                      <div className="text-sm sm:text-base font-bold text-slate-800">{property.bathrooms}</div>
                       <div className="text-[10px] text-slate-600 font-medium">Baths</div>
                     </CardContent>
                   </Card>
@@ -234,7 +234,7 @@ const PropertyDetailsModal = ({ property, open, onClose }: PropertyDetailsModalP
                   <Card className="border border-slate-200 hover:border-primary/50 transition-colors">
                     <CardContent className="p-3 text-center">
                       <Square className="h-4 w-4 text-primary mx-auto mb-1" />
-                      <div className="text-lg font-bold text-slate-800">{property.sqft}</div>
+                      <div className="text-sm sm:text-base font-bold text-slate-800">{property.sqft}</div>
                       <div className="text-[10px] text-slate-600 font-medium">Sq Ft</div>
                     </CardContent>
                   </Card>
@@ -243,7 +243,7 @@ const PropertyDetailsModal = ({ property, open, onClose }: PropertyDetailsModalP
                   <Card className="border border-slate-200 hover:border-primary/50 transition-colors">
                     <CardContent className="p-3 text-center">
                       <Calendar className="h-4 w-4 text-primary mx-auto mb-1" />
-                      <div className="text-lg font-bold text-slate-800">{property.yearBuilt}</div>
+                      <div className="text-sm sm:text-base font-bold text-slate-800">{property.yearBuilt}</div>
                       <div className="text-[10px] text-slate-600 font-medium">Built</div>
                     </CardContent>
                   </Card>
@@ -276,7 +276,7 @@ const PropertyDetailsModal = ({ property, open, onClose }: PropertyDetailsModalP
                   {property.description && (
                     <Card className="shadow-sm border border-slate-200">
                       <CardContent className="p-4">
-                        <h3 className="text-base font-bold text-slate-800 mb-2">Description</h3>
+                        <h3 className="text-sm sm:text-base font-bold text-slate-800 mb-2">Description</h3>
                         <p className="text-sm text-slate-600 leading-relaxed line-clamp-4">
                           {property.description}
                         </p>

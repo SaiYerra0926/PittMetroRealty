@@ -232,14 +232,14 @@ const Rent = () => {
               Trusted by 10,000+ Pittsburgh Renters
             </div>
             
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 md:mb-5 leading-tight px-2">
+            <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4 md:mb-5 leading-tight px-2">
               Find Your Perfect
               <span className="block bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">
                 Rental Home
               </span>
             </h1>
             
-            <p className="text-sm sm:text-base md:text-lg text-white/90 mb-5 sm:mb-6 md:mb-7 leading-relaxed max-w-2xl mx-auto px-3 sm:px-4">
+            <p className="text-xs sm:text-sm md:text-base text-white/90 mb-5 sm:mb-6 md:mb-7 leading-relaxed max-w-2xl mx-auto px-3 sm:px-4">
               Discover premium rental properties in Pittsburgh with flexible lease terms, 
               exceptional amenities, and transparent pricing.
             </p>
@@ -272,16 +272,16 @@ const Rent = () => {
       </section>
 
       {/* Search Section */}
-      <section className="py-12 sm:py-16 md:py-20 -mt-8 sm:-mt-10 md:-mt-12">
+      <section className="py-8 sm:py-10 md:py-12 -mt-6 sm:-mt-8 md:-mt-10">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
           <Card className="shadow-xl border border-slate-200/50 bg-white/90 backdrop-blur-sm">
-            <CardContent className="p-5 sm:p-6 md:p-8 lg:p-10">
-              <div className="text-center mb-8 sm:mb-10">
-                <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-primary/10 rounded-full text-xs sm:text-sm font-medium text-primary mb-4 sm:mb-5 md:mb-6">
+            <CardContent className="p-4 sm:p-5 md:p-6 lg:p-8">
+              <div className="text-center mb-6 sm:mb-8">
+                <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-primary/10 rounded-full text-xs sm:text-sm font-medium text-primary mb-3 sm:mb-4 md:mb-5">
                   <Search className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
                   <span>Advanced Search</span>
                 </div>
-                <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 px-2">
+                <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-2 sm:mb-3 px-2">
                   Find Your Dream Rental
                 </h2>
                 <p className="text-xs sm:text-sm md:text-base text-slate-600 max-w-2xl mx-auto px-3">
@@ -289,7 +289,7 @@ const Rent = () => {
                 </p>
               </div>
 
-              <div className="space-y-6 sm:space-y-7 md:space-y-8">
+              <div className="space-y-4 sm:space-y-5 md:space-y-6">
                 {/* Main Search */}
                 <div className="relative">
                   <MapPin className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 text-gray-400 z-10" />
@@ -317,7 +317,7 @@ const Rent = () => {
                 </div>
 
                 {/* Filters */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-7 gap-3 sm:gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-7 gap-2.5 sm:gap-3">
                   <Select value={searchFilters.priceMin} onValueChange={(value) => setSearchFilters({...searchFilters, priceMin: value})}>
                     <SelectTrigger className="h-11 sm:h-12 md:h-14 text-sm sm:text-base border-2 border-gray-200 focus:border-primary rounded-lg sm:rounded-xl touch-target">
                       <DollarSign className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-gray-400 mr-2 flex-shrink-0" />
@@ -466,7 +466,7 @@ const Rent = () => {
           {/* Search Results Info */}
           {isSearchActive && filteredProperties.length === 0 && (
             <div className="mb-8 p-6 bg-yellow-50 border-2 border-yellow-200 rounded-xl text-center">
-              <p className="text-lg font-semibold text-yellow-800 mb-2">No properties found</p>
+              <p className="text-base sm:text-lg font-semibold text-yellow-800 mb-2">No properties found</p>
               <p className="text-sm text-yellow-700 mb-4">Try adjusting your search filters to see more results.</p>
               <Button
                 onClick={handleClearSearch}
@@ -492,9 +492,9 @@ const Rent = () => {
                     <span className="text-xs font-semibold uppercase tracking-wide">Rent</span>
                   </div>
                   <div className="absolute bottom-4 left-4 right-4">
-                    <div className="text-3xl font-bold text-white drop-shadow-lg">
+                    <div className="text-2xl sm:text-3xl font-bold text-white drop-shadow-lg">
                       {property.price}
-                      <span className="text-lg font-normal text-white/80">{property.period}</span>
+                      <span className="text-sm sm:text-base font-normal text-white/80">{property.period}</span>
                     </div>
                   </div>
                 </div>
@@ -510,7 +510,7 @@ const Rent = () => {
                     </Badge>
                   </div>
                   
-                  <h3 className="text-xl font-semibold text-slate-800 mb-3 group-hover:text-primary transition-colors line-clamp-2">
+                  <h3 className="text-base sm:text-lg md:text-xl font-semibold text-slate-800 mb-3 group-hover:text-primary transition-colors line-clamp-2">
                     {property.address}
                   </h3>
                   
@@ -599,7 +599,7 @@ const Rent = () => {
                   propertiesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
               }}
-              className="px-8 py-4 text-lg font-semibold border-2 border-primary text-primary hover:bg-primary hover:text-white touch-target"
+              className="px-8 py-4 text-sm sm:text-base md:text-lg font-semibold border-2 border-primary text-primary hover:bg-primary hover:text-white touch-target"
             >
               Load More Rentals
             </Button>

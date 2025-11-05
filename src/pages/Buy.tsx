@@ -176,10 +176,10 @@ const Buy = () => {
       </section>
 
       {/* Buyer Information Section */}
-      <section className="py-10 sm:py-12 md:py-16 bg-slate-50/80 backdrop-blur-sm">
+      <section className="py-8 sm:py-10 md:py-12 bg-slate-50/80 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
-          <div className="text-center mb-10 sm:mb-12 md:mb-16">
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 md:mb-5 px-2">
+          <div className="text-center mb-6 sm:mb-8 md:mb-10">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-2 sm:mb-3 md:mb-4 px-2">
               Tell Us About Your Home Buying Needs
             </h2>
             <p className="text-xs sm:text-sm md:text-base text-slate-600 max-w-3xl mx-auto leading-relaxed px-3">
@@ -400,7 +400,7 @@ const Buy = () => {
                 
                 <CardContent className="p-4 sm:p-5 md:p-6 lg:p-8">
                   <div className="flex flex-col sm:flex-row justify-between items-start gap-2 sm:gap-0 mb-4 sm:mb-5 md:mb-6">
-                    <div className="text-xl sm:text-2xl md:text-3xl font-bold text-primary">
+                    <div className="text-lg sm:text-xl md:text-2xl font-bold text-primary">
                       {property.price}
                     </div>
                     <div className="flex items-center gap-1">

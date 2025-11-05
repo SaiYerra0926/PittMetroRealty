@@ -52,71 +52,71 @@ const Contact = () => {
   ];
 
   return (
-    <section id="contact" className="py-12 sm:py-16 md:py-20 bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
+    <section id="contact" className="py-8 sm:py-10 md:py-12 bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
       <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-12 sm:mb-16 md:mb-20 animate-fade-in-up">
-          <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-gradient-to-r from-primary to-primary/80 rounded-xl sm:rounded-2xl mb-6 sm:mb-7 md:mb-8 shadow-lg">
-            <MessageCircle className="h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 text-white" />
+        <div className="text-center mb-6 sm:mb-8 md:mb-10 animate-fade-in-up">
+          <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-gradient-to-r from-primary to-primary/80 rounded-xl sm:rounded-2xl mb-4 sm:mb-5 md:mb-6 shadow-lg">
+            <MessageCircle className="h-6 w-6 sm:h-8 sm:w-8 md:h-10 md:w-10 text-white" />
           </div>
-          <h2 className="text-responsive-xl font-bold text-primary mb-4 sm:mb-5 md:mb-6 px-2">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-primary mb-2 sm:mb-3 md:mb-4 px-2">
             Get In Touch
           </h2>
-          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-6 sm:mb-7 md:mb-8 px-3">
+          <p className="text-xs sm:text-sm md:text-base text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-4 sm:mb-5 px-3">
             Ready to start your real estate journey? Contact our expert team for personalized 
             assistance and professional guidance.
           </p>
           
           {/* Quick Contact Stats */}
-          <div className="flex flex-wrap justify-center gap-4 sm:gap-6 md:gap-8 mb-6 sm:mb-7 md:mb-8 px-2">
-            <div className="flex items-center gap-2 sm:gap-3 text-gray-600 bg-white px-5 sm:px-6 md:px-8 py-3 sm:py-3.5 md:py-4 rounded-lg sm:rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 touch-target">
-              <div className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                <Star className="w-4 h-4 sm:w-5 sm:h-5 md:w-5 md:h-5 text-primary" />
+          <div className="flex flex-wrap justify-center gap-3 sm:gap-4 md:gap-5 mb-4 sm:mb-5 md:mb-6 px-2">
+            <div className="flex items-center gap-2 sm:gap-2.5 text-gray-600 bg-white px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 rounded-lg sm:rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 touch-target">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                <Star className="w-3.5 w-3.5 sm:w-4 sm:h-4 md:w-4 md:h-4 text-primary" />
               </div>
               <div className="text-left">
-                <div className="text-xs sm:text-sm md:text-base font-semibold text-gray-800">4.9/5 Client Rating</div>
-                <div className="text-[10px] sm:text-xs text-gray-500">Based on 500+ reviews</div>
+                <div className="text-xs sm:text-sm font-semibold text-gray-800">4.9/5 Client Rating</div>
+                <div className="text-[9px] sm:text-[10px] text-gray-500">Based on 500+ reviews</div>
               </div>
             </div>
-            <div className="flex items-center gap-2 sm:gap-3 text-gray-600 bg-white px-5 sm:px-6 md:px-8 py-3 sm:py-3.5 md:py-4 rounded-lg sm:rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 touch-target">
-              <div className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 md:w-5 md:h-5 text-green-600" />
+            <div className="flex items-center gap-2 sm:gap-2.5 text-gray-600 bg-white px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 rounded-lg sm:rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 touch-target">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                <CheckCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-4 md:h-4 text-green-600" />
               </div>
               <div className="text-left">
-                <div className="text-xs sm:text-sm md:text-base font-semibold text-gray-800">Free Consultation</div>
-                <div className="text-[10px] sm:text-xs text-gray-500">No obligation required</div>
+                <div className="text-xs sm:text-sm font-semibold text-gray-800">Free Consultation</div>
+                <div className="text-[9px] sm:text-[10px] text-gray-500">No obligation required</div>
               </div>
             </div>
           </div>
         </div>
 
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 md:gap-16 lg:gap-20 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6 md:gap-8 lg:gap-10 items-start">
             {/* Left Section - Contact Information */}
             <div className="animate-slide-in-left">
-              <div className="bg-white rounded-xl sm:rounded-2xl p-5 sm:p-6 md:p-8 shadow-lg border border-gray-100">
-                <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-primary mb-4 sm:mb-5 md:mb-6 flex items-center gap-2 sm:gap-3">
-                  <div className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-gradient-to-r from-primary to-primary/80 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+              <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-lg border border-gray-100">
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-primary mb-3 sm:mb-4 md:mb-5 flex items-center gap-2 sm:gap-2.5">
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 bg-gradient-to-r from-primary to-primary/80 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Phone className="w-3.5 h-3.5 sm:w-4 sm:w-4 text-white" />
                   </div>
                   <span>Contact Information</span>
                 </h3>
-                <p className="text-sm sm:text-base md:text-lg text-muted-foreground mb-6 sm:mb-7 md:mb-8 leading-relaxed">
+                <p className="text-xs sm:text-sm md:text-base text-muted-foreground mb-4 sm:mb-5 md:mb-6 leading-relaxed">
                   We're here to help you with all your real estate needs. Reach out to us through 
                   any of the following channels, and we'll get back to you promptly.
                 </p>
 
                 {/* Office Hours */}
-                <div className="mb-6 sm:mb-7 md:mb-8">
-                  <h4 className="text-lg sm:text-xl md:text-2xl font-bold text-primary mb-3 sm:mb-4 flex items-center gap-2 sm:gap-3">
-                    <div className="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
+                <div className="mb-4 sm:mb-5 md:mb-6">
+                  <h4 className="text-base sm:text-lg md:text-xl font-bold text-primary mb-2 sm:mb-3 flex items-center gap-2 sm:gap-2.5">
+                    <div className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Clock className="w-3 w-3 sm:w-3.5 sm:h-3.5 text-white" />
                     </div>
                     <span>Office Hours</span>
                   </h4>
-                  <div className="bg-gradient-to-r from-gray-50 to-gray-100/50 rounded-lg sm:rounded-xl p-4 sm:p-5 md:p-6 border border-gray-200">
+                  <div className="bg-gradient-to-r from-gray-50 to-gray-100/50 rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-5 border border-gray-200">
                     {officeHours.map((schedule, index) => (
-                      <div key={schedule.day} className="flex flex-col sm:flex-row justify-between items-start sm:items-center py-3 sm:py-4 border-b border-gray-200 last:border-b-0 gap-1 sm:gap-0">
+                      <div key={schedule.day} className="flex flex-col sm:flex-row justify-between items-start sm:items-center py-2 sm:py-2.5 border-b border-gray-200 last:border-b-0 gap-1 sm:gap-0">
                         <span className="font-semibold text-gray-800 text-xs sm:text-sm md:text-base">{schedule.day}</span>
                         <span className="text-gray-600 font-medium text-xs sm:text-sm md:text-base">{schedule.hours}</span>
                       </div>
@@ -125,19 +125,19 @@ const Contact = () => {
                 </div>
 
                 {/* Location */}
-                <div className="mb-6 sm:mb-7 md:mb-8">
-                  <h4 className="text-lg sm:text-xl md:text-2xl font-bold text-primary mb-3 sm:mb-4 flex items-center gap-2 sm:gap-3">
-                    <div className="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-r from-green-500 to-green-600 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
+                <div className="mb-4 sm:mb-5 md:mb-6">
+                  <h4 className="text-base sm:text-lg md:text-xl font-bold text-primary mb-2 sm:mb-3 flex items-center gap-2 sm:gap-2.5">
+                    <div className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 bg-gradient-to-r from-green-500 to-green-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <MapPin className="w-3 w-3 sm:w-3.5 sm:h-3.5 text-white" />
                     </div>
                     <span>Our Location</span>
                   </h4>
-                  <div className="bg-gradient-to-r from-gray-50 to-gray-100/50 rounded-lg sm:rounded-xl p-4 sm:p-5 md:p-6 border border-gray-200">
+                  <div className="bg-gradient-to-r from-gray-50 to-gray-100/50 rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-5 border border-gray-200">
                     <div className="space-y-1.5 sm:space-y-2">
-                      <p className="text-gray-800 font-semibold text-sm sm:text-base md:text-lg">Pitt Metro Realty</p>
-                      <p className="text-gray-600 text-xs sm:text-sm md:text-base">123 Real Estate Avenue</p>
-                      <p className="text-gray-600 text-xs sm:text-sm md:text-base">Pittsburgh, PA 15213</p>
-                      <p className="text-gray-600 text-xs sm:text-sm md:text-base">United States</p>
+                      <p className="text-gray-800 font-semibold text-xs sm:text-sm md:text-base">Pitt Metro Realty</p>
+                      <p className="text-gray-600 text-xs sm:text-sm">123 Real Estate Avenue</p>
+                      <p className="text-gray-600 text-xs sm:text-sm">Pittsburgh, PA 15213</p>
+                      <p className="text-gray-600 text-xs sm:text-sm">United States</p>
                     </div>
                   </div>
                 </div>
@@ -169,21 +169,21 @@ const Contact = () => {
 
             {/* Right Section - Contact Form */}
             <div className="animate-slide-in-right">
-              <div className="bg-white rounded-xl sm:rounded-2xl p-5 sm:p-6 md:p-8 shadow-lg border border-gray-100">
-                <div className="text-center mb-6 sm:mb-7 md:mb-8">
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-gradient-to-r from-primary to-primary/80 rounded-xl sm:rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-5 md:mb-6 shadow-lg">
-                    <Send className="h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 text-white" />
+              <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-lg border border-gray-100">
+                <div className="text-center mb-4 sm:mb-5 md:mb-6">
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-gradient-to-r from-primary to-primary/80 rounded-xl sm:rounded-2xl flex items-center justify-center mx-auto mb-3 sm:mb-4 md:mb-5 shadow-lg">
+                    <Send className="h-6 w-6 sm:h-8 sm:w-8 md:h-10 md:w-10 text-white" />
                   </div>
-                  <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-primary mb-3 sm:mb-4">
+                  <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-primary mb-2 sm:mb-3">
                     Send Us a Message
                   </h3>
-                  <p className="text-xs sm:text-sm md:text-base lg:text-lg text-muted-foreground px-2">
+                  <p className="text-xs sm:text-sm md:text-base text-muted-foreground px-2">
                     Fill out the form below and we'll get back to you as soon as possible.
                   </p>
                 </div>
                 
-                <form className="space-y-4 sm:space-y-5 md:space-y-6">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
+                <form className="space-y-3 sm:space-y-4 md:space-y-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 md:gap-5">
                     <div className="space-y-1.5 sm:space-y-2">
                       <label className="block text-xs sm:text-sm font-semibold text-primary">First Name</label>
                       <Input 

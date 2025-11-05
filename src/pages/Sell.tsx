@@ -141,7 +141,7 @@ const Sell = () => {
       <section className="section-spacing-xl relative">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/50 to-transparent"></div>
         <div className="relative container-spacing">
-          <div className="text-center mb-16">
+          <div className="text-center mb-10 sm:mb-12 md:mb-14">
             
             
           </div>
@@ -159,16 +159,16 @@ const Sell = () => {
             </CardHeader>
             <CardContent className="card-content-spacing">
               <div className="form-spacing">
-                  <div className="text-center mb-8">
-                    <div className="w-20 h-20 bg-gradient-to-br from-primary/10 to-primary-light/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="text-center mb-6 sm:mb-7">
+                    <div className="w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 bg-gradient-to-br from-primary/10 to-primary-light/20 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
                       <User className="h-10 w-10 text-primary" />
                     </div>
                     <h3 className="text-lg sm:text-xl font-bold text-slate-800 mb-2">Let's Get to Know You</h3>
                     <p className="text-slate-600 text-sm">We'll use this information to provide personalized service</p>
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+                    <div className="space-y-1.5 sm:space-y-2">
                       <Label htmlFor="firstName" className="text-sm font-semibold text-slate-700">
                         First Name *
                       </Label>
@@ -196,8 +196,8 @@ const Sell = () => {
                     </div>
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+                    <div className="space-y-1.5 sm:space-y-2">
                       <Label htmlFor="email" className="text-sm font-semibold text-slate-700">
                         Email Address *
                       </Label>
@@ -299,10 +299,10 @@ const Sell = () => {
         <div className="absolute inset-0 bg-black/10"></div>
         <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary-light/90"></div>
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl font-bold mb-6 drop-shadow-lg">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-5 drop-shadow-lg">
             Ready to Sell Your Property?
           </h2>
-          <p className="text-xl text-white/90 mb-8 drop-shadow-md">
+          <p className="text-sm sm:text-base md:text-lg text-white/90 mb-6 sm:mb-7 drop-shadow-md">
             Start your selling journey today with Pitt Metro Realty
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">

@@ -144,10 +144,10 @@ const Manage = () => {
       </section>
 
       {/* Steps Section */}
-      <section className="py-10 sm:py-12 md:py-16 bg-slate-50/80 backdrop-blur-sm">
+      <section className="py-8 sm:py-10 md:py-12 bg-slate-50/80 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12 sm:mb-14 md:mb-16">
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4">
+          <div className="text-center mb-8 sm:mb-10 md:mb-12">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-2 sm:mb-3">
               Get Started in 4 Simple Steps
             </h2>
             <p className="text-xs sm:text-sm md:text-base text-slate-600 max-w-3xl mx-auto">
@@ -155,16 +155,16 @@ const Manage = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 md:gap-7 mb-10 sm:mb-12 md:mb-14">
             {steps.map((step, index) => (
               <Card key={step.id} className={`text-center transition-all duration-300 hover:shadow-xl ${currentStep === step.id ? 'ring-2 ring-primary shadow-xl' : 'hover:shadow-lg'}`}>
                 <CardContent className="p-8">
-                  <div className={`w-16 h-16 mx-auto mb-6 rounded-full flex items-center justify-center text-2xl font-bold ${
+                  <div className={`w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-4 sm:mb-5 rounded-full flex items-center justify-center text-lg sm:text-xl font-bold ${
                     currentStep >= step.id ? 'bg-primary text-white' : 'bg-slate-200 text-slate-600'
                   }`}>
                     {step.id}
                   </div>
-                  <h3 className="text-base sm:text-lg font-semibold mb-3">{step.title}</h3>
+                  <h3 className="text-base sm:text-lg font-semibold mb-2 sm:mb-2.5">{step.title}</h3>
                   <p className="text-slate-600">{step.description}</p>
                 </CardContent>
               </Card>
@@ -183,8 +183,8 @@ const Manage = () => {
             </CardHeader>
             <CardContent className="p-8">
               {currentStep === 1 && (
-                <div className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-4 sm:space-y-5">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-2">
                         Property Address *
@@ -243,7 +243,7 @@ const Manage = () => {
 
               {currentStep === 2 && (
                 <div className="space-y-6">
-                  <h3 className="text-2xl font-bold text-slate-800 mb-6">
+                  <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-slate-800 mb-5 sm:mb-6">
                     Choose Your Management Plan
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -256,8 +256,8 @@ const Manage = () => {
                         )}
                         <CardContent className="p-6">
                           <div className="text-center">
-                            <h4 className="text-xl font-bold mb-2">{plan.name}</h4>
-                            <div className="text-3xl font-bold text-primary mb-2">{plan.price}</div>
+                            <h4 className="text-base sm:text-lg md:text-xl font-bold mb-2">{plan.name}</h4>
+                            <div className="text-2xl sm:text-3xl font-bold text-primary mb-2">{plan.price}</div>
                             <div className="text-sm text-slate-600 mb-6">of monthly rent</div>
                             <p className="text-slate-600 mb-6">{plan.description}</p>
                             <ul className="space-y-2 text-sm text-slate-600 mb-6 text-left">
@@ -288,7 +288,7 @@ const Manage = () => {
 
               {currentStep === 3 && (
                 <div className="space-y-6">
-                  <h3 className="text-2xl font-bold text-slate-800 mb-6">
+                  <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-slate-800 mb-5 sm:mb-6">
                     Set Your Tenant Criteria
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -350,7 +350,7 @@ const Manage = () => {
 
               {currentStep === 4 && (
                 <div className="space-y-6">
-                  <h3 className="text-2xl font-bold text-slate-800 mb-6">
+                  <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-slate-800 mb-5 sm:mb-6">
                     Complete Your Setup
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -429,7 +429,7 @@ const Manage = () => {
             <h2 className="text-4xl font-bold text-slate-800 mb-4">
               Comprehensive Management Services
             </h2>
-            <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+            <p className="text-xs sm:text-sm md:text-base text-slate-600 max-w-3xl mx-auto">
               We handle every aspect of property management so you can focus on what matters most
             </p>
           </div>
@@ -441,7 +441,7 @@ const Manage = () => {
                   <div className="w-16 h-16 mx-auto mb-6 bg-primary/10 rounded-full flex items-center justify-center">
                     <service.icon className="h-8 w-8 text-primary" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-3">{service.title}</h3>
+                  <h3 className="text-base sm:text-lg md:text-xl font-semibold mb-3">{service.title}</h3>
                   <p className="text-slate-600 mb-6">{service.description}</p>
                   <ul className="space-y-2 text-sm text-slate-600 text-left">
                     {service.features.map((feature, featureIndex) => (
@@ -462,10 +462,10 @@ const Manage = () => {
       <section className="py-20 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-slate-800 mb-4">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4">
               What Our Clients Say
             </h2>
-            <p className="text-xl text-slate-600">
+            <p className="text-xs sm:text-sm md:text-base text-slate-600">
               See how we've helped property owners maximize their rental income
             </p>
           </div>

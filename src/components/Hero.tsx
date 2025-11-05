@@ -78,30 +78,30 @@ const Hero = () => {
         <div className="hidden sm:block absolute bottom-20 right-10 w-12 h-12 bg-white/10 rounded-full animate-float-4"></div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 relative z-10 w-full py-8 sm:py-12 md:py-16">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 relative z-10 w-full py-6 sm:py-8 md:py-10">
         <div className="max-w-6xl mx-auto">
           {/* Main Headline with Enhanced Animation */}
-          <div className="text-center mb-8 sm:mb-10 md:mb-12 animate-fade-in-up">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-4 sm:mb-5 md:mb-6 leading-tight px-2">
+          <div className="text-center mb-6 sm:mb-8 md:mb-10 animate-fade-in-up">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-2 sm:mb-3 md:mb-4 leading-tight px-2">
               <span className="block animate-slide-in-left">Discover</span>
               <span className="block text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-yellow-200 to-yellow-100 mt-2 animate-slide-in-right">
                 Exceptional Properties
               </span>
             </h1>
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/95 mb-6 sm:mb-7 md:mb-8 max-w-2xl mx-auto leading-relaxed animate-fade-in px-3 sm:px-4">
+            <p className="text-sm sm:text-base md:text-lg text-white/95 mb-4 sm:mb-5 md:mb-6 max-w-2xl mx-auto leading-relaxed animate-fade-in px-3 sm:px-4">
               Premium properties and exceptional service with Pitt Metro Realty. 
               Your trusted partner in real estate excellence.
             </p>
           </div>
 
           {/* Enhanced Category Selection Section - Professional UI/UX */}
-          <div className="bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10 lg:p-12 shadow-2xl border border-white/20 animate-scale-in mx-2 sm:mx-4">
+          <div className="bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 lg:p-10 shadow-2xl border border-white/20 animate-scale-in mx-2 sm:mx-4">
             <div className="flex justify-center">
               <div className="w-full max-w-4xl">
-                <p className="text-sm sm:text-base md:text-lg text-gray-600 mb-6 sm:mb-8 md:mb-10 text-center font-semibold">
+                <p className="text-xs sm:text-sm md:text-base text-gray-600 mb-4 sm:mb-5 md:mb-6 text-center font-semibold">
                   Select a category to search
                 </p>
-                <div className="flex flex-wrap justify-center gap-3 sm:gap-4 md:gap-5 bg-white/10 backdrop-blur-md rounded-2xl p-3 sm:p-4 md:p-5 shadow-xl border border-white/20">
+                <div className="flex flex-wrap justify-center gap-2.5 sm:gap-3 md:gap-4 bg-white/10 backdrop-blur-md rounded-2xl p-2.5 sm:p-3 md:p-4 shadow-xl border border-white/20">
                   {tabs.map((tab) => {
                     const Icon = tab.icon;
                     const isActive = activeTab === tab.id;
@@ -109,7 +109,7 @@ const Hero = () => {
                       <button
                         key={tab.id}
                         onClick={() => handleTabClick(tab.id)}
-                        className={`px-6 sm:px-8 md:px-10 lg:px-12 py-4 sm:py-5 md:py-6 rounded-xl font-bold transition-all duration-300 text-sm sm:text-base md:text-lg flex items-center justify-center gap-2 sm:gap-3 touch-target min-h-[56px] sm:min-h-[60px] md:min-h-[64px] whitespace-nowrap relative group shadow-lg ${
+                        className={`px-6 sm:px-8 md:px-10 lg:px-12 py-4 sm:py-5 md:py-6 rounded-xl font-bold transition-all duration-300 text-xs sm:text-sm md:text-base flex items-center justify-center gap-2 sm:gap-3 touch-target min-h-[56px] sm:min-h-[60px] md:min-h-[64px] whitespace-nowrap relative group shadow-lg ${
                           isActive
                             ? "bg-white text-primary shadow-2xl scale-105 ring-4 ring-primary/30 transform"
                             : "bg-white text-gray-700 hover:text-primary hover:bg-white/90 hover:shadow-xl hover:scale-105"
@@ -120,7 +120,7 @@ const Hero = () => {
                         <Icon className={`w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 flex-shrink-0 transition-transform duration-300 ${
                           isActive ? 'scale-110 text-primary' : 'text-gray-600 group-hover:scale-110 group-hover:text-primary'
                         }`} />
-                        <span className={`text-sm sm:text-base md:text-lg font-bold transition-colors duration-300 ${
+                        <span className={`text-xs sm:text-sm md:text-base font-bold transition-colors duration-300 ${
                           isActive ? 'text-primary' : 'text-gray-700 group-hover:text-primary'
                         }`}>{tab.label}</span>
                         {isActive && (

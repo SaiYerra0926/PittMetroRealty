@@ -173,10 +173,10 @@ const ReviewsSection = () => {
     <section className="py-24 bg-gradient-to-br from-blue-50/30 via-slate-50/50 to-indigo-50/20">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16 animate-fade-in-up">
-          <h2 className="text-4xl md:text-5xl font-serif font-bold text-primary mb-4">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-serif font-bold text-primary mb-3 sm:mb-4">
             What Our Clients Say
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-xs sm:text-sm md:text-base text-muted-foreground max-w-2xl mx-auto">
             Real stories from satisfied clients across Pittsburgh. Share your experience!
           </p>
         </div>
@@ -184,25 +184,25 @@ const ReviewsSection = () => {
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16 animate-fade-in-up">
           <Card className="shadow-professional hover:shadow-professional-hover section-transition text-center p-6">
-            <CardTitle className="text-5xl font-bold text-primary mb-2">
+            <CardTitle className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-2">
               {loading ? <Loader2 className="h-8 w-8 animate-spin mx-auto" /> : stats.totalReviews}
             </CardTitle>
             <p className="text-muted-foreground">Total Reviews</p>
           </Card>
           <Card className="shadow-professional hover:shadow-professional-hover section-transition text-center p-6">
-            <CardTitle className="text-5xl font-bold text-primary mb-2">
+            <CardTitle className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-2">
               {loading ? <Loader2 className="h-8 w-8 animate-spin mx-auto" /> : stats.averageRating.toFixed(1)}
             </CardTitle>
             <p className="text-muted-foreground">Average Rating</p>
           </Card>
           <Card className="shadow-professional hover:shadow-professional-hover section-transition text-center p-6">
-            <CardTitle className="text-5xl font-bold text-primary mb-2">
+            <CardTitle className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-2">
               {loading ? <Loader2 className="h-8 w-8 animate-spin mx-auto" /> : stats.fiveStarReviews}
             </CardTitle>
             <p className="text-muted-foreground">5 Star Reviews</p>
           </Card>
           <Card className="shadow-professional hover:shadow-professional-hover section-transition text-center p-6">
-            <CardTitle className="text-5xl font-bold text-primary mb-2">
+            <CardTitle className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-2">
               {loading ? <Loader2 className="h-8 w-8 animate-spin mx-auto" /> : stats.fourStarReviews}
             </CardTitle>
             <p className="text-muted-foreground">4 Star Reviews</p>
@@ -218,7 +218,7 @@ const ReviewsSection = () => {
           <Card className="max-w-2xl mx-auto shadow-professional animate-fade-in-up">
             <CardContent className="p-12 text-center">
               <MessageSquare className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-2xl font-semibold text-primary mb-2">No Reviews Yet</h3>
+              <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-primary mb-2">No Reviews Yet</h3>
               <p className="text-muted-foreground mb-6">
                 Be the first to share your experience with Pitt Metro Realty!
               </p>
@@ -281,7 +281,7 @@ const ReviewsSection = () => {
               <CardContent className="p-8">
                 <div className="flex items-center justify-center gap-4 mb-4">
                   <MessageSquare className="h-6 w-6 text-primary" />
-                  <span className="font-semibold text-lg">Share Your Experience</span>
+                  <span className="font-semibold text-sm sm:text-base md:text-lg">Share Your Experience</span>
                 </div>
                 <p className="text-muted-foreground mb-6">
                   Help others by sharing your experience with Pitt Metro Realty

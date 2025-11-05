@@ -72,14 +72,14 @@ const Header = () => {
     <header className="fixed top-0 left-0 right-0 z-50 bg-slate-100/95 backdrop-blur-md shadow-lg border-b border-slate-200 safe-top">
       <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
         {/* Main navigation */}
-        <nav className="flex items-center justify-between py-2 sm:py-3 md:py-4">
+        <nav className="flex items-center justify-between py-1.5 sm:py-2 md:py-3">
           {/* Logo */}
           <div className="flex items-center flex-shrink-0">
             <Logo />
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-3 md:gap-4 lg:gap-6 xl:gap-8">
+          <div className="hidden lg:flex items-center gap-2.5 md:gap-3 lg:gap-4 xl:gap-5">
             {navItems.map((item) => {
               const isActive = activeSection === item.href.replace('#', '');
               
@@ -87,7 +87,7 @@ const Header = () => {
                 <button
                   key={item.label}
                   onClick={() => handleNavClick(item.href)}
-                  className={`relative px-2 sm:px-3 md:px-4 py-2 font-medium text-xs sm:text-sm md:text-base transition-all duration-300 hover:scale-105 group touch-target ${
+                  className={`relative px-2 sm:px-3 md:px-4 py-2 font-medium text-xs sm:text-sm transition-all duration-300 hover:scale-105 group touch-target ${
                     isActive 
                       ? 'text-primary' 
                       : 'text-slate-800 hover:text-primary'
