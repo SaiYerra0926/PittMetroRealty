@@ -1,15 +1,18 @@
 import { Pool } from 'pg';
 
-// Database configuration
+// Supabase Database configuration
 const dbConfig = {
-  host: 'localhost',
-  port: 5433,
-  database: 'pittmetrorealty',
+  host: 'db.vrdqdeyzxzggzdbmiwdg.supabase.co',
+  port: 5432,
+  database: 'postgres',
   user: 'postgres',
   password: 'postgres',
+  ssl: {
+    rejectUnauthorized: false, // Required for Supabase connections
+  },
   max: 20, // Maximum number of clients in the pool
   idleTimeoutMillis: 30000, // Close idle clients after 30 seconds
-  connectionTimeoutMillis: 2000, // Return an error after 2 seconds if connection could not be established
+  connectionTimeoutMillis: 10000, // Increased timeout for Supabase connections
 };
 
 // Create connection pool

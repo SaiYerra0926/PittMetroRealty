@@ -9,16 +9,19 @@ const __dirname = path.dirname(__filename);
 console.log('🏠 Pitt Metro Realty Database Setup');
 console.log('==================================');
 
-// Database configuration
+// Supabase Database configuration
 const dbConfig = {
-  host: 'localhost',
-  port: 5433,
-  database: 'pittmetrorealty',
+  host: 'db.vrdqdeyzxzggzdbmiwdg.supabase.co',
+  port: 5432,
+  database: 'postgres',
   user: 'postgres',
   password: 'postgres',
+  ssl: {
+    rejectUnauthorized: false, // Required for Supabase connections
+  },
   max: 20,
   idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000,
+  connectionTimeoutMillis: 10000, // Increased timeout for Supabase connections
 };
 
 console.log('📊 Database Configuration:');
@@ -107,10 +110,10 @@ async function setupDatabase() {
     console.error('❌ Database setup failed:', error.message);
     console.error('');
     console.error('🔧 Troubleshooting:');
-    console.error('   1. Make sure PostgreSQL is running on port 5433');
-    console.error('   2. Verify the database "pittmetrorealty" exists');
+    console.error('   1. Make sure Supabase database is accessible');
+    console.error('   2. Verify the database connection details are correct');
     console.error('   3. Check username and password are correct');
-    console.error('   4. Ensure PostgreSQL is accessible from localhost');
+    console.error('   4. Ensure SSL connection is properly configured');
     throw error;
   } finally {
     if (client) {
