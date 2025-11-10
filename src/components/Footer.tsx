@@ -31,12 +31,12 @@ const Footer = () => {
 
   return (
     <footer className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white safe-bottom">
-      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-5 lg:px-6 py-2.5 sm:py-3 md:py-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3 md:gap-3 lg:gap-4">
+      <div className="max-w-6xl mx-auto px-3 sm:px-4 md:px-5 lg:px-6 py-4 sm:py-5 md:py-6 w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5 items-start">
           {/* Company Info */}
           <div className="sm:col-span-2 lg:col-span-1">
             <div className="mb-1 sm:mb-1.5">
-              <Logo size="lg" theme="dark" />
+              <Logo size="xl" theme="dark" />
             </div>
             <p className="text-white/55 mb-1.5 sm:mb-2 leading-snug text-xs sm:text-sm max-w-sm">
               Your trusted partner in real estate excellence. Delivering exceptional service 

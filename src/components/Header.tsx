@@ -72,10 +72,10 @@ const Header = () => {
     <header className="fixed top-0 left-0 right-0 z-50 bg-slate-100/95 backdrop-blur-md shadow-lg border-b border-slate-200 safe-top">
       <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
         {/* Main navigation */}
-        <nav className="flex items-center justify-between py-1.5 sm:py-2 md:py-3">
+        <nav className="flex items-center justify-between py-2 sm:py-2.5 md:py-3 gap-2 sm:gap-3">
           {/* Logo */}
           <div className="flex items-center flex-shrink-0">
-            <Logo />
+            <Logo size="xl" logoNoBg={true} />
           </div>
 
           {/* Desktop Navigation */}

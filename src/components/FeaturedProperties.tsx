@@ -168,20 +168,20 @@ const FeaturedProperties = () => {
   };
 
   return (
-    <section id="properties" className="py-8 sm:py-10 md:py-12 bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
-      <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
+    <section id="properties" className="py-6 sm:py-8 md:py-10 bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
+      <div className="container mx-auto px-3 sm:px-4 md:px-5 lg:px-6 max-w-6xl">
         {/* Header */}
-        <div className="text-center mb-6 sm:mb-8 md:mb-10 animate-fade-in-up">
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-primary mb-2 sm:mb-3 md:mb-4 px-2">
+        <div className="text-center mb-5 sm:mb-6 md:mb-8 animate-fade-in-up">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-2 sm:mb-3 md:mb-4 px-2">
             Featured Properties
           </h2>
-          <p className="text-xs sm:text-sm md:text-base text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-4 sm:mb-5 px-3">
+          <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-4 sm:mb-6 px-4">
             Discover exceptional properties in Pittsburgh's most desirable neighborhoods. 
             Each home is carefully selected for its quality, location, and value.
           </p>
           
           {/* Stats */}
-          <div className="flex flex-wrap justify-center gap-3 sm:gap-4 md:gap-5 mb-4 sm:mb-5 md:mb-6 px-2">
+          <div className="flex flex-wrap justify-center items-center gap-2.5 sm:gap-3 md:gap-4 mb-4 sm:mb-6 px-2">
             <div className="flex items-center gap-2 sm:gap-2.5 text-gray-600 bg-white/80 backdrop-blur-sm rounded-lg sm:rounded-xl px-3 sm:px-4 md:px-5 py-2 sm:py-2.5 border border-gray-200 hover:border-primary/30 transition-all duration-300 hover:scale-105 group touch-target">
               <div className="w-6 h-6 sm:w-7 sm:h-7 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-all duration-300 flex-shrink-0">
                 <Calendar className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-primary" />
@@ -213,8 +213,8 @@ const FeaturedProperties = () => {
         </div>
 
         {/* Properties Grid */}
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
+        <div className="max-w-6xl mx-auto w-full">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-5 items-stretch">
           {properties.map((property, index) => (
             <Card 
               key={property.id}
@@ -266,7 +266,7 @@ const FeaturedProperties = () => {
               </div>
 
               {/* Content */}
-              <CardContent className="p-4 sm:p-5 md:p-6">
+              <CardContent className="p-3 sm:p-4 md:p-5">
                 {/* Price */}
                 <div className="mb-3 sm:mb-4">
                   <h3 className="text-base sm:text-lg md:text-xl font-bold text-primary mb-1 sm:mb-1.5">

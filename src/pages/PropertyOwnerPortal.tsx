@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Home, Upload, Eye, Save, ArrowLeft, CheckCircle, Lock, User, Shield, Camera, DollarSign, MapPin, Bed, Bath, Edit, Trash2, X } from 'lucide-react';
+import { Home, Upload, Eye, Save, ArrowLeft, CheckCircle, Lock, User, Shield, Camera, DollarSign, MapPin, Bed, Bath, Edit, Trash2, X, Search, RefreshCw } from 'lucide-react';
+import PropertyDetailsModal from '@/components/PropertyDetailsModal';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -23,6 +24,12 @@ const PropertyOwnerPortal = () => {
   const [isLoadingListings, setIsLoadingListings] = useState(false);
   const [editingListing, setEditingListing] = useState<any | null>(null);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [isDeleting, setIsDeleting] = useState<string | null>(null);
+  const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
+  const [selectedListing, setSelectedListing] = useState<any | null>(null);
+  const [allListings, setAllListings] = useState<any[]>([]);
+  const [isLoadingAllListings, setIsLoadingAllListings] = useState(false);
+  const [viewingListing, setViewingListing] = useState<any | null>(null);
   const { toast } = useToast();
   const propertiesApi = new PropertiesAPI();
   const [formData, setFormData] = useState({
@@ -146,29 +153,101 @@ const PropertyOwnerPortal = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Fetch listings when authenticated
+  // Track if initial fetch has been done
+  const [hasInitialFetch, setHasInitialFetch] = useState(false);
+
+  // Fetch listings when authenticated (only once on initial login, not on every render)
   useEffect(() => {
-    if (isAuthenticated && loginData.username) {
+    if (isAuthenticated && loginData.username && !hasInitialFetch) {
       fetchListings();
+      fetchAllListings(); // Fetch all listings from website
+      setHasInitialFetch(true);
     }
-  }, [isAuthenticated, loginData.username]);
+  }, [isAuthenticated, loginData.username, hasInitialFetch]); // Only fetch once when authenticated
 
   const fetchListings = async () => {
     setIsLoadingListings(true);
     try {
+      console.log('Fetching listings for:', loginData.username);
       const response = await propertiesApi.getPropertiesByOwner(loginData.username);
-      setSubmittedListings(response.listings || []);
+      console.log('API Response:', response);
+      
+      // Normalize listings data to ensure consistent structure
+      const normalizedListings = (response.listings || []).map((listing: any) => ({
+        id: listing.id,
+        title: listing.title || 'Untitled Listing',
+        description: listing.description || '',
+        address: listing.address || '',
+        city: listing.city || '',
+        state: listing.state || '',
+        zipCode: listing.zipCode || listing.zip_code || '',
+        propertyType: listing.propertyType || listing.property_type || '',
+        bedrooms: listing.bedrooms || 0,
+        bathrooms: listing.bathrooms || 0,
+        squareFeet: listing.squareFeet || listing.square_feet || 0,
+        yearBuilt: listing.yearBuilt || listing.year_built,
+        lotSize: listing.lotSize || listing.lot_size || 0,
+        price: listing.price || 0,
+        listingType: listing.listingType || listing.listing_type || 'rent',
+        status: listing.status || 'Draft',
+        availableDate: listing.availableDate || listing.available_date,
+        photos: Array.isArray(listing.photos) ? listing.photos.map((p: any) => ({
+          id: p.id,
+          name: p.name || p.photo_name || '',
+          url: p.url || p.photo_url || '',
+          size: p.size || p.photo_size || 0
+        })) : [],
+        features: Array.isArray(listing.features) ? listing.features : [],
+        amenities: Array.isArray(listing.amenities) ? listing.amenities : [],
+        ownerName: listing.ownerName || listing.owner_name || '',
+        ownerEmail: listing.ownerEmail || listing.owner_email || loginData.username,
+        ownerPhone: listing.ownerPhone || listing.owner_phone || '',
+        ownerPreferredContact: listing.ownerPreferredContact || listing.owner_preferred_contact || 'email',
+        submittedAt: listing.submittedAt || listing.submitted_at || listing.createdAt || listing.created_at,
+        createdAt: listing.createdAt || listing.created_at,
+        updatedAt: listing.updatedAt || listing.updated_at
+      }));
+      
+      console.log('Normalized listings:', normalizedListings);
+      setSubmittedListings(normalizedListings);
+      
+      // Also save to localStorage for offline access
+      if (normalizedListings.length > 0) {
+        localStorage.setItem('owner_listings', JSON.stringify(normalizedListings));
+      }
     } catch (error) {
-      console.error('Error fetching listings:', error);
-      toast({
-        title: "Error",
-        description: "Failed to load your listings. Please try again.",
-        variant: "destructive",
+      console.error('Error fetching listings from API:', error);
+      console.log('Error details:', {
+        message: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : undefined
       });
+      
       // Fallback to localStorage if available
       const localListings = localStorage.getItem('owner_listings');
       if (localListings) {
-        setSubmittedListings(JSON.parse(localListings));
+        try {
+          const parsed = JSON.parse(localListings);
+          const normalized = Array.isArray(parsed) ? parsed.map((listing: any) => ({
+            ...listing,
+            photos: Array.isArray(listing.photos) ? listing.photos : [],
+            features: Array.isArray(listing.features) ? listing.features : [],
+            amenities: Array.isArray(listing.amenities) ? listing.amenities : []
+          })) : [];
+          setSubmittedListings(normalized);
+          console.log('Loaded from localStorage:', normalized);
+          toast({
+            title: "Warning",
+            description: "Using cached listings. Unable to fetch latest updates.",
+            variant: "default",
+          });
+        } catch (parseError) {
+          console.error('Error parsing localStorage listings:', parseError);
+          setSubmittedListings([]);
+        }
+      } else {
+        // No listings yet - this is normal for new users, don't show error
+        console.log('No listings found in API or localStorage');
+        setSubmittedListings([]);
       }
     } finally {
       setIsLoadingListings(false);
@@ -207,13 +286,34 @@ const PropertyOwnerPortal = () => {
         amenities: formData.amenities,
         status: 'Pending Review' as const,
         availableDate: formData.availableDate || undefined,
-        photos: formData.photos.map((file: File, index: number) => ({
-          id: index,
-          name: file.name,
-          url: '', // Will be set by API after upload
-          size: file.size,
-          file: file
-        })),
+        photos: formData.photos.map((photo: any, index: number) => {
+          // Handle both File objects and photo objects with file property
+          if (photo instanceof File) {
+            return {
+              id: index,
+              name: photo.name,
+              url: '',
+              size: photo.size,
+              file: photo
+            };
+          } else if (photo.file) {
+            return {
+              id: photo.id || index,
+              name: photo.name || photo.file.name,
+              url: photo.url || '',
+              size: photo.size || photo.file.size,
+              file: photo.file
+            };
+          } else {
+            // Existing photo from database (no file property)
+            return {
+              id: photo.id || index,
+              name: photo.name || '',
+              url: photo.url || '',
+              size: photo.size || 0
+            };
+          }
+        }),
         ownerName: formData.ownerName,
         ownerEmail: formData.ownerEmail,
         ownerPhone: formData.ownerPhone,
@@ -222,8 +322,35 @@ const PropertyOwnerPortal = () => {
 
       // Submit to API
       const newListing = await propertiesApi.createProperty(listingData);
+      console.log('Created listing:', newListing);
       
-      // Refresh listings
+      // Normalize the new listing
+      const normalizedListing = {
+        ...newListing,
+        photos: Array.isArray(newListing.photos) ? newListing.photos : [],
+        features: Array.isArray(newListing.features) ? newListing.features : [],
+        amenities: Array.isArray(newListing.amenities) ? newListing.amenities : [],
+        zipCode: newListing.zipCode || newListing.zip_code || '',
+        propertyType: newListing.propertyType || newListing.property_type || '',
+        squareFeet: newListing.squareFeet || newListing.square_feet || 0,
+        yearBuilt: newListing.yearBuilt || newListing.year_built,
+        lotSize: newListing.lotSize || newListing.lot_size || 0,
+        listingType: newListing.listingType || newListing.listing_type || 'rent',
+        availableDate: newListing.availableDate || newListing.available_date,
+        submittedAt: newListing.submittedAt || newListing.submitted_at || newListing.createdAt || newListing.created_at,
+        createdAt: newListing.createdAt || newListing.created_at,
+        updatedAt: newListing.updatedAt || newListing.updated_at
+      };
+      
+      // Add to local state immediately for better UX
+      setSubmittedListings(prev => {
+        const updated = [...prev, normalizedListing];
+        localStorage.setItem('owner_listings', JSON.stringify(updated));
+        return updated;
+      });
+      
+      // Refresh listings from API to get complete data (only after successful submission)
+      // This is fine here since it's after a new submission, not during editing
       await fetchListings();
       
       setShowSuccess(true);
@@ -405,10 +532,17 @@ const PropertyOwnerPortal = () => {
       updatedData.photos = [...existingPhotos, ...processedNewPhotos];
 
       // Update via API
-      await propertiesApi.updateProperty(editingListing.id, updatedData);
+      const updatedListing = await propertiesApi.updateProperty(editingListing.id, updatedData);
       
-      // Refresh listings
-      await fetchListings();
+      // Update local storage with the updated listing
+      const currentListings = submittedListings.map((listing: any) => 
+        listing.id === editingListing.id ? updatedListing : listing
+      );
+      setSubmittedListings(currentListings);
+      localStorage.setItem('owner_listings', JSON.stringify(currentListings));
+      
+      // Don't auto-refresh - let user click refresh button if needed
+      // await fetchListings();
       
       toast({
         title: "Success!",
@@ -438,16 +572,196 @@ const PropertyOwnerPortal = () => {
   };
 
   const handleAddPhotos = (newPhotos: File[]) => {
-    setFormData(prev => ({
-      ...prev,
-      photos: [...prev.photos, ...newPhotos.map((file, index) => ({
+    console.log('Adding photos:', newPhotos.length);
+    setFormData(prev => {
+      const newPhotoObjects = newPhotos.map((file, index) => ({
         id: prev.photos.length + index,
         name: file.name,
         url: '',
         size: file.size,
         file: file
-      }))]
-    }));
+      }));
+      const updatedPhotos = [...prev.photos, ...newPhotoObjects];
+      console.log('Total photos after adding:', updatedPhotos.length);
+      return {
+        ...prev,
+        photos: updatedPhotos
+      };
+    });
+  };
+
+  const handleDeleteListing = async (listingId: string) => {
+    if (!listingId) {
+      toast({
+        title: "Error",
+        description: "Listing ID is required to delete.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsDeleting(listingId);
+    try {
+      await propertiesApi.deleteProperty(listingId);
+      
+      // Remove from local state
+      const updatedListings = submittedListings.filter((listing: any) => listing.id !== listingId);
+      setSubmittedListings(updatedListings);
+      localStorage.setItem('owner_listings', JSON.stringify(updatedListings));
+      
+      // Clear selection if deleted listing was selected
+      if (selectedListing?.id === listingId) {
+        setSelectedListing(null);
+      }
+      
+      toast({
+        title: "Success!",
+        description: "Property listing deleted successfully.",
+      });
+      
+      setDeleteConfirmId(null);
+    } catch (error) {
+      console.error('Error deleting listing:', error);
+      toast({
+        title: "Delete Failed",
+        description: error instanceof Error ? error.message : "There was an error deleting your listing. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsDeleting(null);
+    }
+  };
+
+  const handleSelectListing = (listing: any) => {
+    setSelectedListing(listing);
+    handleEditListing(listing);
+  };
+
+  const fetchAllListings = async () => {
+    setIsLoadingAllListings(true);
+    try {
+      console.log('Fetching all listings from website...');
+      const response = await propertiesApi.getProperties();
+      console.log('All listings response:', response);
+      
+      // Normalize listings data
+      const normalizedListings = (response.listings || []).map((listing: any) => ({
+        id: listing.id,
+        title: listing.title || 'Untitled Listing',
+        description: listing.description || '',
+        address: listing.address || '',
+        city: listing.city || '',
+        state: listing.state || '',
+        zipCode: listing.zipCode || listing.zip_code || '',
+        propertyType: listing.propertyType || listing.property_type || '',
+        bedrooms: listing.bedrooms || 0,
+        bathrooms: listing.bathrooms || 0,
+        squareFeet: listing.squareFeet || listing.square_feet || 0,
+        yearBuilt: listing.yearBuilt || listing.year_built,
+        lotSize: listing.lotSize || listing.lot_size || 0,
+        price: listing.price || 0,
+        listingType: listing.listingType || listing.listing_type || 'rent',
+        status: listing.status || 'Draft',
+        availableDate: listing.availableDate || listing.available_date,
+        photos: Array.isArray(listing.photos) ? listing.photos.map((p: any) => ({
+          id: p.id,
+          name: p.name || p.photo_name || '',
+          url: p.url || p.photo_url || '',
+          size: p.size || p.photo_size || 0
+        })) : [],
+        features: Array.isArray(listing.features) ? listing.features : [],
+        amenities: Array.isArray(listing.amenities) ? listing.amenities : [],
+        ownerName: listing.ownerName || listing.owner_name || '',
+        ownerEmail: listing.ownerEmail || listing.owner_email || '',
+        ownerPhone: listing.ownerPhone || listing.owner_phone || '',
+        ownerPreferredContact: listing.ownerPreferredContact || listing.owner_preferred_contact || 'email',
+        submittedAt: listing.submittedAt || listing.submitted_at || listing.createdAt || listing.created_at,
+        createdAt: listing.createdAt || listing.created_at,
+        updatedAt: listing.updatedAt || listing.updated_at
+      }));
+      
+      console.log('Normalized all listings:', normalizedListings);
+      setAllListings(normalizedListings);
+    } catch (error) {
+      console.error('Error fetching all listings:', error);
+      
+      // Try to load from localStorage as fallback (API client already tried, but let's try again with better error handling)
+      try {
+        const localProperties = localStorage.getItem('properties');
+        if (localProperties) {
+          const cachedListings = JSON.parse(localProperties);
+          if (Array.isArray(cachedListings) && cachedListings.length > 0) {
+            const normalizedCachedListings = cachedListings.map((listing: any) => ({
+              id: listing.id,
+              title: listing.title || 'Untitled Listing',
+              description: listing.description || '',
+              address: listing.address || '',
+              city: listing.city || '',
+              state: listing.state || '',
+              zipCode: listing.zipCode || listing.zip_code || '',
+              propertyType: listing.propertyType || listing.property_type || '',
+              bedrooms: listing.bedrooms || 0,
+              bathrooms: listing.bathrooms || 0,
+              squareFeet: listing.squareFeet || listing.square_feet || 0,
+              yearBuilt: listing.yearBuilt || listing.year_built,
+              lotSize: listing.lotSize || listing.lot_size || 0,
+              price: listing.price || 0,
+              listingType: listing.listingType || listing.listing_type || 'rent',
+              status: listing.status || 'Draft',
+              availableDate: listing.availableDate || listing.available_date,
+              photos: Array.isArray(listing.photos) ? listing.photos.map((p: any) => ({
+                id: p.id,
+                name: p.name || p.photo_name || '',
+                url: p.url || p.photo_url || '',
+                size: p.size || p.photo_size || 0
+              })) : [],
+              features: Array.isArray(listing.features) ? listing.features : [],
+              amenities: Array.isArray(listing.amenities) ? listing.amenities : [],
+              ownerName: listing.ownerName || listing.owner_name || '',
+              ownerEmail: listing.ownerEmail || listing.owner_email || '',
+              ownerPhone: listing.ownerPhone || listing.owner_phone || '',
+              ownerPreferredContact: listing.ownerPreferredContact || listing.owner_preferred_contact || 'email',
+              submittedAt: listing.submittedAt || listing.submitted_at || listing.createdAt || listing.created_at,
+              createdAt: listing.createdAt || listing.created_at,
+              updatedAt: listing.updatedAt || listing.updated_at
+            }));
+            
+            setAllListings(normalizedCachedListings);
+            toast({
+              title: "Warning",
+              description: `Using cached listings (${normalizedCachedListings.length} found). Unable to connect to API server. Start the server with "npm run server" to get fresh data.`,
+              variant: "default",
+            });
+            return;
+          }
+        }
+      } catch (cacheError) {
+        console.error('Error loading from cache:', cacheError);
+      }
+      
+      // If no cache available, show helpful error message
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      const isConnectionError = errorMessage.includes('connect') || errorMessage.includes('fetch') || errorMessage.includes('network');
+      
+      toast({
+        title: "Error",
+        description: isConnectionError 
+          ? "Unable to connect to API server. Please start the server by running: npm run server"
+          : `Failed to fetch all listings: ${errorMessage}`,
+        variant: "destructive",
+      });
+      setAllListings([]);
+    } finally {
+      setIsLoadingAllListings(false);
+    }
+  };
+
+  const handleViewListing = (listing: any) => {
+    setViewingListing(listing);
+  };
+
+  const handleCloseViewModal = () => {
+    setViewingListing(null);
   };
 
   const propertyTypes = [
@@ -556,7 +870,11 @@ const PropertyOwnerPortal = () => {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => setIsAuthenticated(false)}
+                onClick={() => {
+                  setIsAuthenticated(false);
+                  setHasInitialFetch(false); // Reset so listings will fetch again on next login
+                  setEditingListing(null); // Clear any editing state
+                }}
                 className="flex items-center space-x-2"
               >
                 <ArrowLeft className="h-4 w-4" />
@@ -984,13 +1302,18 @@ const PropertyOwnerPortal = () => {
                       </div>
                     )}
                     
-                    {/* Photo Upload Component */}
-                    <PhotoUpload
-                      photos={formData.photos.filter((p: any) => p.file)}
-                      onPhotosChange={(photos) => handleAddPhotos(photos)}
-                      maxPhotos={20}
-                      maxSizePerPhoto={10}
-                    />
+                    {/* Photo Upload Component - Only for new photos */}
+                    <div className="mt-4">
+                      <PhotoUpload
+                        photos={formData.photos.filter((p: any) => p.file).map((p: any) => p.file)}
+                        onPhotosChange={(newPhotos: File[]) => {
+                          console.log('PhotoUpload callback - new photos:', newPhotos.length);
+                          handleAddPhotos(newPhotos);
+                        }}
+                        maxPhotos={20}
+                        maxSizePerPhoto={10}
+                      />
+                    </div>
                     {errors.photos && <p className="text-red-500 text-sm">{errors.photos}</p>}
                   </div>
 
@@ -1053,18 +1376,46 @@ const PropertyOwnerPortal = () => {
                   </div>
 
                   {/* Submit/Update Button */}
-                  <div className="flex justify-center gap-4 pt-6 border-t">
+                  <div className="flex justify-center gap-4 pt-6 border-t flex-wrap">
                     {editingListing && (
-                      <Button
-                        variant="outline"
-                        size="lg"
-                        onClick={handleCancelEdit}
-                        className="min-w-[150px]"
-                        disabled={isUpdating}
-                      >
-                        <X className="h-4 w-4 mr-2" />
-                        Cancel
-                      </Button>
+                      <>
+                        <Button
+                          variant="outline"
+                          size="lg"
+                          onClick={handleCancelEdit}
+                          className="min-w-[150px]"
+                          disabled={isUpdating}
+                        >
+                          <X className="h-4 w-4 mr-2" />
+                          Cancel
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="lg"
+                          onClick={async () => {
+                            await fetchListings();
+                            await fetchAllListings();
+                            toast({
+                              title: "Refreshed",
+                              description: "Listings have been refreshed from the server.",
+                            });
+                          }}
+                          className="min-w-[150px]"
+                          disabled={isUpdating || isLoadingListings || isLoadingAllListings}
+                        >
+                          {isLoadingListings || isLoadingAllListings ? (
+                            <>
+                              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary mr-2"></div>
+                              Refreshing...
+                            </>
+                          ) : (
+                            <>
+                              <RefreshCw className="h-4 w-4 mr-2" />
+                              Refresh
+                            </>
+                          )}
+                        </Button>
+                      </>
                     )}
                     <Button
                       size="lg"
@@ -1092,124 +1443,265 @@ const PropertyOwnerPortal = () => {
 
           {/* Manage Listings Tab */}
           <TabsContent value="manage" className="space-y-6">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-slate-800 mb-4">
-                Manage Your Listings
+            <div className="text-center mb-6 sm:mb-8">
+              <h2 className="text-2xl sm:text-3xl font-bold text-slate-800 mb-2 sm:mb-3">
+                View All Listings
               </h2>
-              <p className="text-slate-600 text-lg">
-                View and manage all your property listings
+              <p className="text-sm sm:text-base text-slate-600">
+                Browse all property listings from the website. View details, update, or delete listings.
               </p>
+              <div className="flex items-center justify-center gap-4 mt-4 flex-wrap">
+                {allListings.length > 0 && (
+                  <p className="text-xs sm:text-sm text-slate-500">
+                    Total: <span className="font-semibold text-primary">{allListings.length}</span> {allListings.length === 1 ? 'listing' : 'listings'}
+                  </p>
+                )}
+                {submittedListings.length > 0 && (
+                  <p className="text-xs sm:text-sm text-slate-500">
+                    Your listings: <span className="font-semibold text-primary">{submittedListings.length}</span>
+                  </p>
+                )}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={fetchAllListings}
+                  disabled={isLoadingAllListings}
+                  className="min-h-[36px]"
+                >
+                  <Search className="h-4 w-4 mr-2" />
+                  {isLoadingAllListings ? 'Refreshing...' : 'Refresh'}
+                </Button>
+              </div>
             </div>
 
-            {isLoadingListings ? (
-              <Card>
-                <CardContent className="p-8 text-center">
+            {isLoadingAllListings ? (
+              <Card className="border-2 border-dashed border-slate-200">
+                <CardContent className="p-8 sm:p-12 text-center">
                   <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-                  <p className="text-slate-600">Loading your listings...</p>
+                  <p className="text-sm sm:text-base text-slate-600">Loading all listings...</p>
                 </CardContent>
               </Card>
-            ) : submittedListings.length === 0 ? (
-              <Card>
-                <CardContent className="p-8 text-center">
+            ) : allListings.length === 0 ? (
+              <Card className="border-2 border-dashed border-slate-200 bg-slate-50/50">
+                <CardContent className="p-8 sm:p-12 text-center">
                   <div className="text-slate-400 mb-4">
-                    <Home className="mx-auto h-12 w-12" />
+                    <Home className="mx-auto h-16 w-16 sm:h-20 sm:w-20" />
                   </div>
-                  <h3 className="text-lg font-medium text-slate-600 mb-2">
+                  <h3 className="text-lg sm:text-xl font-semibold text-slate-700 mb-2">
                     No Listings Yet
                   </h3>
-                  <p className="text-slate-500 mb-4">
+                  <p className="text-sm sm:text-base text-slate-500 mb-6">
                     Create your first property listing to get started.
                   </p>
-                  <Button onClick={() => setActiveTab('list')}>
+                  <Button onClick={() => setActiveTab('list')} className="min-h-[44px]">
+                    <Upload className="h-4 w-4 mr-2" />
                     Create New Listing
                   </Button>
                 </CardContent>
               </Card>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {submittedListings.map((listing) => (
-                  <Card key={listing.id} className="overflow-hidden">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
+                {allListings.map((listing) => {
+                  const isOwnerListing = listing.ownerEmail === loginData.username;
+                  return (
+                  <Card 
+                    key={listing.id} 
+                    className={`overflow-hidden transition-all duration-300 hover:shadow-xl border-2 ${
+                      selectedListing?.id === listing.id 
+                        ? 'border-primary shadow-lg ring-2 ring-primary/20' 
+                        : 'border-slate-200 hover:border-primary/50'
+                    }`}
+                  >
                     <CardContent className="p-0">
-                      {listing.photos.length > 0 ? (
-                        <div className="h-48 bg-slate-100 flex items-center justify-center">
-                          <img
-                            src={listing.photos[0].url}
-                            alt={listing.title}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                      ) : (
-                        <div className="h-48 bg-slate-100 flex items-center justify-center">
-                          <Home className="h-12 w-12 text-slate-400" />
-                        </div>
-                      )}
-                      
-                      <div className="p-4">
-                        <div className="flex items-start justify-between mb-2">
-                          <h3 className="font-semibold text-slate-800 line-clamp-2">
-                            {listing.title}
-                          </h3>
-                          <Badge className={getStatusColor(listing.status)}>
-                            {listing.status}
+                      {/* Photo Section */}
+                      <div className="relative group">
+                        {listing.photos && listing.photos.length > 0 ? (
+                          <div className="h-48 sm:h-56 bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center overflow-hidden">
+                            <img
+                              src={listing.photos[0].url || listing.photos[0].photo_url}
+                              alt={listing.title}
+                              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                              onError={(e) => {
+                                e.currentTarget.style.display = 'none';
+                                e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                              }}
+                            />
+                            <div className="hidden absolute inset-0 flex items-center justify-center bg-slate-100">
+                              <Home className="h-12 w-12 text-slate-400" />
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="h-48 sm:h-56 bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
+                            <Home className="h-12 w-12 sm:h-16 sm:w-16 text-slate-400" />
+                          </div>
+                        )}
+                        
+                        {/* Status Badge Overlay */}
+                        <div className="absolute top-2 right-2">
+                          <Badge className={`${getStatusColor(listing.status)} shadow-lg backdrop-blur-sm`}>
+                            {listing.status || 'Draft'}
                           </Badge>
                         </div>
                         
-                        <p className="text-slate-600 text-sm mb-3 line-clamp-2">
-                          {listing.description}
-                        </p>
-                        
-                        <div className="space-y-2 text-sm text-slate-600">
-                          <div className="flex justify-between">
-                            <span>Address:</span>
-                            <span className="font-medium">{listing.address}</span>
+                        {/* Photo Count Badge */}
+                        {listing.photos && listing.photos.length > 0 && (
+                          <div className="absolute top-2 left-2">
+                            <Badge className="bg-black/60 text-white backdrop-blur-sm">
+                              <Camera className="h-3 w-3 mr-1" />
+                              {listing.photos.length}
+                            </Badge>
                           </div>
-                          <div className="flex justify-between">
-                            <span>Price:</span>
-                            <span className="font-medium text-primary">
+                        )}
+                      </div>
+                      
+                      {/* Content Section */}
+                      <div className="p-4 sm:p-5">
+                        <div className="mb-3">
+                          <h3 className="font-bold text-base sm:text-lg text-slate-800 line-clamp-2 mb-1.5">
+                            {listing.title || 'Untitled Listing'}
+                          </h3>
+                          <p className="text-xs sm:text-sm text-slate-600 line-clamp-2 mb-2">
+                            {listing.description || 'No description available'}
+                          </p>
+                        </div>
+                        
+                        {/* Key Details */}
+                        <div className="space-y-2 mb-4 pb-4 border-b border-slate-200">
+                          <div className="flex items-center justify-between text-xs sm:text-sm">
+                            <div className="flex items-center text-slate-600">
+                              <MapPin className="h-3 w-3 mr-1.5 flex-shrink-0" />
+                              <span className="truncate">Address</span>
+                            </div>
+                            <span className="font-semibold text-slate-800 text-right ml-2 truncate">
+                              {listing.address || 'N/A'}
+                            </span>
+                          </div>
+                          
+                          <div className="flex items-center justify-between text-xs sm:text-sm">
+                            <div className="flex items-center text-slate-600">
+                              <DollarSign className="h-3 w-3 mr-1.5 flex-shrink-0" />
+                              <span>Price</span>
+                            </div>
+                            <span className="font-bold text-primary">
                               ${(listing.price || 0).toLocaleString()}
                             </span>
                           </div>
-                          <div className="flex justify-between">
-                            <span>Type:</span>
-                            <span className="font-medium">{listing.propertyType}</span>
+                          
+                          <div className="grid grid-cols-2 gap-2 text-xs sm:text-sm">
+                            <div className="flex items-center text-slate-600">
+                              <Bed className="h-3 w-3 mr-1.5 flex-shrink-0" />
+                              <span>{listing.bedrooms || 0} Bed</span>
+                            </div>
+                            <div className="flex items-center text-slate-600">
+                              <Bath className="h-3 w-3 mr-1.5 flex-shrink-0" />
+                              <span>{listing.bathrooms || 0} Bath</span>
+                            </div>
                           </div>
-                          <div className="flex justify-between">
-                            <span>Bedrooms:</span>
-                            <span className="font-medium">{listing.bedrooms}</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span>Bathrooms:</span>
-                            <span className="font-medium">{listing.bathrooms}</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span>Photos:</span>
-                            <span className="font-medium">{listing.photos.length}</span>
-                          </div>
+                          
+                          {listing.propertyType && (
+                            <div className="flex items-center justify-between text-xs sm:text-sm">
+                              <span className="text-slate-600">Type</span>
+                              <span className="font-medium text-slate-800">{listing.propertyType}</span>
+                            </div>
+                          )}
                         </div>
                         
-                        <div className="mt-4 pt-4 border-t">
-                          <div className="flex justify-between text-xs text-slate-500 mb-3">
-                            <span>Submitted:</span>
-                            <span>{listing.submittedAt ? new Date(listing.submittedAt).toLocaleDateString() : 'N/A'}</span>
-                          </div>
+                        {/* Action Buttons */}
+                        <div className="space-y-2">
                           <Button
-                            variant="outline"
+                            variant="default"
                             size="sm"
-                            className="w-full"
-                            onClick={() => handleEditListing(listing)}
+                            className="w-full min-h-[40px] bg-primary hover:bg-primary/90"
+                            onClick={() => handleViewListing(listing)}
                           >
-                            <Edit className="h-4 w-4 mr-2" />
-                            Edit Listing
+                            <Eye className="h-4 w-4 mr-2" />
+                            View Details
                           </Button>
+                          
+                          {isOwnerListing && (
+                            <>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="w-full min-h-[40px] border-blue-200 text-blue-600 hover:bg-blue-50 hover:text-blue-700"
+                                onClick={() => handleSelectListing(listing)}
+                              >
+                                <Edit className="h-4 w-4 mr-2" />
+                                Edit Listing
+                              </Button>
+                              
+                              {deleteConfirmId === listing.id ? (
+                                <div className="flex gap-2">
+                                  <Button
+                                    variant="destructive"
+                                    size="sm"
+                                    className="flex-1 min-h-[40px]"
+                                    onClick={() => handleDeleteListing(listing.id)}
+                                    disabled={isDeleting === listing.id}
+                                  >
+                                    {isDeleting === listing.id ? (
+                                      <>
+                                        <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-white mr-2"></div>
+                                        Deleting...
+                                      </>
+                                    ) : (
+                                      <>
+                                        <Trash2 className="h-4 w-4 mr-2" />
+                                        Confirm Delete
+                                      </>
+                                    )}
+                                  </Button>
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    className="flex-1 min-h-[40px]"
+                                    onClick={() => setDeleteConfirmId(null)}
+                                    disabled={isDeleting === listing.id}
+                                  >
+                                    Cancel
+                                  </Button>
+                                </div>
+                              ) : (
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  className="w-full min-h-[40px] border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700"
+                                  onClick={() => setDeleteConfirmId(listing.id)}
+                                >
+                                  <Trash2 className="h-4 w-4 mr-2" />
+                                  Delete Listing
+                                </Button>
+                              )}
+                            </>
+                          )}
                         </div>
+                        
+                        {/* Submission Date */}
+                        {(listing.submittedAt || listing.createdAt) && (
+                          <div className="mt-3 pt-3 border-t border-slate-200">
+                            <p className="text-xs text-slate-500 text-center">
+                              Submitted: {new Date(listing.submittedAt || listing.createdAt).toLocaleDateString()}
+                            </p>
+                          </div>
+                        )}
                       </div>
                     </CardContent>
                   </Card>
-                ))}
+                  );
+                })}
               </div>
             )}
           </TabsContent>
         </Tabs>
+
+        {/* Property Details Modal */}
+        {viewingListing && (
+          <PropertyDetailsModal
+            property={viewingListing}
+            open={!!viewingListing}
+            onClose={handleCloseViewModal}
+          />
+        )}
       </div>
     </div>
   );

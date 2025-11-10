@@ -170,42 +170,42 @@ const ReviewsSection = () => {
   };
 
   return (
-    <section className="py-24 bg-gradient-to-br from-blue-50/30 via-slate-50/50 to-indigo-50/20">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16 animate-fade-in-up">
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-serif font-bold text-primary mb-3 sm:mb-4">
+    <section className="py-6 sm:py-8 md:py-10 bg-gradient-to-br from-blue-50/30 via-slate-50/50 to-indigo-50/20">
+      <div className="container mx-auto px-3 sm:px-4 md:px-5 lg:px-6 max-w-6xl w-full">
+        <div className="text-center mb-6 sm:mb-8 md:mb-10 animate-fade-in-up">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-primary mb-3 sm:mb-4 px-2">
             What Our Clients Say
           </h2>
-          <p className="text-xs sm:text-sm md:text-base text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto px-4">
             Real stories from satisfied clients across Pittsburgh. Share your experience!
           </p>
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16 animate-fade-in-up">
-          <Card className="shadow-professional hover:shadow-professional-hover section-transition text-center p-6">
-            <CardTitle className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-2">
-              {loading ? <Loader2 className="h-8 w-8 animate-spin mx-auto" /> : stats.totalReviews}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5 mb-6 sm:mb-8 md:mb-10 animate-fade-in-up items-stretch">
+          <Card className="shadow-professional hover:shadow-professional-hover section-transition text-center p-4">
+            <CardTitle className="text-xl sm:text-2xl md:text-3xl font-bold text-primary mb-1.5">
+              {loading ? <Loader2 className="h-6 w-6 animate-spin mx-auto" /> : stats.totalReviews}
             </CardTitle>
-            <p className="text-muted-foreground">Total Reviews</p>
+            <p className="text-muted-foreground text-sm">Total Reviews</p>
           </Card>
-          <Card className="shadow-professional hover:shadow-professional-hover section-transition text-center p-6">
-            <CardTitle className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-2">
-              {loading ? <Loader2 className="h-8 w-8 animate-spin mx-auto" /> : stats.averageRating.toFixed(1)}
+          <Card className="shadow-professional hover:shadow-professional-hover section-transition text-center p-4">
+            <CardTitle className="text-xl sm:text-2xl md:text-3xl font-bold text-primary mb-1.5">
+              {loading ? <Loader2 className="h-6 w-6 animate-spin mx-auto" /> : stats.averageRating.toFixed(1)}
             </CardTitle>
-            <p className="text-muted-foreground">Average Rating</p>
+            <p className="text-muted-foreground text-sm">Average Rating</p>
           </Card>
-          <Card className="shadow-professional hover:shadow-professional-hover section-transition text-center p-6">
-            <CardTitle className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-2">
-              {loading ? <Loader2 className="h-8 w-8 animate-spin mx-auto" /> : stats.fiveStarReviews}
+          <Card className="shadow-professional hover:shadow-professional-hover section-transition text-center p-4">
+            <CardTitle className="text-xl sm:text-2xl md:text-3xl font-bold text-primary mb-1.5">
+              {loading ? <Loader2 className="h-6 w-6 animate-spin mx-auto" /> : stats.fiveStarReviews}
             </CardTitle>
-            <p className="text-muted-foreground">5 Star Reviews</p>
+            <p className="text-muted-foreground text-sm">5 Star Reviews</p>
           </Card>
-          <Card className="shadow-professional hover:shadow-professional-hover section-transition text-center p-6">
-            <CardTitle className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-2">
-              {loading ? <Loader2 className="h-8 w-8 animate-spin mx-auto" /> : stats.fourStarReviews}
+          <Card className="shadow-professional hover:shadow-professional-hover section-transition text-center p-4">
+            <CardTitle className="text-xl sm:text-2xl md:text-3xl font-bold text-primary mb-1.5">
+              {loading ? <Loader2 className="h-6 w-6 animate-spin mx-auto" /> : stats.fourStarReviews}
             </CardTitle>
-            <p className="text-muted-foreground">4 Star Reviews</p>
+            <p className="text-muted-foreground text-sm">4 Star Reviews</p>
           </Card>
         </div>
 
@@ -229,14 +229,14 @@ const ReviewsSection = () => {
             </CardContent>
           </Card>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16 animate-fade-in-up">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-5 mb-6 sm:mb-8 md:mb-10 animate-fade-in-up">
             {reviews.map((review, index) => (
               <Card 
                 key={review.id} 
                 className="shadow-professional hover:shadow-professional-hover section-transition group animate-fade-in-up"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <CardContent className="p-6">
+                <CardContent className="p-4">
                   <div className="flex items-center mb-4">
                     <div className="flex">{renderStars(review.rating)}</div>
                     <span className="ml-auto text-xs text-muted-foreground">
@@ -275,10 +275,10 @@ const ReviewsSection = () => {
         )}
 
         {/* Review Form */}
-        <div className="text-center mt-16 animate-fade-in-up">
+        <div className="text-center mt-6 sm:mt-8 md:mt-10 animate-fade-in-up">
           {!showReviewForm ? (
             <Card className="inline-block shadow-professional hover:shadow-professional-hover section-transition animate-scale-in">
-              <CardContent className="p-8">
+              <CardContent className="p-5 sm:p-6">
                 <div className="flex items-center justify-center gap-4 mb-4">
                   <MessageSquare className="h-6 w-6 text-primary" />
                   <span className="font-semibold text-sm sm:text-base md:text-lg">Share Your Experience</span>

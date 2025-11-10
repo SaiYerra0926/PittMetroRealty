@@ -156,16 +156,16 @@ const PropertyMap = () => {
   }, [selectedProperty]);
 
   return (
-    <section className="relative bg-gradient-to-br from-blue-50/30 via-slate-50/50 to-indigo-50/20">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16 pt-20">
-          <h2 className="text-4xl md:text-5xl font-bold text-primary mb-6 animate-fade-in-up">
+    <section className="relative bg-gradient-to-br from-blue-50/30 via-slate-50/50 to-indigo-50/20 py-6 sm:py-8 md:py-10">
+      <div className="container mx-auto px-3 sm:px-4 md:px-5 lg:px-6 max-w-6xl w-full">
+        <div className="text-center mb-6 sm:mb-8 md:mb-10 pt-20 sm:pt-22">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-primary mb-3 sm:mb-4 md:mb-5 animate-fade-in-up px-2">
             Pittsburgh Real Estate Map
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed animate-fade-in-up-delay">
+          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed animate-fade-in-up-delay px-4">
             Explore our featured properties across Pittsburgh, PA with interactive maps. Click on any property marker to see basic details.
           </p>
-          <div className="mt-8 flex justify-center gap-4 animate-fade-in-up-delay">
+          <div className="mt-4 sm:mt-6 flex flex-wrap justify-center items-center gap-2 sm:gap-3 md:gap-4 animate-fade-in-up-delay px-2">
             <Badge variant="outline" className="px-4 py-2">Pittsburgh, PA</Badge>
             <Badge variant="outline" className="px-4 py-2">Pittsburgh</Badge>
             <Badge variant="outline" className="px-4 py-2">Imperial</Badge>
@@ -175,18 +175,18 @@ const PropertyMap = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto pb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4 md:gap-5 max-w-6xl mx-auto pb-6 sm:pb-8 md:pb-10 w-full items-stretch">
           {/* Map Section */}
-          <div className="space-y-6 lg:sticky lg:top-24 lg:self-start">
+          <div className="space-y-4 sm:space-y-5 lg:sticky lg:top-24 lg:self-start">
             <Card className="shadow-professional hover:shadow-professional-hover section-transition animate-fade-in-up">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <MapPin className="h-5 w-5 text-primary" />
+              <CardHeader className="p-3 sm:p-4 md:p-5">
+                <CardTitle className="flex items-center gap-2 text-lg sm:text-xl md:text-2xl">
+                  <MapPin className="h-4 w-4 sm:h-5 sm:w-5 text-primary flex-shrink-0" />
                   Property Locations
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-0">
-                <div className="relative h-[500px] rounded-lg overflow-hidden">
+                <div className="relative h-[350px] sm:h-[400px] md:h-[450px] rounded-lg overflow-hidden">
                   {/* Leaflet Map Container */}
                   <div ref={mapRef} className="w-full h-full rounded-lg"></div>
                   
@@ -209,14 +209,14 @@ const PropertyMap = () => {
 
             {/* Property List */}
             <Card className="shadow-professional hover:shadow-professional-hover section-transition animate-fade-in-up">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Home className="h-5 w-5 text-primary" />
+              <CardHeader className="p-3 sm:p-4 md:p-5">
+                <CardTitle className="flex items-center gap-2 text-lg sm:text-xl md:text-2xl">
+                  <Home className="h-4 w-4 sm:h-5 sm:w-5 text-primary flex-shrink-0" />
                   All Properties
                 </CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="space-y-3 max-h-[400px] overflow-y-auto">
+              <CardContent className="p-3 sm:p-4 md:p-5">
+                <div className="space-y-2.5 max-h-[280px] sm:max-h-[320px] md:max-h-[360px] overflow-y-auto">
                   {properties.map((property, index) => (
                     <div
                       key={property.id}
@@ -245,15 +245,15 @@ const PropertyMap = () => {
           </div>
 
           {/* Property Details */}
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-5">
             <Card className="shadow-professional hover:shadow-professional-hover section-transition animate-fade-in-up">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Home className="h-5 w-5 text-primary" />
+              <CardHeader className="p-3 sm:p-4 md:p-5">
+                <CardTitle className="flex items-center gap-2 text-lg sm:text-xl md:text-2xl">
+                  <Home className="h-4 w-4 sm:h-5 sm:w-5 text-primary flex-shrink-0" />
                   Property Details
                 </CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="p-3 sm:p-4 md:p-5">
                 {properties[selectedProperty] && (
                   <div className="space-y-4">
                     <div className="aspect-video bg-muted rounded-lg overflow-hidden">
@@ -265,24 +265,24 @@ const PropertyMap = () => {
                     </div>
                     
                     <div>
-                      <h3 className="text-xl font-bold text-primary mb-2">
+                      <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-primary mb-2 sm:mb-3">
                         {properties[selectedProperty].name}
                       </h3>
-                      <p className="text-muted-foreground text-sm mb-3">
+                      <p className="text-muted-foreground text-sm sm:text-base mb-3 sm:mb-4">
                         {properties[selectedProperty].address}
                       </p>
                       
-                      <div className="flex items-center gap-2 mb-4">
-                        <Badge variant={properties[selectedProperty].status === "For Sale" ? "default" : "secondary"}>
+                      <div className="flex items-center gap-2 mb-4 sm:mb-5">
+                        <Badge variant={properties[selectedProperty].status === "For Sale" ? "default" : "secondary"} className="text-xs sm:text-sm">
                           {properties[selectedProperty].status}
                         </Badge>
                       </div>
                       
-                      <div className="text-2xl font-bold text-primary mb-4">
+                      <div className="text-xl sm:text-2xl md:text-3xl font-bold text-primary mb-4 sm:mb-5">
                         ${((properties[selectedProperty]?.price) || 0).toLocaleString()}
                       </div>
                       
-                      <div className="grid grid-cols-3 gap-4 mb-4">
+                      <div className="grid grid-cols-3 gap-3 sm:gap-4 mb-4 sm:mb-5">
                         <div className="text-center">
                           <Bed className="h-5 w-5 text-muted-foreground mx-auto mb-1" />
                           <div className="text-sm font-semibold">{properties[selectedProperty].beds}</div>
@@ -333,8 +333,8 @@ const PropertyMap = () => {
 
             {/* Market Overview */}
             <Card className="shadow-professional hover:shadow-professional-hover section-transition animate-fade-in-up">
-              <CardContent className="p-6">
-                <h4 className="font-semibold text-primary mb-4">Market Overview</h4>
+              <CardContent className="p-3 sm:p-4 md:p-5">
+                <h4 className="font-semibold text-primary mb-3 sm:mb-4 text-lg sm:text-xl">Market Overview</h4>
                 <div className="space-y-3">
                   <div className="flex justify-between">
                     <span className="text-sm text-muted-foreground">Properties Listed</span>

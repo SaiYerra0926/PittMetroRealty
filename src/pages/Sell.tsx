@@ -85,47 +85,47 @@ const Sell = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-100 via-slate-50 to-slate-100">
       {/* Hero Section */}
-      <section className="hero-section relative text-white overflow-hidden bg-gradient-to-br from-primary via-primary-light to-primary">
+      <section className="relative pt-16 sm:pt-20 md:pt-24 pb-12 sm:pb-14 md:pb-16 bg-gradient-to-br from-primary via-primary-light to-primary text-white overflow-hidden safe-top">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fill-opacity%3D%220.1%22%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%222%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')]"></div>
         </div>
         
-        <div className="container-spacing relative z-10">
+        <div className="max-w-6xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 relative z-10">
           <div className="text-center max-w-4xl mx-auto">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium mb-6">
               <DollarSign className="h-4 w-4" />
               Maximize Your Property Value
             </div>
             
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-5 md:mb-6 leading-tight">
+            <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4 md:mb-5 leading-tight px-2">
               Sell Your Property
               <span className="block bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">
                 With Confidence
               </span>
             </h1>
             
-            <p className="text-sm sm:text-base md:text-lg text-white/90 mb-6 sm:mb-7 md:mb-8 leading-relaxed max-w-2xl mx-auto">
+            <p className="text-xs sm:text-sm md:text-base text-white/90 mb-5 sm:mb-6 md:mb-7 leading-relaxed max-w-2xl mx-auto px-3 sm:px-4">
               Get maximum value for your property with our proven selling strategy, 
               expert market analysis, and professional marketing.
             </p>
             
-            <div className="flex flex-wrap justify-center button-group-spacing">
-              <div className="flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full">
-                <TrendingUp className="h-4 w-4 text-green-300" />
-                <span className="font-medium text-sm">Market Analysis</span>
+            <div className="flex flex-wrap justify-center gap-2 sm:gap-3 md:gap-4 px-2">
+              <div className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full touch-target">
+                <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4 text-green-300 flex-shrink-0" />
+                <span className="font-medium text-xs sm:text-sm">Market Analysis</span>
               </div>
-              <div className="flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full">
-                <Camera className="h-4 w-4 text-blue-300" />
-                <span className="font-medium text-sm">Professional Photos</span>
+              <div className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full touch-target">
+                <Camera className="h-3 w-3 sm:h-4 sm:w-4 text-blue-300 flex-shrink-0" />
+                <span className="font-medium text-xs sm:text-sm">Professional Photos</span>
               </div>
-              <div className="flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full">
-                <Users className="h-4 w-4 text-purple-300" />
-                <span className="font-medium text-sm">Expert Agents</span>
+              <div className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full touch-target">
+                <Users className="h-3 w-3 sm:h-4 sm:w-4 text-purple-300 flex-shrink-0" />
+                <span className="font-medium text-xs sm:text-sm">Expert Agents</span>
               </div>
-              <div className="flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full">
-                <Award className="h-4 w-4 text-yellow-300" />
-                <span className="font-medium text-sm">Proven Results</span>
+              <div className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full touch-target">
+                <Award className="h-3 w-3 sm:h-4 sm:w-4 text-yellow-300 flex-shrink-0" />
+                <span className="font-medium text-xs sm:text-sm">Proven Results</span>
               </div>
             </div>
           </div>
@@ -138,36 +138,36 @@ const Sell = () => {
       </section>
 
       {/* Steps Section */}
-      <section className="section-spacing-xl relative">
+      <section className="section-spacing-xl relative py-3 sm:py-5 md:py-6">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/50 to-transparent"></div>
-        <div className="relative container-spacing">
-          <div className="text-center mb-10 sm:mb-12 md:mb-14">
+        <div className="relative container-spacing px-3 sm:px-4 md:px-5 lg:px-6 max-w-4xl mx-auto w-full">
+          <div className="text-center mb-4 sm:mb-6 md:mb-8">
             
             
           </div>
 
 
           {/* Form Content */}
-          <Card className="max-w-4xl mx-auto shadow-xl border border-slate-200/50 bg-white/90 backdrop-blur-sm">
-            <CardHeader className="text-center pb-6 lg:pb-8 bg-gradient-to-r from-slate-50/80 via-slate-50/60 to-slate-50/80 rounded-t-lg border-b border-slate-200">
-              <CardTitle className="text-xl sm:text-2xl font-bold text-slate-800">
+          <Card className="max-w-xl mx-auto w-full shadow-xl border border-slate-200/50 bg-white/90 backdrop-blur-sm">
+            <CardHeader className="text-center pb-3 sm:pb-4 bg-gradient-to-r from-slate-50/80 via-slate-50/60 to-slate-50/80 rounded-t-lg border-b border-slate-200 p-3 sm:p-4 md:p-5">
+              <CardTitle className="text-lg sm:text-xl md:text-2xl font-bold text-slate-800">
                 Personal Information
               </CardTitle>
-              <p className="text-slate-600 text-sm">
+              <p className="text-slate-600 text-xs sm:text-sm md:text-base mt-1">
                 Tell us about yourself
               </p>
             </CardHeader>
-            <CardContent className="card-content-spacing">
-              <div className="form-spacing">
-                  <div className="text-center mb-6 sm:mb-7">
-                    <div className="w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 bg-gradient-to-br from-primary/10 to-primary-light/20 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
-                      <User className="h-10 w-10 text-primary" />
+            <CardContent className="card-content-spacing p-3 sm:p-4 md:p-5 lg:p-6">
+              <div className="form-spacing space-y-2.5 sm:space-y-3 md:space-y-4">
+                  <div className="text-center mb-4 sm:mb-5">
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-primary/10 to-primary-light/20 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
+                      <User className="h-7 w-7 sm:h-8 sm:w-8 text-primary" />
                     </div>
-                    <h3 className="text-lg sm:text-xl font-bold text-slate-800 mb-2">Let's Get to Know You</h3>
-                    <p className="text-slate-600 text-sm">We'll use this information to provide personalized service</p>
+                    <h3 className="text-base sm:text-lg md:text-xl font-bold text-slate-800 mb-1">Let's Get to Know You</h3>
+                    <p className="text-slate-600 text-xs sm:text-sm md:text-base px-4">We'll use this information to provide personalized service</p>
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 md:gap-5">
                     <div className="space-y-1.5 sm:space-y-2">
                       <Label htmlFor="firstName" className="text-sm font-semibold text-slate-700">
                         First Name *
@@ -276,13 +276,13 @@ const Sell = () => {
                 </div>
 
               {/* Navigation Buttons */}
-              <div className="flex justify-center pt-8 border-t border-slate-200">
+              <div className="flex justify-center pt-6 border-t border-slate-200">
                 <Button 
                   onClick={handleSubmit}
-                  className="px-10 py-3.5 h-14 bg-gradient-to-r from-primary to-primary-light hover:from-primary/90 hover:to-primary-light/90 transition-all duration-300 shadow-lg hover:shadow-xl text-base font-semibold min-h-[56px] touch-target"
+                  className="px-8 py-2.5 h-12 bg-gradient-to-r from-primary to-primary-light hover:from-primary/90 hover:to-primary-light/90 transition-all duration-300 shadow-lg hover:shadow-xl text-sm sm:text-base font-semibold min-h-[48px] touch-target"
                 >
                   Submit Application
-                  <ArrowRight className="h-5 w-5 ml-2" />
+                  <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 ml-2" />
                 </Button>
               </div>
             </CardContent>
@@ -295,25 +295,25 @@ const Sell = () => {
 
 
       {/* CTA Section */}
-      <section className="py-16 sm:py-20 bg-gradient-to-r from-primary to-primary-light text-white relative overflow-hidden">
+      <section className="py-4 sm:py-6 md:py-8 bg-gradient-to-r from-primary to-primary-light text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-black/10"></div>
         <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary-light/90"></div>
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-5 drop-shadow-lg">
+        <div className="relative max-w-xl mx-auto px-3 sm:px-4 md:px-5 lg:px-6 text-center w-full">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 sm:mb-4 drop-shadow-lg px-2">
             Ready to Sell Your Property?
           </h2>
-          <p className="text-sm sm:text-base md:text-lg text-white/90 mb-6 sm:mb-7 drop-shadow-md">
+          <p className="text-xs sm:text-sm md:text-base text-white/90 mb-4 sm:mb-5 drop-shadow-md px-4">
             Start your selling journey today with Pitt Metro Realty
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center">
             <Button 
               size="lg" 
               onClick={() => {
                 window.location.href = `tel:+14129777090`;
               }}
-              className="bg-white text-primary hover:bg-white/90 h-12 px-8 py-3 text-sm sm:text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-300 min-h-[48px] touch-target"
+              className="bg-white text-primary hover:bg-white/90 h-12 sm:h-14 px-6 sm:px-8 py-2.5 sm:py-3 text-sm sm:text-base md:text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 min-h-[48px] touch-target"
             >
-              <Phone className="h-5 w-5 mr-2" />
+              <Phone className="h-4 w-4 sm:h-5 sm:w-5 mr-2 flex-shrink-0" />
               Call +1-412-977-7090
             </Button>
           </div>

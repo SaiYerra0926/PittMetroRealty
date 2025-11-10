@@ -63,20 +63,20 @@ const About = () => {
   ];
 
   return (
-    <section id="about" className="py-8 sm:py-10 md:py-12 bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
-      <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
+    <section id="about" className="py-6 sm:py-8 md:py-10 bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
+      <div className="container mx-auto px-3 sm:px-4 md:px-5 lg:px-6 max-w-6xl">
         {/* Header */}
-        <div className="text-center mb-6 sm:mb-8 md:mb-10 animate-fade-in-up">
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-primary mb-2 sm:mb-3 md:mb-4 px-2">
+        <div className="text-center mb-5 sm:mb-6 md:mb-8 animate-fade-in-up">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-2 sm:mb-3 md:mb-4 px-2">
             About Pitt Metro Realty
           </h2>
-          <p className="text-xs sm:text-sm md:text-base text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-4 sm:mb-5 px-3">
+          <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-4 sm:mb-6 px-4">
             With over 15 years of experience in the real estate industry, Pitt Metro Realty has been 
             the trusted partner for thousands of clients in their property journey.
           </p>
           
           {/* Trust Badges */}
-          <div className="flex flex-wrap justify-center gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-5 md:mb-6 px-2">
+          <div className="flex flex-wrap justify-center gap-2.5 sm:gap-3 md:gap-4 mb-4 sm:mb-6 px-2">
             <Badge variant="outline" className="px-4 py-2 text-xs sm:text-sm flex items-center gap-2 bg-white/80 backdrop-blur-sm border-primary/30 hover:bg-primary/10 transition-all duration-300 hover:scale-105 group">
               <div className="w-5 h-5 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-all duration-300">
                 <Award className="w-3.5 h-3.5 text-primary" />
@@ -99,21 +99,21 @@ const About = () => {
         </div>
 
         {/* Main Content */}
-        <div className="bg-white rounded-xl sm:rounded-2xl shadow-2xl overflow-hidden mb-8 sm:mb-10 md:mb-12">
-          <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr]">
+        <div className="bg-white rounded-xl sm:rounded-2xl shadow-2xl overflow-hidden mb-6 sm:mb-8 md:mb-10 w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] items-stretch">
             {/* Left Column - Biography */}
-            <div className="p-4 sm:p-6 md:p-8 animate-slide-in-left">
-              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-slate-900 mb-3 sm:mb-4 md:mb-5 tracking-wide">
+            <div className="p-4 sm:p-5 md:p-6 lg:p-8 animate-slide-in-left flex flex-col justify-center">
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-3 sm:mb-4 md:mb-5 tracking-wide">
                 MEET YOUR AGENT
               </h3>
               <div className="prose prose-sm sm:prose-base max-w-none text-slate-700">
-                <p className="text-xs sm:text-sm md:text-base leading-relaxed mb-3 sm:mb-4 md:mb-5">
+                <p className="text-sm sm:text-base md:text-lg leading-relaxed mb-3 sm:mb-4 md:mb-5">
                   With a stellar track record of over $125 million in sales from 2020 to 2024, 
                   I bring over two decades of experience and hundreds of closed transactions to every client. 
                   My approach is built on positivity, professionalism, and an unparalleled dedication to 
                   delivering exceptional service and results.
                 </p>
-                <p className="text-xs sm:text-sm md:text-base leading-relaxed">
+                <p className="text-sm sm:text-base md:text-lg leading-relaxed">
                   My tenacious work ethic drives me to go above and beyond for my clients, persisting 
                   where others might falter. I firmly believe in never taking no for an answer — where 
                   there is a will, there is a way, and I am relentless in my pursuit of finding it.
@@ -122,7 +122,7 @@ const About = () => {
             </div>
 
             {/* Right Column - Profile Card */}
-            <div className="bg-slate-50 p-4 sm:p-6 md:p-8 border-t lg:border-t-0 lg:border-l border-slate-300 animate-slide-in-right">
+            <div className="bg-slate-50 p-4 sm:p-5 md:p-6 lg:p-8 border-t lg:border-t-0 lg:border-l border-slate-300 animate-slide-in-right">
               <div className="flex flex-col items-center">
                 {/* Profile Image */}
                 <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-full overflow-hidden border-2 border-slate-300 shadow-xl mb-3 sm:mb-4 md:mb-5 bg-gradient-to-br from-slate-200 to-slate-100 flex items-center justify-center">
@@ -208,21 +208,21 @@ const About = () => {
         </div>
 
         {/* Our Values */}
-        <div className="mb-12 sm:mb-16 md:mb-20">
-          <div className="text-center mb-8 sm:mb-10 md:mb-12 animate-fade-in-up px-2">
+        <div className="mb-8 sm:mb-10 md:mb-12">
+          <div className="text-center mb-6 sm:mb-8 md:mb-10 animate-fade-in-up px-2">
             <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-3 sm:mb-4">Our Core Values</h3>
-            <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto px-3">
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto px-4">
               The principles that guide everything we do and every relationship we build.
             </p>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-6 items-stretch">
             {values.map((value, index) => {
               const Icon = value.icon;
               return (
                 <Card 
                   key={value.title}
-                  className="text-center p-4 sm:p-5 md:p-6 bg-white shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in-up"
+                  className="text-center p-4 sm:p-5 md:p-6 bg-white shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in-up flex flex-col"
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
                   <CardContent className="p-0">

@@ -85,6 +85,11 @@ export class PropertiesAPI {
 
       return await response.json();
     } catch (error) {
+      // Handle network errors (e.g., server not running, CORS, connection refused)
+      if (error instanceof TypeError && (error.message.includes('fetch') || error.message.includes('Failed to fetch'))) {
+        console.error(`Network error fetching from ${url}:`, error.message);
+        throw new Error(`Unable to connect to API server`);
+      }
       console.error(`Error fetching from ${url}:`, error);
       throw error;
     }
@@ -109,11 +114,14 @@ export class PropertiesAPI {
       if (filters?.offset) queryParams.append('offset', filters.offset.toString());
 
       const endpoint = `/properties${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
-      const data = await this.fetchData<PropertyListingsResponse>(endpoint);
+      const data = await this.fetchData<{ success: boolean; listings: PropertyListing[]; total: number } | PropertyListingsResponse>(endpoint);
+      
+      // Normalize response format
+      const normalizedData = 'listings' in data ? data : { listings: (data as any).data || [], total: (data as any).count || (data as any).total || 0 };
       
       // Cache to localStorage
-      localStorage.setItem('properties', JSON.stringify(data.listings));
-      return data;
+      localStorage.setItem('properties', JSON.stringify(normalizedData.listings));
+      return normalizedData;
     } catch (error) {
       console.warn("Failed to fetch properties from API, attempting to load from localStorage.");
       const localProperties = localStorage.getItem('properties');
@@ -173,13 +181,21 @@ export class PropertiesAPI {
         body: JSON.stringify(processedData),
       };
 
-      const result = await this.fetchData<{ message: string; listing: PropertyListing }>('/properties', options);
+      const result = await this.fetchData<{ success: boolean; message: string; listing: PropertyListing }>('/properties', options);
       
       // Invalidate cache after creating a new listing
       localStorage.removeItem('properties');
       localStorage.removeItem('propertyStats');
+      localStorage.removeItem('owner_listings');
       
-      return result.listing;
+      // Normalize the listing data
+      const listing = result.listing || result as any;
+      return {
+        ...listing,
+        photos: Array.isArray(listing.photos) ? listing.photos : [],
+        features: Array.isArray(listing.features) ? listing.features : [],
+        amenities: Array.isArray(listing.amenities) ? listing.amenities : []
+      };
     } catch (error) {
       console.error("Failed to create property:", error);
       throw error;
@@ -196,13 +212,26 @@ export class PropertiesAPI {
         body: JSON.stringify(listingData),
       };
 
-      const result = await this.fetchData<{ message: string; listing: PropertyListing }>(`/properties/${id}`, options);
+      const result = await this.fetchData<{ success: boolean; message: string; data: PropertyListing }>(`/properties/${id}`, options);
       
       // Invalidate cache
       localStorage.removeItem('properties');
       localStorage.removeItem('propertyStats');
+      localStorage.removeItem('owner_listings');
       
-      return result.listing;
+      // Normalize the listing data
+      const listing = result.data || result as any;
+      return {
+        ...listing,
+        photos: Array.isArray(listing.photos) ? listing.photos.map((p: any) => ({
+          id: p.id,
+          name: p.name || p.photo_name || '',
+          url: p.url || p.photo_url || '',
+          size: p.size || p.photo_size || 0
+        })) : [],
+        features: Array.isArray(listing.features) ? listing.features : [],
+        amenities: Array.isArray(listing.amenities) ? listing.amenities : []
+      };
     } catch (error) {
       console.error("Failed to update property:", error);
       throw error;
@@ -218,11 +247,12 @@ export class PropertiesAPI {
         method: 'DELETE',
       };
 
-      await this.fetchData<{ message: string }>(`/properties/${id}`, options);
+      await this.fetchData<{ success: boolean; message: string }>(`/properties/${id}`, options);
       
       // Invalidate cache
       localStorage.removeItem('properties');
       localStorage.removeItem('propertyStats');
+      localStorage.removeItem('owner_listings');
     } catch (error) {
       console.error("Failed to delete property:", error);
       throw error;
@@ -258,7 +288,25 @@ export class PropertiesAPI {
    * Get properties by owner email
    */
   async getPropertiesByOwner(ownerEmail: string): Promise<PropertyListingsResponse> {
-    return this.getProperties({ ownerEmail });
+    try {
+      const endpoint = `/properties/owner?ownerEmail=${encodeURIComponent(ownerEmail)}`;
+      const data = await this.fetchData<{ success: boolean; listings: PropertyListing[]; total: number }>(endpoint);
+      
+      // Cache to localStorage
+      if (data.listings && data.listings.length > 0) {
+        localStorage.setItem('owner_listings', JSON.stringify(data.listings));
+      }
+      
+      return { listings: data.listings || [], total: data.total || 0 };
+    } catch (error) {
+      console.warn("Failed to fetch properties by owner from API, attempting to load from localStorage.");
+      const localProperties = localStorage.getItem('owner_listings');
+      if (localProperties) {
+        const parsed = JSON.parse(localProperties);
+        return { listings: Array.isArray(parsed) ? parsed : [], total: Array.isArray(parsed) ? parsed.length : 0 };
+      }
+      throw error;
+    }
   }
 
   /**

@@ -78,8 +78,8 @@ export default {
         },
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
-        heading: ['Poppins', 'sans-serif'],
+        sans: ['Montserrat', 'sans-serif'],
+        heading: ['Montserrat', 'sans-serif'],
       },
       borderRadius: {
         lg: "var(--radius)",

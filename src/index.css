@@ -492,16 +492,40 @@ Modern tech blue and purple gradient theme.
 @layer base {
   * {
     @apply border-border;
+    font-family: 'Montserrat', sans-serif;
   }
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'Montserrat', sans-serif;
     font-feature-settings: "rlig" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   /* Smooth scrolling */
   html {
     scroll-behavior: smooth;
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  /* Professional uppercase text styling */
+  .font-uppercase-professional {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* Ensure all headings use Montserrat */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+  }
+
+  /* Professional body text */
+  p, span, div, a, button, input, textarea, select, label {
+    font-family: 'Montserrat', sans-serif;
   }
 
   /* Custom scrollbar */
@@ -676,33 +700,33 @@ Modern tech blue and purple gradient theme.
     animation: pulse 2s ease-in-out infinite;
   }
 
-  /* Professional Spacing System */
+  /* Professional Spacing System - Ultra Compact */
   .section-spacing {
-    @apply py-12 lg:py-16;
+    @apply py-6 lg:py-8;
   }
 
   .section-spacing-lg {
-    @apply py-16 lg:py-20;
+    @apply py-8 lg:py-10;
   }
 
   .section-spacing-xl {
-    @apply py-20 lg:py-24;
+    @apply py-10 lg:py-12;
   }
 
   .container-spacing {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+    @apply max-w-6xl mx-auto px-3 sm:px-4 lg:px-5;
   }
 
   .content-spacing {
-    @apply space-y-6 lg:space-y-8;
+    @apply space-y-3 lg:space-y-4;
   }
 
   .form-spacing {
-    @apply space-y-4 lg:space-y-6;
+    @apply space-y-2.5 lg:space-y-3;
   }
 
   .card-spacing {
-    @apply p-6 lg:p-8;
+    @apply p-3 lg:p-4;
   }
 
   .button-spacing {
@@ -713,34 +737,34 @@ Modern tech blue and purple gradient theme.
     @apply px-4 py-3;
   }
 
-  /* Optimized Layout Classes */
+  /* Optimized Layout Classes - Ultra Compact */
   .hero-section {
-    @apply min-h-screen flex items-center pt-20 lg:pt-24 pb-12 lg:pb-16;
+    @apply min-h-screen flex items-center pt-20 lg:pt-24 pb-8 lg:pb-10;
   }
 
   .content-section {
-    @apply py-12 lg:py-16;
+    @apply py-6 lg:py-8;
   }
 
   .feature-section {
-    @apply py-16 lg:py-20;
+    @apply py-8 lg:py-10;
   }
 
   .cta-section {
-    @apply py-16 lg:py-20;
+    @apply py-8 lg:py-10;
   }
 
-  /* Grid Spacing */
+  /* Grid Spacing - Ultra Compact */
   .grid-spacing {
-    @apply grid gap-6 lg:gap-8;
+    @apply grid gap-3 lg:gap-4;
   }
 
   .grid-spacing-sm {
-    @apply grid gap-4 lg:gap-6;
+    @apply grid gap-2.5 lg:gap-3;
   }
 
   .grid-spacing-lg {
-    @apply grid gap-8 lg:gap-12;
+    @apply grid gap-4 lg:gap-5;
   }
 
   /* Text Spacing */
@@ -749,50 +773,50 @@ Modern tech blue and purple gradient theme.
   }
 
   .heading-spacing {
-    @apply mb-4 lg:mb-6;
+    @apply mb-2.5 lg:mb-3;
   }
 
   .paragraph-spacing {
-    @apply mb-6 lg:mb-8;
+    @apply mb-3 lg:mb-4;
   }
 
-  /* Component Spacing */
+  /* Component Spacing - Ultra Compact */
   .card-content-spacing {
-    @apply p-6 lg:p-8 space-y-4 lg:space-y-6;
+    @apply p-3 lg:p-4 space-y-2.5 lg:space-y-3;
   }
 
   .form-group-spacing {
-    @apply space-y-2 lg:space-y-3;
+    @apply space-y-2 lg:space-y-2;
   }
 
   .button-group-spacing {
-    @apply flex gap-3 lg:gap-4;
+    @apply flex gap-2 lg:gap-2.5;
   }
 
-  /* Enhanced Responsive Spacing - Mobile First */
+  /* Enhanced Responsive Spacing - Mobile First - Ultra Compact */
   @media (max-width: 640px) {
     .section-spacing {
-      @apply py-8 px-4;
+      @apply py-5 px-2.5;
     }
     
     .section-spacing-lg {
-      @apply py-12 px-4;
+      @apply py-6 px-2.5;
     }
     
     .section-spacing-xl {
-      @apply py-16 px-4;
+      @apply py-8 px-2.5;
     }
     
     .card-spacing {
-      @apply p-4;
+      @apply p-2.5;
     }
     
     .content-spacing {
-      @apply space-y-4;
+      @apply space-y-2.5;
     }
     
     .form-spacing {
-      @apply space-y-3;
+      @apply space-y-2;
     }
 
     /* Touch-friendly button sizes on mobile */
@@ -801,24 +825,24 @@ Modern tech blue and purple gradient theme.
     }
   }
 
-  /* Tablet-specific adjustments */
+  /* Tablet-specific adjustments - Ultra Compact */
   @media (min-width: 641px) and (max-width: 1024px) {
     .section-spacing {
-      @apply py-10 px-6;
+      @apply py-6 px-3;
     }
     
     .section-spacing-lg {
-      @apply py-14 px-6;
+      @apply py-8 px-3;
     }
     
     .section-spacing-xl {
-      @apply py-16 px-6;
+      @apply py-10 px-3;
     }
   }
 
-  /* Enhanced Container Spacing */
+  /* Enhanced Container Spacing - Compact */
   .container-responsive {
-    @apply w-full mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16;
+    @apply w-full mx-auto px-3 sm:px-4 md:px-5 lg:px-6 xl:px-8;
   }
 
   /* Responsive Images */
@@ -856,11 +880,11 @@ Modern tech blue and purple gradient theme.
   }
 
   .margin-section {
-    @apply my-12 lg:my-16;
+    @apply my-8 lg:my-10;
   }
 
   .margin-content {
-    @apply my-6 lg:my-8;
+    @apply my-4 lg:my-5;
   }
 
   /* Clean Layout Utilities */

@@ -133,31 +133,31 @@ const Buy = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-100 via-slate-50 to-slate-100">
       {/* Hero Section */}
-      <section className="relative pt-16 sm:pt-20 md:pt-24 pb-12 sm:pb-14 md:pb-16 bg-gradient-to-br from-primary via-primary-light to-primary text-white overflow-hidden safe-top">
+      <section className="relative pt-20 sm:pt-22 md:pt-24 pb-8 sm:pb-10 md:pb-12 bg-gradient-to-br from-primary via-primary-light to-primary text-white overflow-hidden safe-top">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fill-opacity%3D%220.1%22%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%222%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')]"></div>
         </div>
         
-        <div className="max-w-6xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 relative z-10">
-          <div className="text-center max-w-4xl mx-auto">
-            <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-5 md:mb-6">
-              <Home className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+        <div className="max-w-5xl mx-auto px-3 sm:px-4 md:px-5 lg:px-6 relative z-10">
+          <div className="text-center max-w-3xl mx-auto">
+            <div className="inline-flex items-center gap-2 sm:gap-2.5 px-3 sm:px-4 py-1.5 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full text-xs sm:text-sm md:text-base font-medium mb-4 sm:mb-5 md:mb-6">
+              <Home className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
               <span>Find Your Dream Home</span>
             </div>
             
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 md:mb-5 leading-tight px-2">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 sm:mb-4 md:mb-5 leading-tight px-2">
               Discover Your Perfect
               <span className="block bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">
                 Home Today
               </span>
             </h1>
             
-            <p className="text-sm sm:text-base md:text-lg text-white/90 mb-5 sm:mb-6 md:mb-7 leading-relaxed max-w-2xl mx-auto px-3">
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-white/90 mb-4 sm:mb-5 md:mb-6 leading-relaxed max-w-2xl mx-auto px-4">
               Explore premium properties in Pittsburgh with expert guidance, 
               transparent pricing, and exceptional service.
             </p>
             
-            <div className="flex flex-wrap justify-center gap-2 sm:gap-3 md:gap-4 px-2">
+            <div className="flex flex-wrap justify-center gap-2.5 sm:gap-3 md:gap-4 px-2">
               <div className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full touch-target">
                 <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-300 flex-shrink-0" />
                 <span className="font-medium text-xs sm:text-sm">Verified Properties</span>
@@ -176,29 +176,29 @@ const Buy = () => {
       </section>
 
       {/* Buyer Information Section */}
-      <section className="py-8 sm:py-10 md:py-12 bg-slate-50/80 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
-          <div className="text-center mb-6 sm:mb-8 md:mb-10">
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-2 sm:mb-3 md:mb-4 px-2">
+      <section className="py-6 sm:py-8 md:py-10 bg-slate-50/80 backdrop-blur-sm">
+        <div className="max-w-6xl mx-auto px-3 sm:px-4 md:px-5 lg:px-6 w-full">
+          <div className="text-center mb-5 sm:mb-6 md:mb-8">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-800 mb-2 sm:mb-3 md:mb-4 px-2">
               Tell Us About Your Home Buying Needs
             </h2>
-            <p className="text-xs sm:text-sm md:text-base text-slate-600 max-w-3xl mx-auto leading-relaxed px-3">
+            <p className="text-sm sm:text-base md:text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed px-4">
               Help us find the perfect property for you by sharing your preferences and requirements
             </p>
           </div>
 
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-3xl mx-auto w-full">
             {/* Buyer Form */}
             <Card className="shadow-xl border-0">
               <CardHeader className="bg-gradient-to-r from-primary to-primary/80 text-white rounded-t-lg p-4 sm:p-5 md:p-6">
-                <CardTitle className="text-xl sm:text-2xl font-bold flex items-center gap-2 sm:gap-3">
-                  <User className="h-5 w-5 sm:h-6 sm:w-6 flex-shrink-0" />
+                <CardTitle className="text-xl sm:text-2xl md:text-3xl font-bold flex items-center gap-2 sm:gap-3">
+                  <User className="h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7 flex-shrink-0" />
                   <span>Buyer Information</span>
                 </CardTitle>
-                <p className="text-white/90 text-xs sm:text-sm md:text-base mt-2 sm:mt-3">We'll use this information to match you with the best properties</p>
+                <p className="text-white/90 text-sm sm:text-base md:text-lg mt-2 sm:mt-3">We'll use this information to match you with the best properties</p>
               </CardHeader>
               <CardContent className="p-4 sm:p-5 md:p-6 lg:p-8">
-                <form className="space-y-6 sm:space-y-7 md:space-y-8">
+                <form className="space-y-4 sm:space-y-5 md:space-y-6">
                   {/* Personal Information */}
                   <div className="space-y-6">
                     <h3 className="text-sm sm:text-base font-bold text-slate-800 border-b border-slate-200 pb-2">Personal Information</h3>
@@ -362,18 +362,18 @@ const Buy = () => {
       </section>
 
       {/* Properties Grid */}
-      <section id="properties" className="py-10 sm:py-12 md:py-16 bg-slate-50/80 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
-          <div className="text-center mb-8 sm:mb-10 md:mb-12">
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-3 sm:mb-4 md:mb-5 px-2">
+      <section id="properties" className="py-6 sm:py-8 md:py-10 bg-slate-50/80 backdrop-blur-sm">
+        <div className="max-w-6xl mx-auto px-3 sm:px-4 md:px-5 lg:px-6 w-full">
+          <div className="text-center mb-5 sm:mb-6 md:mb-8">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-800 mb-3 sm:mb-4 md:mb-5 px-2">
               Featured Properties from Owners
             </h2>
-            <p className="text-xs sm:text-sm md:text-base text-slate-600 max-w-3xl mx-auto leading-relaxed px-3">
+            <p className="text-sm sm:text-base md:text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed px-4">
               Discover premium properties listed directly by owners across Pittsburgh's most desirable neighborhoods
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 lg:gap-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-5 lg:gap-6 items-stretch">
             {properties.map((property) => (
               <Card key={property.id} className="group hover:shadow-2xl transition-all duration-300 overflow-hidden bg-white/90 backdrop-blur-sm border border-slate-200/50 shadow-md hover:-translate-y-1">
                 <div className="relative">
@@ -398,7 +398,7 @@ const Buy = () => {
                   </div>
                 </div>
                 
-                <CardContent className="p-4 sm:p-5 md:p-6 lg:p-8">
+                <CardContent className="p-3 sm:p-4 md:p-5 lg:p-6">
                   <div className="flex flex-col sm:flex-row justify-between items-start gap-2 sm:gap-0 mb-4 sm:mb-5 md:mb-6">
                     <div className="text-lg sm:text-xl md:text-2xl font-bold text-primary">
                       {property.price}
@@ -544,23 +544,23 @@ const Buy = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-primary to-primary-light text-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-5">
+      <section className="py-8 sm:py-10 md:py-12 bg-gradient-to-r from-primary to-primary-light text-white">
+        <div className="max-w-3xl mx-auto px-3 sm:px-4 md:px-5 lg:px-6 text-center">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 md:mb-5 px-2">
             Need Help Finding Your Perfect Home?
           </h2>
-          <p className="text-sm sm:text-base md:text-lg text-white/90 mb-6 sm:mb-7">
+          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-white/90 mb-4 sm:mb-5 md:mb-6 px-4">
             Our expert team is here to guide you through every step of the home buying process
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center">
             <Button 
               size="lg" 
               onClick={() => {
                 window.location.href = `tel:+14129777090`;
               }}
-              className="bg-white text-primary hover:bg-white/90 h-12 px-8 py-3 text-sm sm:text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-300 min-h-[48px] touch-target"
+              className="bg-white text-primary hover:bg-white/90 h-14 sm:h-16 px-8 sm:px-10 py-3 sm:py-4 text-base sm:text-lg md:text-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 min-h-[56px] touch-target"
             >
-              <Phone className="h-5 w-5 mr-2" />
+              <Phone className="h-5 w-5 sm:h-6 sm:w-6 mr-2 flex-shrink-0" />
               Call +1-412-977-7090
             </Button>
           </div>

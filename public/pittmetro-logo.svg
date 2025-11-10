@@ -1,0 +1,64 @@
+<svg width="200" height="120" viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg" style="background: transparent;">
+  <!-- House Illustration -->
+  <g id="house">
+    <!-- Chimney -->
+    <rect x="75" y="18" width="5" height="12" fill="#0d7377" stroke="#0d7377" stroke-width="1"/>
+    
+    <!-- Roof (Gabled) -->
+    <path d="M100 15 L80 35 L120 35 Z" fill="#0d7377" stroke="#0d7377" stroke-width="1.5"/>
+    <!-- Roof texture lines -->
+    <line x1="88" y1="28" x2="112" y2="28" stroke="#0d7377" stroke-width="0.8" opacity="0.7"/>
+    <line x1="85" y1="32" x2="115" y2="32" stroke="#0d7377" stroke-width="0.8" opacity="0.7"/>
+    
+    <!-- House Body (Two Story) -->
+    <rect x="82" y="35" width="36" height="30" fill="white" stroke="#0d7377" stroke-width="1.5"/>
+    
+    <!-- Door -->
+    <rect x="93" y="50" width="10" height="15" fill="#0d7377" stroke="#0d7377" stroke-width="1"/>
+    <circle cx="98" cy="57" r="0.8" fill="white"/>
+    
+    <!-- First Floor Windows Left -->
+    <rect x="85" y="42" width="6" height="6" fill="white" stroke="#0d7377" stroke-width="1"/>
+    <line x1="88" y1="42" x2="88" y2="48" stroke="#0d7377" stroke-width="0.8"/>
+    <line x1="85" y1="45" x2="91" y2="45" stroke="#0d7377" stroke-width="0.8"/>
+    
+    <!-- First Floor Windows Right -->
+    <rect x="109" y="42" width="6" height="6" fill="white" stroke="#0d7377" stroke-width="1"/>
+    <line x1="112" y1="42" x2="112" y2="48" stroke="#0d7377" stroke-width="0.8"/>
+    <line x1="109" y1="45" x2="115" y2="45" stroke="#0d7377" stroke-width="0.8"/>
+    
+    <!-- Second Floor Window (Gabled) -->
+    <path d="M100 35 L94 42 L106 42 Z" fill="white" stroke="#0d7377" stroke-width="1"/>
+    <line x1="100" y1="35" x2="100" y2="42" stroke="#0d7377" stroke-width="0.8"/>
+    <line x1="97" y1="38.5" x2="103" y2="38.5" stroke="#0d7377" stroke-width="0.8"/>
+    
+    <!-- Grass Base -->
+    <path d="M75 65 L80 65 L82 63 L84 65 L86 63 L88 65 L90 63 L92 65 L94 63 L96 65 L98 63 L100 65 L102 63 L104 65 L106 63 L108 65 L110 63 L112 65 L114 63 L116 65 L118 63 L120 65 L125 65" fill="#0d7377" stroke="none"/>
+    
+    <!-- Foliage Left (Sage Green) -->
+    <path d="M70 55 Q68 50 70 45 Q72 40 75 45 Q73 50 75 55" fill="#7fb3a3" stroke="#0d7377" stroke-width="0.5" opacity="0.8"/>
+    <path d="M73 60 Q71 55 73 50 Q75 45 78 50 Q76 55 78 60" fill="#7fb3a3" stroke="#0d7377" stroke-width="0.5" opacity="0.8"/>
+    <circle cx="71" cy="52" r="1.5" fill="#0d7377" opacity="0.5"/>
+    <circle cx="74" cy="57" r="1" fill="#0d7377" opacity="0.5"/>
+    <path d="M68 58 L70 60 L72 58 L70 56 Z" fill="#0d7377" opacity="0.4"/>
+    
+    <!-- Foliage Right (Sage Green) -->
+    <path d="M130 55 Q132 50 130 45 Q128 40 125 45 Q127 50 125 55" fill="#7fb3a3" stroke="#0d7377" stroke-width="0.5" opacity="0.8"/>
+    <path d="M127 60 Q129 55 127 50 Q125 45 122 50 Q124 55 122 60" fill="#7fb3a3" stroke="#0d7377" stroke-width="0.5" opacity="0.8"/>
+    <circle cx="129" cy="52" r="1.5" fill="#0d7377" opacity="0.5"/>
+    <circle cx="126" cy="57" r="1" fill="#0d7377" opacity="0.5"/>
+    <path d="M132 58 L130 60 L128 58 L130 56 Z" fill="#0d7377" opacity="0.4"/>
+  </g>
+  
+  <!-- Text: Pittmetro (Script/Elegant) -->
+  <text x="100" y="85" text-anchor="middle" font-family="serif" font-size="20" font-weight="normal" fill="#0d7377" font-style="italic">
+    <tspan x="100" dy="0">Pittmetro</tspan>
+  </text>
+  
+  <!-- Text: REALTY with dashes -->
+  <g id="realty-text">
+    <line x1="65" y1="95" x2="75" y2="95" stroke="#0d7377" stroke-width="1.5"/>
+    <text x="100" y="95" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#0d7377" letter-spacing="2px">REALTY</text>
+    <line x1="125" y1="95" x2="135" y2="95" stroke="#0d7377" stroke-width="1.5"/>
+  </g>
+</svg>

@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import OwnerAccess from "./OwnerAccess";
+import PropertyOwnerSection from "./propertyOwnerSection";
 
 const Services = () => {
   const services = [
@@ -63,22 +64,22 @@ const Services = () => {
   ];
 
   return (
-    <section id="services" className="py-8 sm:py-10 md:py-12 bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
-      <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
+    <section id="services" className="py-6 sm:py-8 md:py-10 bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
+      <div className="container mx-auto px-3 sm:px-4 md:px-5 lg:px-6 max-w-6xl">
         {/* Header */}
-        <div className="text-center mb-6 sm:mb-8 md:mb-10 animate-fade-in-up">
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-primary mb-2 sm:mb-3 md:mb-4 px-2">
+        <div className="text-center mb-5 sm:mb-6 md:mb-8 animate-fade-in-up">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-2 sm:mb-3 md:mb-4 px-2">
             Our Services
           </h2>
-          <p className="text-xs sm:text-sm md:text-base text-muted-foreground max-w-3xl mx-auto leading-relaxed px-3">
+          <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed px-4">
             Comprehensive real estate services tailored to meet your unique needs and exceed your expectations. 
             Our expert team delivers exceptional results through innovative solutions and personalized service.
           </p>
         </div>
 
         {/* Services Grid */}
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-5">
+        <div className="max-w-6xl mx-auto w-full">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-5 items-stretch">
             {services.map((service, index) => {
               const Icon = service.icon;
               return (
@@ -87,7 +88,7 @@ const Services = () => {
                   className={`service-card group animate-fade-in-up`}
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
-                  <CardContent className="p-4 sm:p-5 md:p-6">
+                  <CardContent className="p-3 sm:p-4 md:p-5">
                     {/* Icon */}
                     <div className={`w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-gradient-to-r ${service.color} rounded-lg sm:rounded-xl flex items-center justify-center mx-auto mb-3 sm:mb-4 md:mb-5 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
                       <Icon className="h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7 text-white" />
@@ -121,26 +122,7 @@ const Services = () => {
             })}
           </div>
         </div>
-
-        {/* Property Owner Access Section */}
-        <div className="mt-8 sm:mt-10 md:mt-12">
-          <div className="text-center mb-6 sm:mb-8 px-3">
-            <Badge variant="outline" className="mb-2 sm:mb-3 text-xs sm:text-sm">
-              <Shield className="h-3 w-3 mr-1 flex-shrink-0" />
-              Property Owner Services
-            </Badge>
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-2 sm:mb-3">
-              Owner Portal Access
-            </h2>
-            <p className="text-xs sm:text-sm md:text-base text-slate-600 max-w-2xl mx-auto">
-              Property owners can access our secure portal to manage listings, upload photos, and track their properties.
-            </p>
-          </div>
-          
-          <div className="max-w-md mx-auto px-3 sm:px-4">
-            <OwnerAccess />
-          </div>
-        </div>
+        {/* <PropertyOwnerSection /> */}
 
       </div>
     </section>

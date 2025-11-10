@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Lock, Shield, Home, ArrowRight, Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -15,6 +16,7 @@ const OwnerAccess: React.FC<OwnerAccessProps> = ({
   onAccessGranted,
   className = '' 
 }) => {
+  const navigate = useNavigate();
   const [showAccessForm, setShowAccessForm] = useState(false);
   const [accessCode, setAccessCode] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -33,11 +35,11 @@ const OwnerAccess: React.FC<OwnerAccessProps> = ({
 
   const handleAccessSubmit = () => {
     if (validAccessCodes.includes(accessCode.toUpperCase())) {
-      // Redirect to owner portal
-      window.location.href = '/admin';
+      // Redirect to owner portal using React Router
       if (onAccessGranted) {
         onAccessGranted();
       }
+      navigate('/admin');
     } else {
       setError('Invalid access code. Please contact Pitt Metro Realty for assistance.');
     }
