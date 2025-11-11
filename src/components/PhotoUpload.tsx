@@ -54,10 +54,9 @@ const PhotoUpload: React.FC<PhotoUploadProps> = ({
       const validationError = validateFile(file);
       if (validationError) {
         errors.push(`${file.name}: ${validationError}`);
-      } else if (photos.length + newPhotos.length < maxPhotos) {
-        newPhotos.push(file);
       } else {
-        errors.push(`${file.name}: Maximum ${maxPhotos} photos allowed.`);
+        // No limit on number of photos - accept all valid photos
+        newPhotos.push(file);
       }
     });
 
@@ -139,7 +138,7 @@ const PhotoUpload: React.FC<PhotoUploadProps> = ({
             
             <p className="text-sm text-slate-500 text-center max-w-md">
               Drag and drop your photos here, or click to browse. 
-              Maximum {maxPhotos} photos, {maxSizePerPhoto}MB each.
+              Unlimited photos allowed, {maxSizePerPhoto}MB each.
             </p>
 
             <Button
@@ -194,7 +193,7 @@ const PhotoUpload: React.FC<PhotoUploadProps> = ({
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-semibold text-slate-800">
-              Uploaded Photos ({photos.length}/{maxPhotos})
+              Uploaded Photos ({photos.length})
             </h3>
             <div className="flex space-x-2">
               <Button

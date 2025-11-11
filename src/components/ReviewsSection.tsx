@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { fetchReviews, submitReview, calculateStats, type Review, type ReviewStats } from "@/lib/api/reviews";
+import { fetchReviews, fetchReviewStats, submitReview, calculateStats, type Review, type ReviewStats } from "@/lib/api/reviews";
 
 const ReviewsSection = () => {
   const [showReviewForm, setShowReviewForm] = useState(false);
@@ -41,7 +41,12 @@ const ReviewsSection = () => {
   const loadReviews = async () => {
     try {
       setLoading(true);
-      const fetchedReviews = await fetchReviews();
+      
+      // Fetch reviews and stats in parallel
+      const [fetchedReviews, fetchedStats] = await Promise.all([
+        fetchReviews(),
+        fetchReviewStats().catch(() => null) // Fallback if stats fail
+      ]);
       
       // Sort by date (newest first)
       const sortedReviews = fetchedReviews.sort((a, b) => {
@@ -52,9 +57,13 @@ const ReviewsSection = () => {
       
       setReviews(sortedReviews);
       
-      // Calculate stats
-      const calculatedStats = calculateStats(sortedReviews);
-      setStats(calculatedStats);
+      // Use API stats if available, otherwise calculate from reviews
+      if (fetchedStats) {
+        setStats(fetchedStats);
+      } else {
+        const calculatedStats = calculateStats(sortedReviews);
+        setStats(calculatedStats);
+      }
     } catch (error) {
       console.error('Error loading reviews:', error);
       toast({
@@ -92,11 +101,6 @@ const ReviewsSection = () => {
       });
 
       if (result.success) {
-        toast({
-          title: "Review submitted!",
-          description: result.message || "Thank you for your review. It will be displayed after approval.",
-        });
-
         // Reset form
         setNewReview({
           name: '',
@@ -111,6 +115,12 @@ const ReviewsSection = () => {
 
         // Reload reviews to show the new one (if approved)
         await loadReviews();
+        
+        // Show success message
+        toast({
+          title: "Review submitted!",
+          description: result.message || "Thank you for your review. It has been saved and will be displayed.",
+        });
       }
     } catch (error: any) {
       toast({
@@ -233,33 +243,38 @@ const ReviewsSection = () => {
             {reviews.map((review, index) => (
               <Card 
                 key={review.id} 
-                className="shadow-professional hover:shadow-professional-hover section-transition group animate-fade-in-up"
+                className="shadow-professional hover:shadow-professional-hover section-transition group animate-fade-in-up border border-slate-200/50"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <CardContent className="p-4">
-                  <div className="flex items-center mb-4">
-                    <div className="flex">{renderStars(review.rating)}</div>
-                    <span className="ml-auto text-xs text-muted-foreground">
+                <CardContent className="p-4 sm:p-5">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-1">{renderStars(review.rating)}</div>
+                    <span className="text-xs text-slate-500">
                       {formatDate(review.created_at)}
                     </span>
                   </div>
 
-                  <div className="relative mb-6">
-                    <p className="text-muted-foreground italic leading-relaxed pl-6 relative">
-                      <span className="absolute left-0 top-0 text-primary text-4xl font-serif leading-none">"</span>
+                  <div className="relative mb-5">
+                    <p className="text-slate-700 italic leading-relaxed pl-6 pr-2 relative text-sm sm:text-base">
+                      <span className="absolute left-0 top-0 text-primary text-3xl sm:text-4xl font-serif leading-none opacity-60">"</span>
                       {review.text || review.review_text}
-                      <span className="absolute bottom-0 text-primary text-4xl font-serif leading-none">"</span>
+                      <span className="absolute bottom-0 right-0 text-primary text-3xl sm:text-4xl font-serif leading-none opacity-60">"</span>
                     </p>
                   </div>
 
-                  <div className="flex items-center gap-4 pt-4 border-t">
-                    <div className="h-12 w-12 bg-gradient-to-br from-primary to-primary/80 text-white rounded-full flex items-center justify-center font-semibold text-sm shadow-md">
-                      {review.name.split(' ').map(n => n[0]).join('').toUpperCase()}
+                  <div className="flex items-center gap-4 pt-4 border-t border-slate-200">
+                    <div className="h-12 w-12 bg-gradient-to-br from-primary to-primary/80 text-white rounded-full flex items-center justify-center font-semibold text-sm shadow-md flex-shrink-0">
+                      {review.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h4 className="font-semibold text-primary truncate">{review.name}</h4>
+                      <div className="flex items-center gap-2">
+                        <h4 className="font-semibold text-slate-800 truncate">{review.name}</h4>
+                        {review.is_verified && (
+                          <CheckCircle className="h-4 w-4 text-primary flex-shrink-0" title="Verified Review" />
+                        )}
+                      </div>
                       {review.location && (
-                        <p className="text-sm text-muted-foreground truncate">{review.location}</p>
+                        <p className="text-xs sm:text-sm text-slate-600 truncate mt-0.5">{review.location}</p>
                       )}
                       {review.property_type && (
                         <p className="text-xs text-primary font-medium mt-1 truncate">

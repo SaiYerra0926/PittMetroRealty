@@ -20,7 +20,8 @@ export const getProperties = async (req, res) => {
       FROM properties p
       LEFT JOIN users u ON p.owner_id = u.id
       LEFT JOIN users a ON p.agent_id = a.id
-      WHERE 1=1
+      WHERE p.listing_type IN ('rent', 'sell', 'buy')
+        AND p.status IN ('active', 'inactive')
     `;
     
     const params: any[] = [];
@@ -284,7 +285,7 @@ export const createProperty = async (req, res) => {
           availableDate || available_date, 
           owner_id, 
           agent_id,
-          status || 'Pending Review',
+          status || 'active', // Default to 'active' for new listings
           ownerEmail || '',
           ownerPhone || ''
         ]
@@ -793,6 +794,8 @@ export const getPropertiesByOwner = async (req, res) => {
       });
     }
     
+    // Only fetch listings from Buy, Rent, and Sell pages (listing_type IN ('rent', 'sell', 'buy'))
+    // and only show active or inactive listings (status IN ('active', 'inactive'))
     let query = `
       SELECT 
         p.*,
@@ -802,7 +805,9 @@ export const getPropertiesByOwner = async (req, res) => {
         u.email as owner_email
       FROM properties p
       LEFT JOIN users u ON p.owner_id = u.id
-      WHERE u.email = $1 OR p.owner_email = $1
+      WHERE (u.email = $1 OR p.owner_email = $1)
+        AND p.listing_type IN ('rent', 'sell', 'buy')
+        AND p.status IN ('active', 'inactive')
     `;
     
     const result = await pool.query(query, [ownerEmail]);

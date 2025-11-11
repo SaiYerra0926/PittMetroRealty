@@ -1,141 +1,80 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MapPin, Bed, Bath, Car, Square, Eye, Star, Calendar, Users, Clock, TrendingUp, Home, Key, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import property1 from "@/assets/property-1.jpg";
-import property2 from "@/assets/property-2.jpg";
-import property3 from "@/assets/property-3.jpg";
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 import 'react-lazy-load-image-component/src/effects/blur.css'
 import PropertyDetailsModal from "@/components/PropertyDetailsModal";
+import { PropertiesAPI } from "@/lib/api/properties";
 
 const FeaturedProperties = () => {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [selectedProperty, setSelectedProperty] = useState<any | null>(null);
+  const [properties, setProperties] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const propertiesApi = new PropertiesAPI();
 
-  const properties = [
-    {
-      id: 1,
-      image: property1,
-      price: "$850,000",
-      address: "123 Oak Street, Shadyside, Pittsburgh",
-      bedrooms: 4,
-      bathrooms: 3,
-      sqft: "2,400",
-      type: "Single Family",
-      yearBuilt: 2018,
-      features: ["Modern Kitchen", "Hardwood Floors", "Garage"],
-      amenities: ["Pool", "Gym", "Parking"],
-      status: "For Sale",
-      listingType: "buy", // "buy", "rent", or "sell"
-      daysOnMarket: 15,
-      rating: 4.9,
-      agent: "Sarah Johnson",
-      description: "Stunning modern home with premium finishes and excellent location.",
-      images: [property1, property2, property3]
-    },
-    {
-      id: 2,
-      image: property2,
-      price: "$650,000",
-      address: "456 Maple Avenue, Lawrenceville, Pittsburgh",
-      bedrooms: 3,
-      bathrooms: 2,
-      sqft: "1,800",
-      type: "Townhouse",
-      yearBuilt: 2020,
-      features: ["Open Floor Plan", "Balcony", "Storage"],
-      amenities: ["Rooftop", "Concierge", "Storage"],
-      status: "For Sale",
-      listingType: "buy",
-      daysOnMarket: 8,
-      rating: 4.8,
-      agent: "Mike Chen",
-      description: "Contemporary townhouse with urban lifestyle amenities.",
-      images: [property2, property1, property3]
-    },
-    {
-      id: 3,
-      image: property3,
-      price: "$1,200,000",
-      address: "789 Pine Road, Squirrel Hill, Pittsburgh",
-      bedrooms: 5,
-      bathrooms: 4,
-      sqft: "3,200",
-      type: "Luxury Home",
-      yearBuilt: 2015,
-      features: ["Chef's Kitchen", "Wine Cellar", "Library"],
-      amenities: ["Pool", "Tennis Court", "Garden"],
-      status: "For Sale",
-      listingType: "rent",
-      daysOnMarket: 22,
-      rating: 4.9,
-      agent: "Emily Rodriguez",
-      description: "Luxury estate with premium amenities and privacy.",
-      images: [property3, property1, property2]
-    },
-    {
-      id: 4,
-      image: property1,
-      price: "$450,000",
-      address: "321 Elm Street, Downtown, Pittsburgh",
-      bedrooms: 2,
-      bathrooms: 2,
-      sqft: "1,200",
-      type: "Condominium",
-      yearBuilt: 2019,
-      features: ["City Views", "Modern Design", "Balcony"],
-      amenities: ["Gym", "Concierge", "Rooftop"],
-      status: "For Sale",
-      listingType: "sell",
-      daysOnMarket: 5,
-      rating: 4.7,
-      agent: "David Kim",
-      description: "Modern downtown living with stunning city views.",
-      images: [property1, property3, property2]
-    },
-    {
-      id: 5,
-      image: property2,
-      price: "$750,000",
-      address: "654 Cedar Lane, Mount Washington, Pittsburgh",
-      bedrooms: 4,
-      bathrooms: 3,
-      sqft: "2,100",
-      type: "Single Family",
-      yearBuilt: 2017,
-      features: ["Mountain Views", "Deck", "Fireplace"],
-      amenities: ["Parking", "Storage", "Garden"],
-      status: "For Sale",
-      listingType: "buy",
-      daysOnMarket: 12,
-      rating: 4.8,
-      agent: "Lisa Thompson",
-      description: "Charming home with breathtaking mountain and city views.",
-      images: [property2, property1, property3]
-    },
-    {
-      id: 6,
-      image: property3,
-      price: "$950,000",
-      address: "987 Birch Boulevard, Fox Chapel, Pittsburgh",
-      bedrooms: 5,
-      bathrooms: 4,
-      sqft: "2,800",
-      type: "Estate",
-      yearBuilt: 2016,
-      features: ["Gourmet Kitchen", "Home Office", "Walk-in Closets"],
-      amenities: ["Pool", "Tennis Court", "Guest House"],
-      status: "For Sale",
-      listingType: "rent",
-      daysOnMarket: 18,
-      rating: 4.9,
-      agent: "Robert Wilson",
-      description: "Elegant estate in prestigious neighborhood with luxury amenities.",
-      images: [property3, property2, property1]
-    }
-  ];
+  useEffect(() => {
+    const fetchProperties = async () => {
+      try {
+        setIsLoading(true);
+        // Fetch active properties from Buy, Rent, and Sell pages
+        const response = await propertiesApi.getProperties({ 
+          status: 'active',
+          limit: 6 
+        });
+        
+        // Map API response to component format
+        const mappedProperties = (response.listings || []).map((listing: any) => ({
+          id: listing.id,
+          image: listing.photos && listing.photos.length > 0 
+            ? (listing.photos[0].url || listing.photos[0].photo_url || '')
+            : '',
+          price: listing.price ? `$${listing.price.toLocaleString()}` : 'Price on request',
+          address: listing.address || '',
+          bedrooms: listing.bedrooms || 0,
+          bathrooms: listing.bathrooms || 0,
+          sqft: listing.squareFeet ? listing.squareFeet.toLocaleString() : '0',
+          type: listing.propertyType || '',
+          yearBuilt: listing.yearBuilt || null,
+          features: listing.features || [],
+          amenities: listing.amenities || [],
+          status: listing.status === 'active' ? 'For Sale' : listing.status,
+          listingType: listing.listingType || 'buy',
+          daysOnMarket: listing.daysOnMarket || 0,
+          rating: listing.rating || 4.5,
+          agent: listing.agent || 'Pitt Metro Realty',
+          description: listing.description || '',
+          images: listing.photos && listing.photos.length > 0
+            ? listing.photos.map((p: any) => p.url || p.photo_url || '').filter(Boolean)
+            : []
+        }));
+        
+        setProperties(mappedProperties);
+      } catch (error) {
+        console.error('Error fetching properties:', error);
+        setProperties([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProperties();
+  }, []);
+
+  // Helper function to get image source (handles base64 and URLs)
+  const getImageSrc = (image: string) => {
+    if (!image) return '';
+    // If it's a base64 data URL, return as is
+    if (image.startsWith('data:image')) return image;
+    // If it's a URL, return as is
+    if (image.startsWith('http://') || image.startsWith('https://')) return image;
+    // Otherwise, assume it's a base64 string without prefix
+    return `data:image/jpeg;base64,${image}`;
+  };
+
+  // Static properties removed - now fetching from API
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -214,28 +153,48 @@ const FeaturedProperties = () => {
 
         {/* Properties Grid */}
         <div className="max-w-6xl mx-auto w-full">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-5 items-stretch">
-          {properties.map((property, index) => (
-            <Card 
-              key={property.id}
-              className={`property-card group cursor-pointer animate-fade-in-up ${
-                hoveredCard === property.id ? 'shadow-2xl' : ''
-              }`}
-              style={{ animationDelay: `${index * 0.1}s` }}
-              onMouseEnter={() => setHoveredCard(property.id)}
-              onMouseLeave={() => setHoveredCard(null)}
-            >
-              {/* Image Section */}
-              <div className="relative overflow-hidden">
-                <LazyLoadImage
-                  src={property.image}
-                  alt={property.address}
-                  effect="blur"
-                  width="100%"
-                  height="auto"
-                  placeholderSrc="/placeholder.svg"
-                  className="property-image"
-                />
+          {isLoading ? (
+            <div className="text-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+              <p className="text-gray-600">Loading properties...</p>
+            </div>
+          ) : properties.length === 0 ? (
+            <div className="text-center py-12">
+              <Home className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+              <p className="text-gray-600">No properties available at the moment.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-5 items-stretch">
+              {properties.map((property, index) => (
+                <Card 
+                  key={property.id}
+                  className={`property-card group cursor-pointer animate-fade-in-up ${
+                    hoveredCard === property.id ? 'shadow-2xl' : ''
+                  }`}
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                  onMouseEnter={() => setHoveredCard(property.id)}
+                  onMouseLeave={() => setHoveredCard(null)}
+                >
+                  {/* Image Section */}
+                  <div className="relative overflow-hidden">
+                    {property.image ? (
+                      <LazyLoadImage
+                        src={getImageSrc(property.image)}
+                        alt={property.address}
+                        effect="blur"
+                        width="100%"
+                        height="auto"
+                        className="property-image w-full h-64 object-cover"
+                        onError={(e) => {
+                          // Fallback to placeholder if image fails to load
+                          e.currentTarget.src = '/placeholder.svg';
+                        }}
+                      />
+                    ) : (
+                      <div className="w-full h-64 bg-gradient-to-br from-slate-200 via-slate-300 to-slate-400 flex items-center justify-center">
+                        <Home className="h-20 w-20 text-slate-500" />
+                      </div>
+                    )}
                 
                 {/* Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -344,8 +303,9 @@ const FeaturedProperties = () => {
                 </div>
               </CardContent>
             </Card>
-          ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
 
       </div>

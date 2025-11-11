@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Search, MapPin, Home, DollarSign, Bed, Bath, Calendar, Star, Phone, Mail, Filter, Clock, Users, Shield, Wifi, Key, TrendingUp, Eye } from "lucide-react";
 import PropertyDetailsModal from "@/components/PropertyDetailsModal";
 import { Button } from "@/components/ui/button";
@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { PropertiesAPI } from "@/lib/api/properties";
 
 const Rent = () => {
   const [selectedProperty, setSelectedProperty] = useState<any | null>(null);
@@ -20,109 +21,67 @@ const Rent = () => {
   });
   const [filteredProperties, setFilteredProperties] = useState<any[]>([]);
   const [isSearchActive, setIsSearchActive] = useState(false);
+  const [rentalProperties, setRentalProperties] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const propertiesApi = new PropertiesAPI();
 
-  const rentalProperties = [
-    {
-      id: 1,
-      image: "/api/placeholder/400/300",
-      price: "$2,800",
-      period: "/month",
-      address: "1000 Chatham Park Dr, Pittsburgh, PA 15216",
-      bedrooms: 3,
-      bathrooms: 2.5,
-      sqft: "1,850",
-      type: "Townhouse",
-      yearBuilt: 2018,
-      features: ["Garage", "Updated Kitchen", "Hardwood Floors"],
-      amenities: ["Patio", "Central AC", "Laundry Room"],
-      status: "Available",
-      availableDate: "2025-02-01",
-      leaseLength: "12 months",
-      rating: 4.9,
-      agent: "Pitt Metro Realty",
-      deposit: "$2,800"
-    },
-    {
-      id: 2,
-      image: "/api/placeholder/400/300",
-      price: "$2,400",
-      period: "/month",
-      address: "2600 Canterbury Dr, Imperial, PA 15126",
-      bedrooms: 4,
-      bathrooms: 3,
-      sqft: "2,200",
-      type: "Single Family",
-      yearBuilt: 2019,
-      features: ["Large Yard", "Updated Bathrooms", "Attached Garage"],
-      amenities: ["Deck", "Fireplace", "Finished Basement"],
-      status: "Available",
-      availableDate: "2025-02-15",
-      leaseLength: "12-24 months",
-      rating: 4.8,
-      agent: "Pitt Metro Realty",
-      deposit: "$2,400"
-    },
-    {
-      id: 3,
-      image: "/api/placeholder/400/300",
-      price: "$1,900",
-      period: "/month",
-      address: "246 Overlook Ct, Coraopolis, PA 15108",
-      bedrooms: 2,
-      bathrooms: 2,
-      sqft: "1,400",
-      type: "Townhouse",
-      yearBuilt: 2020,
-      features: ["Modern Appliances", "Pet Friendly", "Parking"],
-      amenities: ["Balcony", "Storage", "Walk-in Closets"],
-      status: "Available",
-      availableDate: "2025-03-01",
-      leaseLength: "12 months",
-      rating: 4.7,
-      agent: "Pitt Metro Realty",
-      deposit: "$1,900"
-    },
-    {
-      id: 4,
-      image: "/api/placeholder/400/300",
-      price: "$2,600",
-      period: "/month",
-      address: "228 Fielbrook Dr, Canonsburg, PA 15317",
-      bedrooms: 3,
-      bathrooms: 2.5,
-      sqft: "1,950",
-      type: "Single Family",
-      yearBuilt: 2017,
-      features: ["Large Lot", "Two-Car Garage", "Updated Features"],
-      amenities: ["Deck", "Fireplace", "Finished Garage"],
-      status: "Available",
-      availableDate: "2025-02-20",
-      leaseLength: "12 months",
-      rating: 4.9,
-      agent: "Pitt Metro Realty",
-      deposit: "$2,600"
-    },
-    {
-      id: 5,
-      image: "/api/placeholder/400/300",
-      price: "$1,750",
-      period: "/month",
-      address: "1115 Elm Ct, Oakdale, PA 15071",
-      bedrooms: 2,
-      bathrooms: 1.5,
-      sqft: "1,200",
-      type: "Apartment",
-      yearBuilt: 2016,
-      features: ["Updated Kitchen", "Cable Ready", "Parking"],
-      amenities: ["Laundry", "Storage", "Balcony"],
-      status: "Available",
-      availableDate: "2025-02-10",
-      leaseLength: "12 months",
-      rating: 4.6,
-      agent: "Pitt Metro Realty",
-      deposit: "$1,750"
-    }
-  ];
+  useEffect(() => {
+    const fetchRentalProperties = async () => {
+      try {
+        setIsLoading(true);
+        // Fetch active rental properties
+        const response = await propertiesApi.getProperties({ 
+          status: 'active',
+          listingType: 'rent'
+        });
+        
+        // Map API response to component format
+        const mappedProperties = (response.listings || []).map((listing: any) => ({
+          id: listing.id,
+          image: listing.photos && listing.photos.length > 0 
+            ? (listing.photos[0].url || listing.photos[0].photo_url || '')
+            : '',
+          price: listing.price ? `$${listing.price.toLocaleString()}` : 'Price on request',
+          period: "/month",
+          address: listing.address || '',
+          bedrooms: listing.bedrooms || 0,
+          bathrooms: listing.bathrooms || 0,
+          sqft: listing.squareFeet ? listing.squareFeet.toLocaleString() : '0',
+          type: listing.propertyType || '',
+          yearBuilt: listing.yearBuilt || null,
+          features: listing.features || [],
+          amenities: listing.amenities || [],
+          status: "Available",
+          availableDate: listing.availableDate || '',
+          leaseLength: "12 months",
+          rating: 4.5,
+          agent: "Pitt Metro Realty",
+          deposit: listing.price ? `$${Math.round(listing.price * 0.1).toLocaleString()}` : '$0',
+          description: listing.description || '',
+          photos: listing.photos || []
+        }));
+        
+        setRentalProperties(mappedProperties);
+      } catch (error) {
+        console.error('Error fetching rental properties:', error);
+        setRentalProperties([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchRentalProperties();
+  }, []);
+
+  // Helper function to get image source (handles base64 and URLs)
+  const getImageSrc = (image: string) => {
+    if (!image) return '';
+    if (image.startsWith('data:image')) return image;
+    if (image.startsWith('http://') || image.startsWith('https://')) return image;
+    return `data:image/jpeg;base64,${image}`;
+  };
+
+  // Static rental properties removed - now fetching from API
 
   const handleSearch = () => {
     // Filter properties based on search criteria
@@ -478,11 +437,33 @@ const Rent = () => {
             </div>
           )}
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
-            {(isSearchActive ? filteredProperties : rentalProperties).map((property) => (
+          {isLoading ? (
+            <div className="text-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+              <p className="text-gray-600">Loading rental properties...</p>
+            </div>
+          ) : (isSearchActive ? filteredProperties : rentalProperties).length === 0 ? (
+            <div className="text-center py-12">
+              <Home className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+              <p className="text-gray-600">No rental properties available at the moment.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
+              {(isSearchActive ? filteredProperties : rentalProperties).map((property) => (
               <Card key={property.id} className="group hover:shadow-2xl transition-all duration-500 overflow-hidden bg-white/90 backdrop-blur-sm border border-slate-200/50 shadow-md hover:-translate-y-1">
                 <div className="relative overflow-hidden">
-                  <div className="w-full h-72 bg-gradient-to-br from-slate-200 via-slate-300 to-slate-400 flex items-center justify-center">
+                  {property.image ? (
+                    <img
+                      src={getImageSrc(property.image)}
+                      alt={property.address}
+                      className="w-full h-72 object-cover"
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none';
+                        e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                      }}
+                    />
+                  ) : null}
+                  <div className={`w-full h-72 bg-gradient-to-br from-slate-200 via-slate-300 to-slate-400 flex items-center justify-center ${property.image ? 'hidden' : ''}`}>
                     <Home className="h-20 w-20 text-slate-500" />
                   </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
@@ -582,10 +563,12 @@ const Rent = () => {
                   </div>
                 </CardContent>
               </Card>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
 
           {/* Load More */}
+          {!isLoading && (isSearchActive ? filteredProperties : rentalProperties).length > 0 && (
           <div className="text-center mt-16">
             <Button 
               size="lg" 
@@ -604,6 +587,7 @@ const Rent = () => {
               Load More Rentals
             </Button>
           </div>
+          )}
         </div>
       </section>
 

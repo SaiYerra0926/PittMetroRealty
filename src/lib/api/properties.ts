@@ -63,8 +63,26 @@ interface PropertyListingStats {
 export class PropertiesAPI {
   private baseUrl: string;
 
-  constructor(baseUrl: string = 'http://localhost:3001/api') {
-    this.baseUrl = baseUrl;
+  constructor(baseUrl?: string) {
+    // Use environment variable if available, otherwise fallback to localhost for development
+    this.baseUrl = baseUrl || import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+  }
+
+  /**
+   * Test API server connection
+   */
+  async testConnection(): Promise<boolean> {
+    try {
+      const response = await fetch(`${this.baseUrl.replace('/api', '')}/api/health`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      return response.ok;
+    } catch (error) {
+      return false;
+    }
   }
 
   private async fetchData<T>(endpoint: string, options?: RequestInit): Promise<T> {
@@ -88,10 +106,23 @@ export class PropertiesAPI {
       // Handle network errors (e.g., server not running, CORS, connection refused)
       if (error instanceof TypeError && (error.message.includes('fetch') || error.message.includes('Failed to fetch'))) {
         console.error(`Network error fetching from ${url}:`, error.message);
-        throw new Error(`Unable to connect to API server`);
+        
+        // Provide more helpful error message
+        const isLocalhost = this.baseUrl.includes('localhost') || this.baseUrl.includes('127.0.0.1');
+        const errorMessage = isLocalhost
+          ? `Unable to connect to API server at ${this.baseUrl}. Please ensure the server is running with "npm run server" or "npm start".`
+          : `Unable to connect to API server at ${this.baseUrl}. Please check your network connection and ensure the server is running.`;
+        
+        throw new Error(errorMessage);
       }
+      
+      // Re-throw if it's already an Error with a message
+      if (error instanceof Error) {
+        throw error;
+      }
+      
       console.error(`Error fetching from ${url}:`, error);
-      throw error;
+      throw new Error(`An unexpected error occurred: ${String(error)}`);
     }
   }
 

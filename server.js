@@ -2,15 +2,43 @@ import express from 'express';
 import cors from 'cors';
 import { testConnection } from './src/lib/database.js';
 import * as propertyRoutes from './api/properties.js';
+import * as reviewRoutes from './api/reviews.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
 // Enable CORS for all routes with specific origins
-app.use(cors({
-  origin: ['https://pittmetrorealty.com', 'https://pittmetrorealty.netlify.app'],
-  credentials: true
-}));
+const allowedOrigins = [
+  'https://pittmetrorealty.com',
+  'https://pittmetrorealty.netlify.app',
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'http://localhost:5174',
+  'http://127.0.0.1:5173',
+  'http://127.0.0.1:3000'
+];
+
+// In development, allow all origins for easier debugging
+if (process.env.NODE_ENV === 'development') {
+  app.use(cors({
+    origin: true, // Allow all origins in development
+    credentials: true
+  }));
+} else {
+  // In production, use strict CORS
+  app.use(cors({
+    origin: function (origin, callback) {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        console.warn(`CORS blocked origin: ${origin}`);
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true
+  }));
+}
 
 // Middleware
 app.use(express.json());
@@ -45,6 +73,13 @@ app.post('/api/properties', propertyRoutes.createProperty);
 app.put('/api/properties/:id', propertyRoutes.updateProperty);
 app.delete('/api/properties/:id', propertyRoutes.deleteProperty);
 app.post('/api/inquiries', propertyRoutes.createInquiry);
+
+// Review routes
+app.get('/api/reviews', reviewRoutes.getReviews);
+app.get('/api/reviews/stats', reviewRoutes.getReviewStats);
+app.post('/api/reviews', reviewRoutes.createReview);
+app.put('/api/reviews/:id/status', reviewRoutes.updateReviewStatus);
+app.delete('/api/reviews/:id', reviewRoutes.deleteReview);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

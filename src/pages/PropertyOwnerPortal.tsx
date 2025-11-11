@@ -27,8 +27,7 @@ const PropertyOwnerPortal = () => {
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
   const [selectedListing, setSelectedListing] = useState<any | null>(null);
-  const [allListings, setAllListings] = useState<any[]>([]);
-  const [isLoadingAllListings, setIsLoadingAllListings] = useState(false);
+  // Removed allListings - only owner's listings are shown now
   const [viewingListing, setViewingListing] = useState<any | null>(null);
   const { toast } = useToast();
   const propertiesApi = new PropertiesAPI();
@@ -51,14 +50,14 @@ const PropertyOwnerPortal = () => {
     
     // Pricing
     price: 0,
-    listingType: 'rent', // 'rent' or 'sell'
+    listingType: 'rent', // 'rent', 'sell', or 'buy'
     
     // Features & Amenities
     features: [] as string[],
     amenities: [] as string[],
     
     // Additional Info
-    status: 'Draft',
+    status: 'active', // Default to 'active' for new listings
     availableDate: '',
     photos: [] as File[],
     
@@ -159,8 +158,7 @@ const PropertyOwnerPortal = () => {
   // Fetch listings when authenticated (only once on initial login, not on every render)
   useEffect(() => {
     if (isAuthenticated && loginData.username && !hasInitialFetch) {
-      fetchListings();
-      fetchAllListings(); // Fetch all listings from website
+      fetchListings(); // Only fetch owner's listings (already filtered to Buy/Rent/Sell with active/inactive status)
       setHasInitialFetch(true);
     }
   }, [isAuthenticated, loginData.username, hasInitialFetch]); // Only fetch once when authenticated
@@ -189,7 +187,7 @@ const PropertyOwnerPortal = () => {
         lotSize: listing.lotSize || listing.lot_size || 0,
         price: listing.price || 0,
         listingType: listing.listingType || listing.listing_type || 'rent',
-        status: listing.status || 'Draft',
+        status: listing.status || 'active',
         availableDate: listing.availableDate || listing.available_date,
         photos: Array.isArray(listing.photos) ? listing.photos.map((p: any) => ({
           id: p.id,
@@ -284,7 +282,7 @@ const PropertyOwnerPortal = () => {
         listingType: formData.listingType as 'rent' | 'sell' | 'buy',
         features: formData.features,
         amenities: formData.amenities,
-        status: 'Pending Review' as const,
+        status: formData.status || 'active', // Use form status or default to 'active'
         availableDate: formData.availableDate || undefined,
         photos: formData.photos.map((photo: any, index: number) => {
           // Handle both File objects and photo objects with file property
@@ -422,7 +420,7 @@ const PropertyOwnerPortal = () => {
       listingType: listing.listingType || 'rent',
       features: listing.features || [],
       amenities: listing.amenities || [],
-      status: listing.status || 'Draft',
+      status: listing.status || 'active',
       availableDate: listing.availableDate || '',
       photos: listing.photos || [],
       ownerName: listing.ownerName || '',
@@ -502,6 +500,7 @@ const PropertyOwnerPortal = () => {
         listingType: formData.listingType as 'rent' | 'sell' | 'buy',
         features: formData.features,
         amenities: formData.amenities,
+        status: formData.status || 'active', // Include status in update
         availableDate: formData.availableDate || undefined,
         ownerName: formData.ownerName,
         ownerEmail: formData.ownerEmail,
@@ -661,7 +660,7 @@ const PropertyOwnerPortal = () => {
         lotSize: listing.lotSize || listing.lot_size || 0,
         price: listing.price || 0,
         listingType: listing.listingType || listing.listing_type || 'rent',
-        status: listing.status || 'Draft',
+        status: listing.status || 'active',
         availableDate: listing.availableDate || listing.available_date,
         photos: Array.isArray(listing.photos) ? listing.photos.map((p: any) => ({
           id: p.id,
@@ -707,7 +706,7 @@ const PropertyOwnerPortal = () => {
               lotSize: listing.lotSize || listing.lot_size || 0,
               price: listing.price || 0,
               listingType: listing.listingType || listing.listing_type || 'rent',
-              status: listing.status || 'Draft',
+              status: listing.status || 'active',
               availableDate: listing.availableDate || listing.available_date,
               photos: Array.isArray(listing.photos) ? listing.photos.map((p: any) => ({
                 id: p.id,
@@ -789,6 +788,8 @@ const PropertyOwnerPortal = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
+      case 'active': return 'bg-green-100 text-green-800';
+      case 'inactive': return 'bg-gray-100 text-gray-800';
       case 'Pending Review': return 'bg-yellow-100 text-yellow-800';
       case 'Approved': return 'bg-green-100 text-green-800';
       case 'Rejected': return 'bg-red-100 text-red-800';
@@ -1061,7 +1062,7 @@ const PropertyOwnerPortal = () => {
                   {/* Listing Type */}
                   <div>
                     <Label className="text-lg font-semibold mb-4 block">Listing Type</Label>
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                       <Card 
                         className={`cursor-pointer transition-all ${
                           formData.listingType === 'rent' ? 'ring-2 ring-primary bg-primary/5' : 'hover:shadow-md'
@@ -1086,7 +1087,49 @@ const PropertyOwnerPortal = () => {
                           <p className="text-sm text-slate-600">Property sale listing</p>
                         </CardContent>
                       </Card>
+                      <Card 
+                        className={`cursor-pointer transition-all ${
+                          formData.listingType === 'buy' ? 'ring-2 ring-primary bg-primary/5' : 'hover:shadow-md'
+                        }`}
+                        onClick={() => handleInputChange('listingType', 'buy')}
+                      >
+                        <CardContent className="p-4 text-center">
+                          <Search className="h-8 w-8 mx-auto mb-2 text-primary" />
+                          <h3 className="font-semibold">For Buy</h3>
+                          <p className="text-sm text-slate-600">Property purchase listing</p>
+                        </CardContent>
+                      </Card>
                     </div>
+                  </div>
+
+                  {/* Status Toggle */}
+                  <div>
+                    <Label className="text-lg font-semibold mb-4 block">Listing Status</Label>
+                    <div className="flex items-center gap-4">
+                      <Button
+                        type="button"
+                        variant={formData.status === 'active' ? 'default' : 'outline'}
+                        onClick={() => handleInputChange('status', 'active')}
+                        className="flex-1"
+                      >
+                        <CheckCircle className="h-4 w-4 mr-2" />
+                        Active
+                      </Button>
+                      <Button
+                        type="button"
+                        variant={formData.status === 'inactive' ? 'default' : 'outline'}
+                        onClick={() => handleInputChange('status', 'inactive')}
+                        className="flex-1"
+                      >
+                        <X className="h-4 w-4 mr-2" />
+                        Inactive
+                      </Button>
+                    </div>
+                    <p className="text-sm text-slate-500 mt-2">
+                      {formData.status === 'active' 
+                        ? 'This listing will be visible on Buy, Rent, and Sell pages'
+                        : 'This listing will be hidden from public view'}
+                    </p>
                   </div>
 
                   {/* Basic Information */}
@@ -1310,7 +1353,7 @@ const PropertyOwnerPortal = () => {
                           console.log('PhotoUpload callback - new photos:', newPhotos.length);
                           handleAddPhotos(newPhotos);
                         }}
-                        maxPhotos={20}
+                        maxPhotos={9999}
                         maxSizePerPhoto={10}
                       />
                     </div>
@@ -1394,16 +1437,15 @@ const PropertyOwnerPortal = () => {
                           size="lg"
                           onClick={async () => {
                             await fetchListings();
-                            await fetchAllListings();
                             toast({
                               title: "Refreshed",
                               description: "Listings have been refreshed from the server.",
                             });
                           }}
                           className="min-w-[150px]"
-                          disabled={isUpdating || isLoadingListings || isLoadingAllListings}
+                          disabled={isUpdating || isLoadingListings}
                         >
-                          {isLoadingListings || isLoadingAllListings ? (
+                          {isLoadingListings ? (
                             <>
                               <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary mr-2"></div>
                               Refreshing...
@@ -1445,15 +1487,15 @@ const PropertyOwnerPortal = () => {
           <TabsContent value="manage" className="space-y-6">
             <div className="text-center mb-6 sm:mb-8">
               <h2 className="text-2xl sm:text-3xl font-bold text-slate-800 mb-2 sm:mb-3">
-                View All Listings
+                Your Listings
               </h2>
               <p className="text-sm sm:text-base text-slate-600">
-                Browse all property listings from the website. View details, update, or delete listings.
+                Manage your property listings from Buy, Rent, and Sell pages. View details, update, or delete listings.
               </p>
               <div className="flex items-center justify-center gap-4 mt-4 flex-wrap">
-                {allListings.length > 0 && (
+                {submittedListings.length > 0 && (
                   <p className="text-xs sm:text-sm text-slate-500">
-                    Total: <span className="font-semibold text-primary">{allListings.length}</span> {allListings.length === 1 ? 'listing' : 'listings'}
+                    Total: <span className="font-semibold text-primary">{submittedListings.length}</span> {submittedListings.length === 1 ? 'listing' : 'listings'}
                   </p>
                 )}
                 {submittedListings.length > 0 && (
@@ -1464,24 +1506,24 @@ const PropertyOwnerPortal = () => {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={fetchAllListings}
-                  disabled={isLoadingAllListings}
+                  onClick={fetchListings}
+                  disabled={isLoadingListings}
                   className="min-h-[36px]"
                 >
                   <Search className="h-4 w-4 mr-2" />
-                  {isLoadingAllListings ? 'Refreshing...' : 'Refresh'}
+                  {isLoadingListings ? 'Refreshing...' : 'Refresh'}
                 </Button>
               </div>
             </div>
 
-            {isLoadingAllListings ? (
+            {isLoadingListings ? (
               <Card className="border-2 border-dashed border-slate-200">
                 <CardContent className="p-8 sm:p-12 text-center">
                   <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-                  <p className="text-sm sm:text-base text-slate-600">Loading all listings...</p>
+                  <p className="text-sm sm:text-base text-slate-600">Loading listings...</p>
                 </CardContent>
               </Card>
-            ) : allListings.length === 0 ? (
+            ) : submittedListings.length === 0 ? (
               <Card className="border-2 border-dashed border-slate-200 bg-slate-50/50">
                 <CardContent className="p-8 sm:p-12 text-center">
                   <div className="text-slate-400 mb-4">
@@ -1501,7 +1543,7 @@ const PropertyOwnerPortal = () => {
               </Card>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
-                {allListings.map((listing) => {
+                {submittedListings.map((listing) => {
                   const isOwnerListing = listing.ownerEmail === loginData.username;
                   return (
                   <Card 

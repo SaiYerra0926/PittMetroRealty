@@ -2,7 +2,7 @@
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
 
 export interface Review {
-  id: number;
+  id: number | string;
   name: string;
   email?: string;
   location?: string;
@@ -12,6 +12,7 @@ export interface Review {
   property_type?: string;
   created_at: string;
   status?: string;
+  is_verified?: boolean;
 }
 
 export interface ReviewStats {
