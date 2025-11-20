@@ -40,3 +40,35 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Header Logo Constraint - Keep logo large but fit within header height */
+.header-logo-container {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  max-height: 3.5rem; /* h-14 = 56px */
+}
+
+@media (min-width: 768px) {
+  .header-logo-container {
+    max-height: 4rem; /* h-16 = 64px */
+  }
+}
+
+.header-logo-container a {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.header-logo-container a > div {
+  height: 100% !important;
+  max-height: 100% !important;
+}
+
+.header-logo-container a > div > img {
+  height: 100% !important;
+  max-height: 100% !important;
+  width: auto !important;
+  object-fit: contain !important;
+}

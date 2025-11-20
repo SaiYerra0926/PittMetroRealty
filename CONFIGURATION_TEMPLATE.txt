@@ -1,0 +1,72 @@
+# ============================================
+# SERVER & DATABASE CONFIGURATION TEMPLATE
+# ============================================
+# Copy this content to a file named .env in the root directory
+# DO NOT commit .env to Git (it contains sensitive data)
+
+# ============================================
+# DATABASE CONFIGURATION (REQUIRED)
+# ============================================
+# Replace with YOUR database credentials
+DATABASE_HOST=your_database_host_or_ip_here
+DATABASE_PORT=5432
+DATABASE_USER=your_database_username_here
+DATABASE_PASSWORD=your_database_password_here
+DATABASE_NAME=your_database_name_here
+
+# Optional: Use connection string format instead
+# DATABASE_URL=postgresql://username:password@host:port/database
+
+# ============================================
+# SERVER CONFIGURATION (REQUIRED)
+# ============================================
+# Port where your API server will run
+PORT=3001
+
+# Environment: 'development' or 'production'
+NODE_ENV=development
+
+# ============================================
+# API URL CONFIGURATION (REQUIRED)
+# ============================================
+# For Development (local server):
+VITE_API_URL=http://localhost:3001/api
+
+# For Production (replace with your actual server URL):
+# VITE_API_URL=https://your-api-server-domain.com/api
+# OR
+# VITE_API_URL=http://your-server-ip:3001/api
+
+# ============================================
+# FRONTEND URL (REQUIRED)
+# ============================================
+# For Development:
+FRONTEND_URL=http://localhost:5173
+
+# For Production (replace with your frontend URL):
+# FRONTEND_URL=https://your-frontend-domain.com
+
+# ============================================
+# SECURITY (OPTIONAL but RECOMMENDED)
+# ============================================
+# Generate random strings for these (at least 32 characters)
+JWT_SECRET=change_this_to_random_string_at_least_32_chars
+API_KEY=change_this_to_random_string_at_least_32_chars
+
+# ============================================
+# OPTIONAL CONFIGURATIONS
+# ============================================
+# Cache Configuration (optional)
+CACHE_DURATION=300000
+REDIS_URL=redis://localhost:6379
+
+# Rate Limiting (optional)
+RATE_LIMIT_WINDOW=15
+RATE_LIMIT_MAX=100
+
+# Email Configuration (optional - if using email features)
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your_email@gmail.com
+SMTP_PASS=your_app_password
+

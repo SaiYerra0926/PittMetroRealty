@@ -1,4 +1,4 @@
-import { Users, Award, Clock, TrendingUp, Phone, Mail, MapPin, Building2, Star, CheckCircle, ArrowRight, Heart, Shield, Zap } from "lucide-react";
+import { Users, Award, Clock, TrendingUp, Phone, Mail, MapPin, Star, CheckCircle, ArrowRight, Heart, Shield, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -123,28 +123,9 @@ const About = () => {
 
             {/* Right Column - Profile Card */}
             <div className="bg-slate-50 p-4 sm:p-5 md:p-6 lg:p-8 border-t lg:border-t-0 lg:border-l border-slate-300 animate-slide-in-right">
-              <div className="flex flex-col items-center">
-                {/* Profile Image */}
-                <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-full overflow-hidden border-2 border-slate-300 shadow-xl mb-3 sm:mb-4 md:mb-5 bg-gradient-to-br from-slate-200 to-slate-100 flex items-center justify-center">
-                  <img 
-                    src="/amit-aggarwal-profile.jpg" 
-                    alt="Amit Aggarwal - Real Estate Expert"
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.style.display = 'none';
-                      if (!target.parentElement?.querySelector('.fallback')) {
-                        const placeholder = document.createElement('div');
-                        placeholder.className = 'fallback w-full h-full bg-gradient-to-br from-primary/20 to-primary/10 text-slate-700 flex items-center justify-center font-bold text-3xl';
-                        placeholder.textContent = 'AA';
-                        target.parentElement?.appendChild(placeholder);
-                      }
-                    }}
-                  />
-                </div>
-
+              <div className="flex flex-col items-center justify-center h-full">
                 {/* Name */}
-                <h4 className="text-base sm:text-lg md:text-xl font-bold text-slate-900 text-center mb-1 sm:mb-1.5">
+                <h4 className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 text-center mb-2 sm:mb-3">
                   Amit Aggarwal
                 </h4>
 
@@ -240,27 +221,11 @@ const About = () => {
 
 
         {/* Mission Statement */}
-        <div className="text-center animate-fade-in-up px-3 sm:px-4">
-          <div className="bg-white rounded-xl sm:rounded-2xl p-6 sm:p-7 md:p-8 shadow-lg border border-gray-100 max-w-4xl mx-auto">
-            <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-r from-primary to-primary/80 rounded-lg sm:rounded-xl flex items-center justify-center mx-auto mb-4 sm:mb-5 md:mb-6">
-              <Building2 className="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 text-white" />
-            </div>
-            <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-4 sm:mb-5 md:mb-6">Our Mission</h3>
-            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground leading-relaxed italic">
-              "To provide exceptional real estate services that exceed our clients' expectations, 
-              while building lasting relationships based on trust, integrity, and professional excellence. 
-              We are committed to helping our clients achieve their property goals with innovative solutions 
-              and personalized service."
-            </p>
-            <div className="mt-4 sm:mt-5 md:mt-6 flex justify-center">
-              <div className="flex items-center gap-2 text-primary text-xs sm:text-sm md:text-base">
-                <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
-                <span className="font-semibold">Licensed • Insured • Trusted</span>
-              </div>
-            </div>
+        
+            
+            
           </div>
-        </div>
-      </div>
+        
     </section>
   );
 };

@@ -1,18 +1,9 @@
 // Reviews API for Pitt Metro Realty
 // Handles CRUD operations for reviews with caching and database persistence
+// PostgreSQL Version
 
-const mysql = require('mysql2/promise');
-const crypto = require('crypto');
-
-// Database configuration
-const dbConfig = {
-  host: process.env.DB_HOST || 'localhost',
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || '',
-  database: process.env.DB_NAME || 'pittmetro_reviews',
-  port: process.env.DB_PORT || 3306,
-  charset: 'utf8mb4'
-};
+import pool from '../src/lib/database.js';
+import crypto from 'crypto';
 
 // Cache configuration
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
@@ -20,12 +11,7 @@ const cache = new Map();
 
 class ReviewsAPI {
   constructor() {
-    this.pool = mysql.createPool({
-      ...dbConfig,
-      waitForConnections: true,
-      connectionLimit: 10,
-      queueLimit: 0
-    });
+    this.pool = pool; // Use existing PostgreSQL pool
   }
 
   // Generate cache key
@@ -73,20 +59,42 @@ class ReviewsAPI {
     }
 
     try {
-      const [rows] = await this.pool.execute(
-        'SELECT * FROM reviews WHERE status = ? ORDER BY created_at DESC LIMIT ? OFFSET ?',
-        ['approved', limit, offset]
+      // PostgreSQL uses is_verified boolean instead of status enum
+      // Join with properties to get location and property_type
+      const result = await this.pool.query(
+        `SELECT 
+          r.*,
+          p.property_type,
+          CASE 
+            WHEN p.city IS NOT NULL AND p.state IS NOT NULL 
+            THEN p.city || ', ' || p.state 
+            ELSE NULL 
+          END as location
+        FROM reviews r
+        LEFT JOIN properties p ON r.property_id = p.id
+        WHERE r.is_verified = true OR r.is_verified IS NULL 
+        ORDER BY r.created_at DESC 
+        LIMIT $1 OFFSET $2`,
+        [limit, offset]
       );
 
-      const result = {
+      // Map to match expected format
+      const rows = result.rows.map(row => ({
+        ...row,
+        name: row.reviewer_name,
+        email: row.reviewer_email,
+        text: row.review_text
+      }));
+
+      const response = {
         reviews: rows,
         total: rows.length,
         limit,
         offset
       };
 
-      this.setCache(cacheKey, result);
-      return result;
+      this.setCache(cacheKey, response);
+      return response;
     } catch (error) {
       console.error('Error fetching reviews:', error);
       throw new Error('Failed to fetch reviews');
@@ -103,7 +111,7 @@ class ReviewsAPI {
     }
 
     try {
-      const [rows] = await this.pool.execute(
+      const result = await this.pool.query(
         `SELECT 
           COUNT(*) as total_reviews,
           AVG(rating) as average_rating,
@@ -112,11 +120,11 @@ class ReviewsAPI {
           COUNT(CASE WHEN rating = 3 THEN 1 END) as three_star_reviews,
           COUNT(CASE WHEN rating = 2 THEN 1 END) as two_star_reviews,
           COUNT(CASE WHEN rating = 1 THEN 1 END) as one_star_reviews
-        FROM reviews WHERE status = 'approved'`
+        FROM reviews WHERE is_verified = true OR is_verified IS NULL`
       );
 
-      const stats = rows[0];
-      stats.average_rating = parseFloat(stats.average_rating).toFixed(1);
+      const stats = result.rows[0];
+      stats.average_rating = parseFloat(stats.average_rating || 0).toFixed(1);
 
       this.setCache(cacheKey, stats, 10 * 60 * 1000); // Cache stats for 10 minutes
       return stats;
@@ -135,6 +143,7 @@ class ReviewsAPI {
       rating,
       review_text,
       property_type,
+      property_id = null,
       ip_address = null,
       user_agent = null
     } = reviewData;
@@ -153,28 +162,79 @@ class ReviewsAPI {
     }
 
     try {
-      const [result] = await this.pool.execute(
-        `INSERT INTO reviews (name, email, location, rating, review_text, property_type, ip_address, user_agent, status)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'approved')`,
-        [name, email, location, rating, review_text, property_type, ip_address, user_agent]
+      // Ensure UUID extension exists
+      await this.pool.query('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"');
+      
+      // Create reviews table if it doesn't exist (PostgreSQL schema)
+      // Note: location is computed from property data, not stored directly
+      await this.pool.query(`
+        CREATE TABLE IF NOT EXISTS reviews (
+          id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+          property_id UUID REFERENCES properties(id) ON DELETE CASCADE,
+          user_id UUID REFERENCES users(id),
+          reviewer_name VARCHAR(100) NOT NULL,
+          reviewer_email VARCHAR(255),
+          rating INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 5),
+          review_text TEXT,
+          is_verified BOOLEAN DEFAULT true,
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+      `).catch(() => {
+        // Table might already exist, ignore error
+      });
+
+      // Insert review using PostgreSQL syntax
+      // Note: location and property_type are not stored in reviews table
+      // They are computed from property data when needed
+      const result = await this.pool.query(
+        `INSERT INTO reviews (reviewer_name, reviewer_email, rating, review_text, property_id, is_verified)
+         VALUES ($1, $2, $3, $4, $5, $6)
+         RETURNING *`,
+        [name, email, parseInt(rating), review_text, property_id || null, true]
       );
+
+      const review = result.rows[0];
+
+      // Get property info if property_id exists to compute location and property_type
+      let computedLocation = location || null;
+      let computedPropertyType = property_type || null;
+      
+      if (review.property_id) {
+        try {
+          const propertyResult = await this.pool.query(
+            'SELECT property_type, city, state FROM properties WHERE id = $1',
+            [review.property_id]
+          );
+          if (propertyResult.rows.length > 0) {
+            const prop = propertyResult.rows[0];
+            computedPropertyType = prop.property_type || property_type || null;
+            if (prop.city && prop.state) {
+              computedLocation = `${prop.city}, ${prop.state}`;
+            }
+          }
+        } catch (propError) {
+          // Property lookup failed, use provided values
+          console.warn('Could not fetch property info:', propError);
+        }
+      }
 
       // Clear cache to ensure fresh data
       this.clearCache('reviews');
       this.clearCache('stats');
 
       return {
-        id: result.insertId,
+        id: review.id,
         message: 'Review added successfully',
         review: {
-          id: result.insertId,
-          name,
-          email,
-          location,
-          rating,
-          review_text,
-          property_type,
-          created_at: new Date().toISOString()
+          id: review.id,
+          name: review.reviewer_name,
+          email: review.reviewer_email,
+          location: computedLocation,
+          rating: parseInt(review.rating),
+          review_text: review.review_text,
+          property_type: computedPropertyType,
+          created_at: review.created_at ? new Date(review.created_at).toISOString() : new Date().toISOString()
         }
       };
     } catch (error) {
@@ -184,22 +244,32 @@ class ReviewsAPI {
   }
 
   // Update review status (admin function)
+  // PostgreSQL uses is_verified boolean instead of status enum
   async updateReviewStatus(reviewId, status) {
-    if (!['pending', 'approved', 'rejected'].includes(status)) {
-      throw new Error('Invalid status');
+    // Convert status string to boolean for PostgreSQL
+    let isVerified = true;
+    if (status === 'pending' || status === 'rejected') {
+      isVerified = false;
     }
 
     try {
-      await this.pool.execute(
-        'UPDATE reviews SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?',
-        [status, reviewId]
+      const result = await this.pool.query(
+        'UPDATE reviews SET is_verified = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2 RETURNING *',
+        [isVerified, reviewId]
       );
+
+      if (result.rows.length === 0) {
+        throw new Error('Review not found');
+      }
 
       // Clear cache
       this.clearCache('reviews');
       this.clearCache('stats');
 
-      return { message: 'Review status updated successfully' };
+      return { 
+        message: 'Review status updated successfully',
+        review: result.rows[0]
+      };
     } catch (error) {
       console.error('Error updating review status:', error);
       throw new Error('Failed to update review status');
@@ -209,7 +279,14 @@ class ReviewsAPI {
   // Delete review (admin function)
   async deleteReview(reviewId) {
     try {
-      await this.pool.execute('DELETE FROM reviews WHERE id = ?', [reviewId]);
+      const result = await this.pool.query(
+        'DELETE FROM reviews WHERE id = $1 RETURNING *',
+        [reviewId]
+      );
+
+      if (result.rows.length === 0) {
+        throw new Error('Review not found');
+      }
 
       // Clear cache
       this.clearCache('reviews');
@@ -232,10 +309,30 @@ class ReviewsAPI {
     }
 
     try {
-      const [rows] = await this.pool.execute(
-        'SELECT * FROM reviews WHERE rating = ? AND status = ? ORDER BY created_at DESC LIMIT ?',
-        [rating, 'approved', limit]
+      const result = await this.pool.query(
+        `SELECT 
+          r.*,
+          p.property_type,
+          CASE 
+            WHEN p.city IS NOT NULL AND p.state IS NOT NULL 
+            THEN p.city || ', ' || p.state 
+            ELSE NULL 
+          END as location
+        FROM reviews r
+        LEFT JOIN properties p ON r.property_id = p.id
+        WHERE r.rating = $1 AND (r.is_verified = true OR r.is_verified IS NULL) 
+        ORDER BY r.created_at DESC 
+        LIMIT $2`,
+        [rating, limit]
       );
+
+      // Map to match expected format
+      const rows = result.rows.map(row => ({
+        ...row,
+        name: row.reviewer_name,
+        email: row.reviewer_email,
+        text: row.review_text
+      }));
 
       this.setCache(cacheKey, rows);
       return rows;
@@ -248,14 +345,31 @@ class ReviewsAPI {
   // Search reviews
   async searchReviews(query, limit = 10) {
     try {
-      const [rows] = await this.pool.execute(
-        `SELECT * FROM reviews 
-         WHERE (name LIKE ? OR review_text LIKE ? OR location LIKE ?) 
-         AND status = 'approved' 
-         ORDER BY created_at DESC 
-         LIMIT ?`,
+      const result = await this.pool.query(
+        `SELECT 
+          r.*,
+          p.property_type,
+          CASE 
+            WHEN p.city IS NOT NULL AND p.state IS NOT NULL 
+            THEN p.city || ', ' || p.state 
+            ELSE NULL 
+          END as location
+        FROM reviews r
+        LEFT JOIN properties p ON r.property_id = p.id
+        WHERE (r.reviewer_name ILIKE $1 OR r.review_text ILIKE $2 OR p.city ILIKE $3 OR p.state ILIKE $3) 
+        AND (r.is_verified = true OR r.is_verified IS NULL) 
+        ORDER BY r.created_at DESC 
+        LIMIT $4`,
         [`%${query}%`, `%${query}%`, `%${query}%`, limit]
       );
+
+      // Map to match expected format
+      const rows = result.rows.map(row => ({
+        ...row,
+        name: row.reviewer_name,
+        email: row.reviewer_email,
+        text: row.review_text
+      }));
 
       return rows;
     } catch (error) {
@@ -263,46 +377,47 @@ class ReviewsAPI {
       throw new Error('Failed to search reviews');
     }
   }
-
-  // Close database connection
-  async close() {
-    await this.pool.end();
-  }
 }
 
-// Express.js middleware for handling CORS and JSON
-const express = require('express');
-const cors = require('cors');
+// Note: This file exports route handlers, not a standalone Express app
+// The routes are registered in server.js
+// Express.js route handlers for reviews API
 
-const app = express();
+// Create instance of ReviewsAPI
 const reviewsAPI = new ReviewsAPI();
 
-// Middleware
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// Export route handlers (these are registered in server.js)
+// Function names must match what server.js expects
 
-// Routes
-app.get('/api/reviews', async (req, res) => {
+// Get all reviews
+export const getReviews = async (req, res) => {
   try {
     const { limit = 10, offset = 0 } = req.query;
     const reviews = await reviewsAPI.getReviews(parseInt(limit), parseInt(offset));
     res.json(reviews);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ 
+      success: false,
+      error: error.message 
+    });
   }
-});
+};
 
-app.get('/api/reviews/stats', async (req, res) => {
+// Get review statistics
+export const getReviewStats = async (req, res) => {
   try {
     const stats = await reviewsAPI.getReviewStats();
     res.json(stats);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ 
+      success: false,
+      error: error.message 
+    });
   }
-});
+};
 
-app.post('/api/reviews', async (req, res) => {
+// Create review
+export const createReview = async (req, res) => {
   try {
     const reviewData = {
       ...req.body,
@@ -312,71 +427,41 @@ app.post('/api/reviews', async (req, res) => {
     const result = await reviewsAPI.addReview(reviewData);
     res.status(201).json(result);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ 
+      success: false,
+      error: error.message 
+    });
   }
-});
+};
 
-app.get('/api/reviews/rating/:rating', async (req, res) => {
-  try {
-    const { rating } = req.params;
-    const { limit = 10 } = req.query;
-    const reviews = await reviewsAPI.getReviewsByRating(parseInt(rating), parseInt(limit));
-    res.json(reviews);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-app.get('/api/reviews/search', async (req, res) => {
-  try {
-    const { q, limit = 10 } = req.query;
-    if (!q) {
-      return res.status(400).json({ error: 'Search query is required' });
-    }
-    const reviews = await reviewsAPI.searchReviews(q, parseInt(limit));
-    res.json(reviews);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-// Admin routes (add authentication in production)
-app.put('/api/reviews/:id/status', async (req, res) => {
+// Update review status (admin)
+export const updateReviewStatus = async (req, res) => {
   try {
     const { id } = req.params;
     const { status } = req.body;
-    const result = await reviewsAPI.updateReviewStatus(parseInt(id), status);
+    const result = await reviewsAPI.updateReviewStatus(id, status);
     res.json(result);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ 
+      success: false,
+      error: error.message 
+    });
   }
-});
+};
 
-app.delete('/api/reviews/:id', async (req, res) => {
+// Delete review (admin)
+export const deleteReview = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await reviewsAPI.deleteReview(parseInt(id));
+    const result = await reviewsAPI.deleteReview(id);
     res.json(result);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ 
+      success: false,
+      error: error.message 
+    });
   }
-});
+};
 
-// Health check
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'OK', timestamp: new Date().toISOString() });
-});
-
-// Error handling middleware
-app.use((error, req, res, next) => {
-  console.error('API Error:', error);
-  res.status(500).json({ error: 'Internal server error' });
-});
-
-// Start server
-const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-  console.log(`Reviews API server running on port ${PORT}`);
-});
-
-module.exports = { ReviewsAPI, app };
+// Export the ReviewsAPI class for use in other files
+export { ReviewsAPI };

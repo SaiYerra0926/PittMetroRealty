@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Home, Upload, Eye, Save, ArrowLeft, CheckCircle, Lock, User, Shield, Camera, DollarSign, MapPin, Bed, Bath, Edit, Trash2, X, Search, RefreshCw } from 'lucide-react';
 import PropertyDetailsModal from '@/components/PropertyDetailsModal';
 import { Button } from '@/components/ui/button';
@@ -39,6 +39,8 @@ const PropertyOwnerPortal = () => {
     city: '',
     state: '',
     zipCode: '',
+    latitude: 0,
+    longitude: 0,
     
     // Property Details
     propertyType: '',
@@ -68,6 +70,9 @@ const PropertyOwnerPortal = () => {
     ownerPreferredContact: 'email'
   });
 
+  const [isGeocoding, setIsGeocoding] = useState(false);
+  const geocodeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   // Owner credentials (in real app, this would be secure authentication)
@@ -86,6 +91,118 @@ const PropertyOwnerPortal = () => {
     }
   };
 
+  // Professional geocoding function with better error handling
+  const geocodeAddress = async (address: string, city: string, state: string, zipCode: string) => {
+    if (!address || address.trim() === '') return;
+    
+    setIsGeocoding(true);
+    try {
+      // Build full address with proper formatting
+      const addressParts: string[] = [];
+      if (address) addressParts.push(address.trim());
+      if (city) addressParts.push(city.trim());
+      if (state) addressParts.push(state.trim());
+      if (zipCode) addressParts.push(zipCode.trim());
+      
+      const fullAddress = addressParts.join(', ');
+      
+      if (fullAddress.trim() === '') {
+        setIsGeocoding(false);
+        return;
+      }
+
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(fullAddress)}&limit=1&addressdetails=1`,
+        {
+          headers: {
+            'User-Agent': 'PittMetroRealty/1.0 (Property Management System)',
+            'Accept-Language': 'en-US,en;q=0.9'
+          }
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Geocoding API returned status ${response.status}`);
+      }
+
+      const data = await response.json();
+      
+      if (data && Array.isArray(data) && data.length > 0) {
+        const result = data[0];
+        const lat = parseFloat(result.lat);
+        const lon = parseFloat(result.lon);
+        
+        // Validate coordinates
+        if (!isNaN(lat) && !isNaN(lon) && lat >= -90 && lat <= 90 && lon >= -180 && lon <= 180) {
+          setFormData(prev => ({
+            ...prev,
+            latitude: lat,
+            longitude: lon
+          }));
+          toast({
+            title: "Location Found",
+            description: `Coordinates: ${lat.toFixed(6)}, ${lon.toFixed(6)}`,
+          });
+        } else {
+          throw new Error('Invalid coordinates received');
+        }
+      } else {
+        // Try with simplified address (city and state only)
+        if (city && state) {
+          const simplifiedAddress = `${city}, ${state}${zipCode ? ` ${zipCode}` : ''}`;
+          const retryResponse = await fetch(
+            `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(simplifiedAddress)}&limit=1`,
+            {
+              headers: {
+                'User-Agent': 'PittMetroRealty/1.0 (Property Management System)',
+                'Accept-Language': 'en-US,en;q=0.9'
+              }
+            }
+          );
+          
+          if (retryResponse.ok) {
+            const retryData = await retryResponse.json();
+            if (retryData && Array.isArray(retryData) && retryData.length > 0) {
+              const result = retryData[0];
+              const lat = parseFloat(result.lat);
+              const lon = parseFloat(result.lon);
+              
+              if (!isNaN(lat) && !isNaN(lon)) {
+                setFormData(prev => ({
+                  ...prev,
+                  latitude: lat,
+                  longitude: lon
+                }));
+                toast({
+                  title: "Approximate Location Found",
+                  description: `Using city center: ${lat.toFixed(6)}, ${lon.toFixed(6)}`,
+                  variant: "default",
+                });
+                setIsGeocoding(false);
+                return;
+              }
+            }
+          }
+        }
+        
+        toast({
+          title: "Location Not Found",
+          description: "Could not geocode address. The property will still be saved, but may not appear on the map.",
+          variant: "default",
+        });
+      }
+    } catch (error) {
+      console.error('Geocoding error:', error);
+      toast({
+        title: "Geocoding Error",
+        description: "Unable to geocode address. The property will still be saved. You can manually add coordinates later.",
+        variant: "default",
+      });
+    } finally {
+      setIsGeocoding(false);
+    }
+  };
+
   const handleInputChange = (field: string, value: any) => {
     setFormData(prev => ({
       ...prev,
@@ -98,6 +215,26 @@ const PropertyOwnerPortal = () => {
         ...prev,
         [field]: ''
       }));
+    }
+
+    // Geocode address when address, city, state, or zipCode changes
+    if (['address', 'city', 'state', 'zipCode'].includes(field)) {
+      // Clear existing timeout
+      if (geocodeTimeoutRef.current) {
+        clearTimeout(geocodeTimeoutRef.current);
+      }
+      
+      // Debounce geocoding (wait 1 second after user stops typing)
+      geocodeTimeoutRef.current = setTimeout(() => {
+        const currentAddress = field === 'address' ? value : formData.address;
+        const currentCity = field === 'city' ? value : formData.city;
+        const currentState = field === 'state' ? value : formData.state;
+        const currentZipCode = field === 'zipCode' ? value : formData.zipCode;
+        
+        if (currentAddress && currentCity && currentState) {
+          geocodeAddress(currentAddress, currentCity, currentState, currentZipCode);
+        }
+      }, 1000);
     }
   };
 
@@ -262,6 +399,21 @@ const PropertyOwnerPortal = () => {
       return;
     }
     
+    // Ensure coordinates are geocoded if not already set
+    if ((formData.latitude === 0 || formData.longitude === 0) && formData.address && formData.city && formData.state) {
+      setIsLoading(true);
+      setIsGeocoding(true);
+      try {
+        await geocodeAddress(formData.address, formData.city, formData.state, formData.zipCode);
+        // Wait a moment for geocoding to complete
+        await new Promise(resolve => setTimeout(resolve, 500));
+      } catch (error) {
+        console.error('Pre-submit geocoding error:', error);
+      } finally {
+        setIsGeocoding(false);
+      }
+    }
+    
     setIsLoading(true);
     try {
       // Prepare listing data for API
@@ -272,6 +424,8 @@ const PropertyOwnerPortal = () => {
         city: formData.city,
         state: formData.state,
         zipCode: formData.zipCode,
+        latitude: formData.latitude || undefined,
+        longitude: formData.longitude || undefined,
         propertyType: formData.propertyType,
         bedrooms: formData.bedrooms,
         bathrooms: formData.bathrooms,
@@ -367,6 +521,8 @@ const PropertyOwnerPortal = () => {
         city: '',
         state: '',
         zipCode: '',
+        latitude: 0,
+        longitude: 0,
         propertyType: '',
         bedrooms: 0,
         bathrooms: 0,
@@ -410,6 +566,8 @@ const PropertyOwnerPortal = () => {
       city: listing.city || '',
       state: listing.state || '',
       zipCode: listing.zipCode || '',
+      latitude: listing.latitude || listing.coordinates?.lat || 0,
+      longitude: listing.longitude || listing.coordinates?.lng || 0,
       propertyType: listing.propertyType || '',
       bedrooms: listing.bedrooms || 0,
       bathrooms: listing.bathrooms || 0,
@@ -441,6 +599,8 @@ const PropertyOwnerPortal = () => {
       city: '',
       state: '',
       zipCode: '',
+      latitude: 0,
+      longitude: 0,
       propertyType: '',
       bedrooms: 0,
       bathrooms: 0,
@@ -480,6 +640,21 @@ const PropertyOwnerPortal = () => {
       return;
     }
 
+    // Ensure coordinates are geocoded if not already set
+    if ((formData.latitude === 0 || formData.longitude === 0) && formData.address && formData.city && formData.state) {
+      setIsUpdating(true);
+      setIsGeocoding(true);
+      try {
+        await geocodeAddress(formData.address, formData.city, formData.state, formData.zipCode);
+        // Wait a moment for geocoding to complete
+        await new Promise(resolve => setTimeout(resolve, 500));
+      } catch (error) {
+        console.error('Pre-update geocoding error:', error);
+      } finally {
+        setIsGeocoding(false);
+      }
+    }
+
     setIsUpdating(true);
     try {
       // Prepare updated listing data
@@ -490,6 +665,8 @@ const PropertyOwnerPortal = () => {
         city: formData.city,
         state: formData.state,
         zipCode: formData.zipCode,
+        latitude: formData.latitude || undefined,
+        longitude: formData.longitude || undefined,
         propertyType: formData.propertyType,
         bedrooms: formData.bedrooms,
         bathrooms: formData.bathrooms,
@@ -756,7 +933,42 @@ const PropertyOwnerPortal = () => {
   };
 
   const handleViewListing = (listing: any) => {
-    setViewingListing(listing);
+    // Format listing data for PropertyDetailsModal
+    const formattedListing = {
+      ...listing,
+      id: listing.id,
+      title: listing.title,
+      address: listing.address,
+      city: listing.city,
+      state: listing.state,
+      zipCode: listing.zipCode,
+      price: listing.price ? `$${listing.price.toLocaleString()}` : '$0',
+      bedrooms: listing.bedrooms || 0,
+      bathrooms: listing.bathrooms || 0,
+      sqft: listing.squareFeet || listing.sqft || 0,
+      type: listing.propertyType,
+      yearBuilt: listing.yearBuilt,
+      features: listing.features || [],
+      amenities: listing.amenities || [],
+      status: listing.status || 'active',
+      listingType: listing.listingType || 'rent',
+      description: listing.description,
+      images: listing.photos && listing.photos.length > 0 
+        ? listing.photos.map((p: any) => p.url || p.photo_url || '').filter(Boolean)
+        : [],
+      image: listing.photos && listing.photos.length > 0 
+        ? (listing.photos[0].url || listing.photos[0].photo_url || '')
+        : undefined,
+      coordinates: listing.latitude && listing.longitude 
+        ? { lat: listing.latitude, lng: listing.longitude }
+        : listing.coordinates,
+      owner: {
+        name: listing.ownerName,
+        phone: listing.ownerPhone,
+        email: listing.ownerEmail
+      }
+    };
+    setViewingListing(formattedListing);
   };
 
   const handleCloseViewModal = () => {
